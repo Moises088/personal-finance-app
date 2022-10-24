@@ -9,11 +9,16 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-native-masked-view/masked-view": "^0.2.8",
+    "@react-navigation/bottom-tabs": "^6.4.0",
+    "@react-navigation/stack": "^6.3.2",
     "expo": "~46.0.16",
     "expo-status-bar": "~1.4.0",
     "react": "18.0.0",
     "react-dom": "18.0.0",
     "react-native": "0.69.6",
+    "react-native-bouncy-checkbox": "^3.0.5",
+    "react-native-gesture-handler": "^2.8.0",
     "react-native-web": "~0.18.7"
   },
   "devDependencies": {
