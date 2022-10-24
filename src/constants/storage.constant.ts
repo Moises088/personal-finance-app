@@ -1,0 +1,1 @@
+export const ASYNC_IS_LOGGED = "ASYNC_IS_LOGGED";
