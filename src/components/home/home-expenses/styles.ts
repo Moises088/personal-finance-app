@@ -23,36 +23,15 @@ export const styles = (theme: ThemesConfig) => {
         containerValue: {
             padding: 20,
             paddingHorizontal: 10,
-        },
-        textValue: {
-            color: theme.text.primary,
-            fontSize: 22,
-            fontWeight: "bold"
+            paddingBottom: 14
         },
         containerBalance: {
-            padding: 12,
+            padding: 8,
             paddingHorizontal: 10,
             flexDirection: 'row',
             alignItems: 'center',
+            justifyContent: 'center',
             backgroundColor: 'rgba(0,0,0,0.1)'
-            // borderTopWidth: .5,
-            // borderColor: theme.background.secondary,
-        },
-        containerBalanceSide: {
-            width: '50%',
-            flexDirection: 'row',
-            alignItems:'center',
-        },
-        containerIcon: {
-            width: 25,
-            height: 25,
-            borderRadius: 25,
-            alignItems: 'center',
-            justifyContent: 'center'
-        },
-        textBalance: {
-            color: theme.text.primary,
-            marginLeft: 8
         }
     })
 };

@@ -1,6 +1,7 @@
 import React from 'react';
-import { SafeAreaView, View } from 'react-native';
+import { SafeAreaView, ScrollView } from 'react-native';
 import HomeBalance from '../../components/home/home-balance';
+import HomeExpenses from '../../components/home/home-expenses';
 import HomeHeader from '../../components/home/home-header';
 import { ThemeContext } from '../../contexts/themeContext';
 import { styles } from './styles';
@@ -13,8 +14,10 @@ const HomeScreen: React.FC = () => {
   return (
     <SafeAreaView style={style.container}>
       <HomeHeader />
-
-      <HomeBalance />
+      <ScrollView style={style.containerScroll}>
+        <HomeBalance />
+        <HomeExpenses />
+      </ScrollView>
     </SafeAreaView>
   );
 }

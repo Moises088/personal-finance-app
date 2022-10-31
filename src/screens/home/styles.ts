@@ -8,6 +8,10 @@ export const styles = (theme: ThemesConfig) => {
             flex: 1,
             backgroundColor: theme.background.primary,
             paddingTop: Constants.statusBarHeight
+        },
+        containerScroll: {
+            flex: 1, 
+            marginBottom: 60
         }
     })
 };
