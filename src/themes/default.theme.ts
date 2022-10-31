@@ -8,7 +8,8 @@ export const DefaultTheme: ThemesConfig = {
     },
     text: {
         primary: "#FFF",
-        secondary: "#000"
+        secondary: "#000",
+        tertiary: "#86888a"
     },
     button: {
         primary: "#F9603B",
