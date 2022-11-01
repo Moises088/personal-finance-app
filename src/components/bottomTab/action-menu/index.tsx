@@ -4,6 +4,7 @@ import { Feather } from '@expo/vector-icons';
 import { ActionMenuBottomTab } from "../../../interfaces/bottom-tab.interface";
 import { WINDOW_HEIGTH } from "../../../constants/screen.contants";
 import styles from "./styles";
+import { COLOR_DANGER, COLOR_SUCCESS } from "../../../constants/colors";
 
 const BottomTabActionMenu = (props: ActionMenuBottomTab) => {
 
@@ -54,21 +55,21 @@ const BottomTabActionMenu = (props: ActionMenuBottomTab) => {
     return showMenu ? (
         <View style={styles.backdrop} onTouchEnd={props.toggleMenu}>
             <View style={styles.container}>
-                <AnimatedTouchable onPress={() => props.emitEvent("AddIncome")} style={[
+                <AnimatedTouchable onPress={() => props.emitEvent("INCOME")} style={[
                     styles.button,
                     { transform: [{ translateX: elementAddIncometranslateX }, { translateY: elementAddIncometranslateY }] }
                 ]}>
-                    <View style={[styles.buttonContainer, { backgroundColor: '#0f993a' }]}>
+                    <View style={[styles.buttonContainer, { backgroundColor: COLOR_SUCCESS }]}>
                         <Feather name="trending-up" size={18} color="#FFF" />
                     </View>
                     <Text style={styles.buttonText}>Renda</Text>
                 </AnimatedTouchable>
 
-                <AnimatedTouchable onPress={() => props.emitEvent("AddExpense")} style={[
+                <AnimatedTouchable onPress={() => props.emitEvent("EXPENSE")} style={[
                     styles.button,
                     { marginLeft: 80, transform: [{ translateX: elementAddExpensetranslateX }, { translateY: elementAddExpensetranslateY }] }
                 ]}>
-                    <View style={[styles.buttonContainer, { backgroundColor: '#d44' }]}>
+                    <View style={[styles.buttonContainer, { backgroundColor: COLOR_DANGER }]}>
                         <Feather name="trending-down" size={18} color="#FFF" />
                     </View>
                     <Text style={styles.buttonText}>Gasto</Text>

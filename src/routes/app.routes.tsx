@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from "../screens/home/homeScreen";
 import CustomBottomTab from "../components/bottomTab/custom-bottom-tab";
 import ProfileScreen from "../screens/profile/profileScreen";
+import FinanceScreen from "../screens/finance/financeScreen";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -22,7 +23,7 @@ const AppRoutes = () => {
     return (
         <Stack.Navigator>
             <Stack.Screen name="HomeScreen" component={TabRoutes} options={{ headerShown: false }} />
-            <Stack.Screen name="AddValueAccountScreen" component={HomeScreen} options={{ headerShown: false, }} />
+            <Stack.Screen name="FinanceScreen" component={FinanceScreen} options={{ headerShown: false, }} />
         </Stack.Navigator>
     );
 }

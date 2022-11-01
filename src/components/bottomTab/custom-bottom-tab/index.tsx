@@ -38,7 +38,7 @@ const CustomBottomTab = ({ navigation, state }: BottomTabBarProps) => {
     }
 
     const receiveEvent = (event: string) => {
-        navigate.navigate("AddValueAccountScreen", { event })
+        navigate.navigate("FinanceScreen", { event })
     }
 
     const bottomTabItens = (routeName: string, index: number, color: string) => (
