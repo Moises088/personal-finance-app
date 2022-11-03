@@ -44,7 +44,8 @@ const CustomInput: React.FC<CustomInputProps> = (props: CustomInputProps) => {
   return (
     <Animated.View style={[
       styles.container,
-      { transform: [{ scale }] }
+      { transform: [{ scale }] },
+      props?.style ? props.style : {}
     ]}>
       <Animated.View style={[
         styles.inputIcon,
@@ -53,7 +54,7 @@ const CustomInput: React.FC<CustomInputProps> = (props: CustomInputProps) => {
         {props.icon}
       </Animated.View>
       <TextInput
-        style={styles.input}
+        style={[styles.input, props?.styleInput ? props.styleInput : {}]}
         placeholder={props.placeholder}
         keyboardType={props.keyboard}
         onBlur={() => onFocus(0.99)}
@@ -62,6 +63,7 @@ const CustomInput: React.FC<CustomInputProps> = (props: CustomInputProps) => {
         autoCapitalize={props.autoCapitalize}
         onChangeText={text => props.onChangeText(text)}
         value={props.value}
+        placeholderTextColor={props.placeholderTextColor}
       />
     </Animated.View>
   );

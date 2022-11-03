@@ -8,6 +8,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { COLOR_DANGER, COLOR_SUCCESS } from '../../constants/colors';
 import { useRoute, RouteProp } from "@react-navigation/native";
 import { TextInputMask } from 'react-native-masked-text';
+import FinanceDetails from '../../components/finance/finance-details';
+import CustomButtonAnimated from '../../components/global/custom-button-animated';
 
 type ParamRoute = {
   Detail: {
@@ -32,6 +34,7 @@ const FinanceScreen: React.FC = () => {
   const [visibleFinanceType, setVisibleFinanceType] = React.useState<boolean>(false)
   const [financeType, setFinanceType] = React.useState<string>();
   const [money, setMoney] = React.useState<string>();
+  const [loadingEnd, setLoadingEnd] = React.useState<boolean>(false);
 
   const inputRef = React.useRef<any>();
 
@@ -39,6 +42,12 @@ const FinanceScreen: React.FC = () => {
     if (financeType == 'INCOME') return COLOR_SUCCESS;
     if (financeType == 'EXPENSE') return COLOR_DANGER;
     return theme.button.primary;
+  }
+
+  const saveFinance = async () => {
+    setLoadingEnd(false)
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    setLoadingEnd(true)
   }
 
   return (
@@ -75,6 +84,19 @@ const FinanceScreen: React.FC = () => {
           onChangeText={(text: string) => setMoney(text)}
           style={style.valueInput}
           ref={inputRef}
+        />
+      </View>
+
+      <FinanceDetails
+      />
+
+      <View style={style.containerButton}>
+        <CustomButtonAnimated
+          buttonText='Salvar'
+          background={backgrounFinanceType(financeType)}
+          onPress={saveFinance}
+          isLoadingButton={true}
+          loadingEnd={loadingEnd}
         />
       </View>
     </SafeAreaView>

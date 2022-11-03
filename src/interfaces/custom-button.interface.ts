@@ -6,3 +6,11 @@ export interface CustomButtonProps {
     style?: StyleProp<ViewStyle>;
     onPress?: ((event: GestureResponderEvent) => void)
 }
+
+export interface CustomButtonAnimatedProps {
+    background: string;
+    buttonText: string;
+    isLoadingButton: boolean;
+    loadingEnd?: boolean;
+    onPress: (event: GestureResponderEvent) => void;
+}

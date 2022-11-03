@@ -47,6 +47,12 @@ export const styles = (theme: ThemesConfig) => {
             fontWeight: 'bold',
             width: WINDOW_WIDTH - 70,
             marginLeft: 10
+        },
+        containerButton: {
+            position: 'absolute',
+            bottom: 30,
+            width: WINDOW_WIDTH - 40,
+            marginLeft: 20
         }
     })
 };
