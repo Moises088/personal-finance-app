@@ -1,4 +1,4 @@
-import { ThemesConfig } from "../interfaces/themes.interface";
+import { ThemesConfig } from "../types/screens/themes.type";
 
 export const DefaultTheme: ThemesConfig = {
     background: {

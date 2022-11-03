@@ -3,7 +3,7 @@ import { Animated, GestureResponderEvent, Modal, TouchableOpacity } from 'react-
 import { Text } from 'react-native';
 import { View } from 'react-native';
 import { ThemeContext } from '../../../contexts/themeContext';
-import { CustomButtonAnimatedProps } from '../../../interfaces/custom-button.interface';
+import { CustomButtonAnimatedProps } from '../../../types/screens/custom-button.type';
 import { styles } from './styles';
 
 const CustomButtonAnimated: React.FC<CustomButtonAnimatedProps> = (props) => {

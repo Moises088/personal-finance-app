@@ -1,13 +1,13 @@
 import { GestureResponderEvent, StyleProp, ViewStyle } from "react-native";
 
-export interface CustomButtonProps {
+export type CustomButtonProps = {
     buttonText: string;
     customStyle: "btn" | "outline";
     style?: StyleProp<ViewStyle>;
     onPress?: ((event: GestureResponderEvent) => void)
 }
 
-export interface CustomButtonAnimatedProps {
+export type CustomButtonAnimatedProps = {
     background: string;
     buttonText: string;
     isLoadingButton: boolean;

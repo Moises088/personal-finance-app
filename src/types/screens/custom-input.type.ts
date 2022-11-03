@@ -1,6 +1,6 @@
 import { KeyboardTypeOptions, StyleProp, TextStyle, ViewStyle } from "react-native";
 
-export interface CustomInputProps {
+export type CustomInputProps = {
     icon: JSX.Element;
     onChangeText: (text: string) => void;
     keyboard?: KeyboardTypeOptions;

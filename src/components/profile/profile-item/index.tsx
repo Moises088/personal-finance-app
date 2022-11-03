@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { ThemeContext } from '../../../contexts/themeContext';
 import { styles } from './styles';
-import { ProfileItemProps } from '../../../interfaces/profile.interface';
+import { ProfileItemProps } from '../../../types/profile.interface';
 import { MaterialIcons } from '@expo/vector-icons';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';

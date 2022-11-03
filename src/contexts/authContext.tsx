@@ -1,5 +1,5 @@
 import React, { createContext } from "react";
-import { AuthContextData } from "../interfaces/auth.interface";
+import { AuthContextData } from "../types/screens/auth.type";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ASYNC_IS_LOGGED } from "../constants/storage.constant";
 

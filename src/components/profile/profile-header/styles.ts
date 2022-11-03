@@ -1,6 +1,6 @@
 import { StyleSheet, Dimensions } from 'react-native';
 import { WINDOW_WIDTH } from '../../../constants/screen.contants';
-import { ThemesConfig } from '../../../interfaces/themes.interface';
+import { ThemesConfig } from '../../../types/screens/themes.type';
 
 export const styles = (theme: ThemesConfig) => {
     return StyleSheet.create({

@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { ThemesConfig } from '../../interfaces/themes.interface';
+import { ThemesConfig } from '../../types/screens/themes.type';
 import Constants from 'expo-constants'
 import { WINDOW_WIDTH } from '../../constants/screen.contants';
 

@@ -1,5 +1,5 @@
 import React, { createContext } from "react";
-import { ThemeContextData, ThemeContextResponse } from "../interfaces/themes.interface";
+import { ThemeContextData, ThemeContextResponse } from "../types/screens/themes.type";
 import { DarkTheme } from "../themes/dark.theme";
 import { DefaultTheme } from "../themes/default.theme";
 

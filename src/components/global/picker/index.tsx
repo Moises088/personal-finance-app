@@ -3,7 +3,7 @@ import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { View, Modal, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { ThemeContext } from '../../../contexts/themeContext';
 import { MaterialIcons } from '@expo/vector-icons';
-import { PickerProps } from '../../../interfaces/picker.interface';
+import { PickerProps } from '../../../types/screens/picker.type';
 import { styles } from './styles';
 
 const GlobalPicker: React.FC<PickerProps> = ({ itens, setSelectedItem, selectedItem, visible }) => {

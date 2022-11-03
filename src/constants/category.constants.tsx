@@ -1,4 +1,4 @@
-import { CategoriesList } from "../interfaces/category.interface";
+import { CategoriesList } from "../types/screens/category.type";
 import { Feather } from '@expo/vector-icons';
 
 export const CATEGORIES_LIST: CategoriesList[] = [
