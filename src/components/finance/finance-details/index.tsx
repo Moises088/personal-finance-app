@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Modal, KeyboardAvoidingView } from 'react-native';
 import { ThemeContext } from '../../../contexts/themeContext';
 import CustomInput from '../../global/custom-input';
 import { styles } from './styles';
 import { MaterialIcons, MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
+import CategoryScreen from '../../../screens/category/categoryScreen';
 
 const FinanceDetails: React.FC = () => {
 
@@ -53,6 +54,15 @@ const FinanceDetails: React.FC = () => {
         </View>
         <MaterialIcons name="keyboard-arrow-right" size={19} color={theme.text.primary} />
       </TouchableOpacity>
+
+      <Modal transparent={true}>
+        <View style={style.backdrop} />
+        <KeyboardAvoidingView behavior="height">
+          <View style={style.modal}>
+            <CategoryScreen />
+          </View>
+        </KeyboardAvoidingView>
+      </Modal>
     </View>
   );
 }

@@ -20,14 +20,6 @@ type ParamRoute = {
 const FinanceScreen: React.FC = () => {
 
   const { params } = useRoute<RouteProp<ParamRoute>>();
-
-  React.useEffect(() => {
-    if (!financeType) setFinanceType(params.event)
-    setTimeout(() => {
-      if (inputRef.current) inputRef.current.getElement().focus();
-    }, 250);
-  }, [])
-
   const { theme } = React.useContext(ThemeContext);
   const style = styles(theme);
 
@@ -37,6 +29,13 @@ const FinanceScreen: React.FC = () => {
   const [loadingEnd, setLoadingEnd] = React.useState<boolean>(false);
 
   const inputRef = React.useRef<any>();
+
+  React.useEffect(() => {
+    if (!financeType) setFinanceType(params.event)
+    setTimeout(() => {
+      if (inputRef.current) inputRef.current.getElement().focus();
+    }, 250);
+  }, []);
 
   const backgrounFinanceType = (financeType: string | undefined) => {
     if (financeType == 'INCOME') return COLOR_SUCCESS;

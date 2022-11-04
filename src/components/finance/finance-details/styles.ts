@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { WINDOW_WIDTH } from '../../../constants/screen.contants';
+import { WINDOW_HEIGTH, WINDOW_WIDTH } from '../../../constants/screen.contants';
 import { ThemesConfig } from '../../../types/screens/themes.type';
 
 export const styles = (theme: ThemesConfig) => {
@@ -46,6 +46,24 @@ export const styles = (theme: ThemesConfig) => {
         containerSelectIcon: {
             flexDirection: 'row',
             alignItems: 'center'
+        },
+        backdrop: {
+            position: 'relative',
+            width: WINDOW_WIDTH,
+            height: WINDOW_HEIGTH,
+            backgroundColor: 'rgba(0,0,0,0.7)'
+        },
+        modal: {
+            position: 'absolute',
+            bottom: 0,
+            padding: 5,
+            paddingVertical: 0,
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
+            width: WINDOW_WIDTH,
+            height: WINDOW_HEIGTH - 90,
+            backgroundColor: theme.background.primary,
+            overflow: 'hidden'
         }
     })
 };
