@@ -4,10 +4,11 @@ import CategoryItem from '../../components/category/category-item';
 import CustomInput from '../../components/global/custom-input';
 import HeaderStack from '../../components/global/header-stack';
 import { ThemeContext } from '../../contexts/themeContext';
-import { MaterialIcons, Ionicons } from '@expo/vector-icons';
+import { MaterialIcons, Ionicons, FontAwesome5 } from '@expo/vector-icons';
 import { styles } from './styles';
 import CustomButtonAnimated from '../../components/global/custom-button-animated';
 import SelectColor from '../../components/global/color';
+import SelectIcon from '../../components/global/icon';
 
 const CategoryScreen: React.FC = () => {
     const { theme } = React.useContext(ThemeContext);
@@ -16,10 +17,12 @@ const CategoryScreen: React.FC = () => {
     const [categories, setCategories] = React.useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2]);
     const [openCreateCategory, setOpenCreateCategory] = React.useState<boolean>(false);
     const [openColorSelect, setOpenColorSelect] = React.useState<boolean>(false);
+    const [openIconSelect, setOpenIconSelect] = React.useState<boolean>(false);
     const [loadingEnd, setLoadingEnd] = React.useState<boolean>(false);
 
     const [title, setTitle] = React.useState<string>();
     const [color, setColor] = React.useState<string>();
+    const [icon, setIcon] = React.useState<string>();
 
     const createCategory = async () => {
         console.log(color)
@@ -52,11 +55,12 @@ const CategoryScreen: React.FC = () => {
                             placeholderTextColor="#b3b3b3"
                         />
 
-                        <TouchableOpacity style={style.containerSelect} activeOpacity={.5}>
+                        <TouchableOpacity style={style.containerSelect} activeOpacity={.5} onPress={() => { setOpenIconSelect(true) }}>
                             <View style={style.containerSelectIcon}>
                                 <View style={style.selectIcon}>
                                     <MaterialIcons name="category" size={19} color={theme.button.primary} />
                                 </View>
+                                {icon && <FontAwesome5 name={icon} size={16} color={theme.text.primary} />}
                                 <Text style={style.selectText}>Icone</Text>
                             </View>
                             <MaterialIcons name="keyboard-arrow-right" size={19} color={theme.text.primary} />
@@ -92,6 +96,16 @@ const CategoryScreen: React.FC = () => {
                     <SelectColor selectedColor={color} setColor={(color) => {
                         setColor(color)
                         setOpenColorSelect(false)
+                    }} />
+                </View>
+
+            </Modal>
+            <Modal transparent={true} visible={openIconSelect}>
+                <View style={style.backdrop} />
+                <View style={[style.modal, { height: "60%", }]}>
+                    <SelectIcon selectedIcon={icon} setIcon={(icon) => {
+                        setIcon(icon)
+                        setOpenIconSelect(false)
                     }} />
                 </View>
             </Modal>

@@ -78,7 +78,8 @@ export const styles = (theme: ThemesConfig) => {
             width: 30,
             height: 48,
             alignItems: "center",
-            justifyContent: "center"
+            justifyContent: "center",
+            marginRight: 5
         },
         containerButton: {
             paddingHorizontal: 5,
