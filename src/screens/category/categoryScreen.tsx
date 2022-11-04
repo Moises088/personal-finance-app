@@ -7,6 +7,7 @@ import { ThemeContext } from '../../contexts/themeContext';
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { styles } from './styles';
 import CustomButtonAnimated from '../../components/global/custom-button-animated';
+import SelectColor from '../../components/global/color';
 
 const CategoryScreen: React.FC = () => {
     const { theme } = React.useContext(ThemeContext);
@@ -14,12 +15,14 @@ const CategoryScreen: React.FC = () => {
 
     const [categories, setCategories] = React.useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2]);
     const [openCreateCategory, setOpenCreateCategory] = React.useState<boolean>(false);
+    const [openColorSelect, setOpenColorSelect] = React.useState<boolean>(false);
     const [loadingEnd, setLoadingEnd] = React.useState<boolean>(false);
 
     const [title, setTitle] = React.useState<string>();
+    const [color, setColor] = React.useState<string>();
 
     const createCategory = async () => {
-        
+        console.log(color)
     }
 
     return (
@@ -59,11 +62,12 @@ const CategoryScreen: React.FC = () => {
                             <MaterialIcons name="keyboard-arrow-right" size={19} color={theme.text.primary} />
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={style.containerSelect} activeOpacity={.5}>
+                        <TouchableOpacity style={style.containerSelect} activeOpacity={.5} onPress={() => { setOpenColorSelect(true) }}>
                             <View style={style.containerSelectIcon}>
                                 <View style={style.selectIcon}>
                                     <Ionicons name="color-fill-outline" size={19} color={theme.button.primary} />
                                 </View>
+                                {color && <View style={[style.colorSelected, { backgroundColor: color }]} />}
                                 <Text style={style.selectText}>Cor</Text>
                             </View>
                             <MaterialIcons name="keyboard-arrow-right" size={19} color={theme.text.primary} />
@@ -80,6 +84,16 @@ const CategoryScreen: React.FC = () => {
                         </View>
                     </View>
                 </KeyboardAvoidingView>
+            </Modal>
+
+            <Modal transparent={true} visible={openColorSelect}>
+                <View style={style.backdrop} />
+                <View style={[style.modal, { height: "35%", }]}>
+                    <SelectColor selectedColor={color} setColor={(color) => {
+                        setColor(color)
+                        setOpenColorSelect(false)
+                    }} />
+                </View>
             </Modal>
         </View>
     );

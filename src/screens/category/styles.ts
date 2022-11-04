@@ -83,6 +83,11 @@ export const styles = (theme: ThemesConfig) => {
         containerButton: {
             paddingHorizontal: 5,
             marginTop: 20
+        },
+        colorSelected: {
+            width: 20,
+            height: 20,
+            borderRadius: 20
         }
     })
 };
