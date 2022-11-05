@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, TextInput, Animated } from 'react-native';
-import { CustomInputProps } from '../../../types/screens/custom-input.type';
+import { CustomInputProps } from '../../../interfaces/screens/custom-input.interface';
 import styles from './styles';
 
 const CustomInput: React.FC<CustomInputProps> = (props: CustomInputProps) => {

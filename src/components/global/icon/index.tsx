@@ -4,7 +4,7 @@ import { COLOR_SUCCESS } from '../../../constants/colors';
 import { ThemeContext } from '../../../contexts/themeContext';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { styles } from './styles';
-import { IconProps } from '../../../types/screens/icon.type';
+import { IconProps } from '../../../interfaces/screens/icon.interface';
 
 const SelectIcon: React.FC<IconProps> = (props) => {
     const { theme } = React.useContext(ThemeContext);

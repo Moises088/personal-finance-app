@@ -1,6 +1,6 @@
 import React from "react";
 import { Animated, TouchableOpacity } from "react-native";
-import { ActionButtonBottomTab } from "../../../types/screens/bottom-tab.type";
+import { ActionButtonBottomTab } from "../../../interfaces/screens/bottom-tab.interface";
 import { Entypo } from '@expo/vector-icons';
 import { styles } from "./styles";
 import { ThemeContext } from "../../../contexts/themeContext";

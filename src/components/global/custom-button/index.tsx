@@ -3,7 +3,7 @@ import { TouchableOpacity } from 'react-native';
 import { Text } from 'react-native';
 import { View } from 'react-native';
 import { ThemeContext } from '../../../contexts/themeContext';
-import { CustomButtonProps } from '../../../types/screens/custom-button.type';
+import { CustomButtonProps } from '../../../interfaces/screens/custom-button.interface';
 import { styles } from './styles';
 
 const CustomButton: React.FC<CustomButtonProps> = (props: CustomButtonProps) => {

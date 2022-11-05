@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { ThemesConfig } from '../../types/screens/themes.type';
+import { ThemesConfig } from '../../interfaces/screens/themes.interace';
 import Constants from 'expo-constants'
 
 export const styles = (theme: ThemesConfig) => {

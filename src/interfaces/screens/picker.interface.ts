@@ -1,4 +1,4 @@
-export type PickerProps = {
+export interface PickerProps {
     selectedItem?: any;
     visible: boolean;
     setSelectedItem: (itemValue: any) => void;

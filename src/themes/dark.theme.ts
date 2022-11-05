@@ -1,4 +1,4 @@
-import { ThemesConfig } from "../types/screens/themes.type";
+import { ThemesConfig } from "../interfaces/screens/themes.interace";
 import { DefaultTheme } from "./default.theme";
 
 export const DarkTheme: ThemesConfig = {

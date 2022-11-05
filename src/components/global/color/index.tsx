@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { COLOR_SUCCESS } from '../../../constants/colors';
 import { ThemeContext } from '../../../contexts/themeContext';
-import { ColorProps } from '../../../types/screens/color.type';
+import { ColorProps } from '../../../interfaces/screens/color.interface';
 import { styles } from './styles';
 
 const SelectColor: React.FC<ColorProps> = (props) => {

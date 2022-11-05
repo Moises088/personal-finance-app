@@ -1,9 +1,9 @@
-export type ActionButtonBottomTab = {
+export interface ActionButtonBottomTab {
     toggleMenu(): void;
     openMenu: boolean;
 }
 
-export type ActionMenuBottomTab = {
+export interface ActionMenuBottomTab {
     toggleMenu(): void;
     emitEvent(route: string): void;
     openMenu: boolean;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { ThemeContext } from '../../../contexts/themeContext';
-import { HeaderStackProps } from '../../../types/screens/header.type';
+import { HeaderStackProps } from '../../../interfaces/screens/header.interface';
 import { Feather } from '@expo/vector-icons';
 import { styles } from './styles';
 

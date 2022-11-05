@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
-import { ThemesConfig } from '../../../types/screens/themes.type';
+import { ThemesConfig } from '../../../interfaces/screens/themes.interace';
 
 export const styles = (theme: ThemesConfig) => {
     return StyleSheet.create({

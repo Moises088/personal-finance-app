@@ -1,7 +1,7 @@
 import React from "react";
 import { Animated, Text, TouchableOpacity, View } from "react-native";
 import { Feather } from '@expo/vector-icons';
-import { ActionMenuBottomTab } from "../../../types/screens/bottom-tab.type";
+import { ActionMenuBottomTab } from "../../../interfaces/screens/bottom-tab.interface";
 import { WINDOW_HEIGTH } from "../../../constants/screen.contants";
 import styles from "./styles";
 import { COLOR_DANGER, COLOR_SUCCESS } from "../../../constants/colors";

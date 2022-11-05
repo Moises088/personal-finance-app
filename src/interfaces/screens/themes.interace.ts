@@ -4,18 +4,18 @@ type ThemesPositions = {
     readonly tertiary?: string;
 }
 
-export type ThemesConfig = {
+export interface ThemesConfig {
     readonly background: ThemesPositions;
     readonly text: ThemesPositions;
     readonly button: ThemesPositions;
 }
 
-export type ThemeContextData = {
+export interface ThemeContextData {
     setTheme: (theme: "dark" | "default") => void;
     theme: ThemesConfig
 }
 
-export type ThemeContextResponse = {
+export interface ThemeContextResponse {
     dark: ThemesConfig;
     default: ThemesConfig
 }
