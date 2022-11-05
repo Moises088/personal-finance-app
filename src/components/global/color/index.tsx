@@ -10,9 +10,12 @@ const SelectColor: React.FC<ColorProps> = (props) => {
     const style = styles(theme);
 
     const colors: string[] = [
-        "#540f99", "#21fc5f", "#850328", "#038a7c",
-        "#8a1203", "#8a7f03", "#508a03", "#e5ed05",
-        "#0588ed", "#d4020d"
+        "#420101", "#6e0202", "#a30202", "#fc0303", "#fa6966",
+        "#5c2201", "#823001", "#ab3f02", "#ff5e03", "#fca868",
+        "#424101", "#8a7f03", "#a19e00", "#fcf803", "#faf743",
+        "#022e01", "#045c02", "#058f01", "#08d902", "#41fa3c",
+        "#020142", "#04188a", "#0539b3", "#126bc9", "#3f93eb",
+        "#3c013d", "#640266", "#940396", "#d802db", "#fa5bfc"
     ];
     const [borderActive, setBorderActive] = React.useState<string>('');
 

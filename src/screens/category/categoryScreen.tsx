@@ -92,7 +92,7 @@ const CategoryScreen: React.FC = () => {
 
             <Modal transparent={true} visible={openColorSelect}>
                 <View style={style.backdrop} />
-                <View style={[style.modal, { height: "35%", }]}>
+                <View style={[style.modal, { height: "60%", }]}>
                     <SelectColor selectedColor={color} setColor={(color) => {
                         setColor(color)
                         setOpenColorSelect(false)
