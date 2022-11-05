@@ -1,7 +1,7 @@
 import React, { createContext } from "react";
-import { AuthContextData } from "../types/screens/auth.type";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ASYNC_IS_LOGGED } from "../constants/storage.constant";
+import { AuthContextData } from "../interfaces/screens/auth.interface";
 
 export const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 

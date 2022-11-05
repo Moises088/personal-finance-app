@@ -17,8 +17,8 @@ const HomeScreen: React.FC = () => {
       <HomeHeader />
       <ScrollView style={style.containerScroll}>
         <HomeBalance />
-        <HomeExpenses />
-        <HomeIncomes />
+        {/* <HomeExpenses />
+        <HomeIncomes /> */}
       </ScrollView>
     </SafeAreaView>
   );

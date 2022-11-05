@@ -9,6 +9,8 @@ import { styles } from './styles';
 import CustomButtonAnimated from '../../components/global/custom-button-animated';
 import SelectColor from '../../components/global/color';
 import SelectIcon from '../../components/global/icon';
+import { AppCategoryService } from '../../services/category';
+import AlertError from '../../components/global/alert-error';
 
 const CategoryScreen: React.FC = () => {
     const { theme } = React.useContext(ThemeContext);
@@ -24,8 +26,30 @@ const CategoryScreen: React.FC = () => {
     const [color, setColor] = React.useState<string>();
     const [icon, setIcon] = React.useState<string>();
 
+    const [validation, setValidation] = React.useState<string[]>([]);
+
     const createCategory = async () => {
-        console.log(color)
+        try {
+            const erros = [];
+            if (!title || !title?.trim()?.length) erros.push("Título é obrigatório")
+            if (!color || !color?.trim()?.length) erros.push("Cor é obrigatória")
+            if (!icon || !icon?.trim()?.length) erros.push("Icone é obrigatório")
+
+            setValidation(erros)
+
+            if (erros.length) {
+                setLoadingEnd(!loadingEnd)
+                return
+            }
+
+            if (!title || !color || !icon) return;
+
+            await AppCategoryService.create({ name: title, color, icon });
+            setLoadingEnd(!loadingEnd)
+            setOpenCreateCategory(false)
+        } catch (error: any) {
+            if (error?.message) setValidation([error.message])
+        } finally { setLoadingEnd(!loadingEnd) }
     }
 
     return (
@@ -46,9 +70,12 @@ const CategoryScreen: React.FC = () => {
                 <KeyboardAvoidingView behavior="height">
                     <View style={style.modal}>
                         <HeaderStack title='Nova categoria' onRequestClose={() => { setOpenCreateCategory(false) }} />
+
+                        <AlertError errors={validation} />
+
                         <CustomInput
                             icon={<MaterialIcons name="title" size={20} color={theme.button.primary} />}
-                            onChangeText={() => { }}
+                            onChangeText={setTitle}
                             style={style.input}
                             styleInput={style.inputText}
                             placeholder="Titulo"

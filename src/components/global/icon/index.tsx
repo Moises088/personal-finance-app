@@ -25,7 +25,6 @@ const SelectIcon: React.FC<IconProps> = (props) => {
 
     const setIcon = async (icon: string) => {
         setBorderActive(icon);
-        await new Promise(resolve => setTimeout(resolve, 10));
         props.setIcon(icon);
     }
 

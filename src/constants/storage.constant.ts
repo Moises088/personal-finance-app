@@ -1,1 +1,2 @@
 export const ASYNC_IS_LOGGED = "ASYNC_IS_LOGGED";
+export const ASYNC_CATEGORIES = "ASYNC_CATEGORIES";
