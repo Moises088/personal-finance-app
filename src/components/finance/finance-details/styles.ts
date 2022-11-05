@@ -14,10 +14,12 @@ export const styles = (theme: ThemesConfig) => {
         containerInput: {
             width: WINDOW_WIDTH - 30,
             marginLeft: 15,
-            height: 50
+            height: 50,
+            marginBottom: 10
         },
         input: {
-            backgroundColor: theme.background.tertiary,
+            backgroundColor: theme.background.primary,
+            opacity: .8
         },
         inputText: {
             color: theme.text.primary,
@@ -30,14 +32,19 @@ export const styles = (theme: ThemesConfig) => {
             justifyContent: "center"
         },
         containerSelect: {
-            width: WINDOW_WIDTH - 30,
-            marginLeft: 15,
-            height: 35,
-            paddingLeft: 4,
-            marginTop: 12,
+            width: WINDOW_WIDTH - 40,
+            marginLeft: 16,
+            height: 48,
+            marginTop: 8,
+            borderRadius: 18,
             flexDirection: 'row',
             alignItems: 'center',
-            justifyContent: 'space-between'
+            justifyContent: 'space-between',
+            backgroundColor: theme.background.primary,
+            paddingLeft: 4,
+            paddingRight: 10,
+            marginBottom: 4,
+            opacity: .8
         },
         selectText: {
             color: '#FFF',

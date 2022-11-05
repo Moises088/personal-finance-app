@@ -11,12 +11,13 @@ import SelectColor from '../../components/global/color';
 import SelectIcon from '../../components/global/icon';
 import { AppCategoryService } from '../../services/category';
 import AlertError from '../../components/global/alert-error';
+import { CategoryEntity } from '../../interfaces/services/category.interface';
 
 const CategoryScreen: React.FC = () => {
     const { theme } = React.useContext(ThemeContext);
     const style = styles(theme);
 
-    const [categories, setCategories] = React.useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2]);
+    const [categories, setCategories] = React.useState<CategoryEntity[]>([]);
     const [openCreateCategory, setOpenCreateCategory] = React.useState<boolean>(false);
     const [openColorSelect, setOpenColorSelect] = React.useState<boolean>(false);
     const [openIconSelect, setOpenIconSelect] = React.useState<boolean>(false);
@@ -27,6 +28,15 @@ const CategoryScreen: React.FC = () => {
     const [icon, setIcon] = React.useState<string>();
 
     const [validation, setValidation] = React.useState<string[]>([]);
+
+    React.useEffect(() => {
+        getCategories()
+    }, [openCreateCategory])
+
+    const getCategories = async () => {
+        const categories = await AppCategoryService.find();
+        setCategories(categories)
+    }
 
     const createCategory = async () => {
         try {
@@ -62,7 +72,8 @@ const CategoryScreen: React.FC = () => {
 
             <FlatList
                 data={categories}
-                renderItem={() => <CategoryItem />}
+                renderItem={({ item }) => <CategoryItem item={item} />}
+                keyExtractor={(item, index) => index.toString()}
             />
 
             <Modal transparent={true} visible={openCreateCategory}>
@@ -117,7 +128,7 @@ const CategoryScreen: React.FC = () => {
                 </KeyboardAvoidingView>
             </Modal>
 
-            <Modal transparent={true} visible={openColorSelect}>
+            <Modal transparent={true} visible={openColorSelect} onRequestClose={() => { setOpenColorSelect(false) }}>
                 <View style={style.backdrop} />
                 <View style={[style.modal, { height: "60%", }]}>
                     <SelectColor selectedColor={color} setColor={(color) => {
@@ -127,7 +138,7 @@ const CategoryScreen: React.FC = () => {
                 </View>
 
             </Modal>
-            <Modal transparent={true} visible={openIconSelect}>
+            <Modal transparent={true} visible={openIconSelect} onRequestClose={() => { setOpenIconSelect(false) }}>
                 <View style={style.backdrop} />
                 <View style={[style.modal, { height: "60%", }]}>
                     <SelectIcon selectedIcon={icon} setIcon={(icon) => {

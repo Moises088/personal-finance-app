@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Modal, KeyboardAvoidingView } from 'react-native';
+import { View, Text, TouchableOpacity, Modal } from 'react-native';
 import { ThemeContext } from '../../../contexts/themeContext';
 import CustomInput from '../../global/custom-input';
 import { styles } from './styles';
@@ -10,6 +10,8 @@ const FinanceDetails: React.FC = () => {
 
   const { theme } = React.useContext(ThemeContext);
   const style = styles(theme);
+
+  const [openCategory, setOpenCategory] = React.useState<boolean>(false)
 
   return (
     <View style={style.container}>
@@ -45,7 +47,7 @@ const FinanceDetails: React.FC = () => {
         <MaterialIcons name="keyboard-arrow-right" size={19} color={theme.text.primary} />
       </TouchableOpacity>
 
-      <TouchableOpacity style={style.containerSelect} activeOpacity={.5}>
+      <TouchableOpacity style={style.containerSelect} activeOpacity={.5} onPress={() => { setOpenCategory(true) }}>
         <View style={style.containerSelectIcon}>
           <View style={style.selectIcon}>
             <MaterialIcons name="category" size={19} color={theme.button.primary} />
@@ -55,13 +57,11 @@ const FinanceDetails: React.FC = () => {
         <MaterialIcons name="keyboard-arrow-right" size={19} color={theme.text.primary} />
       </TouchableOpacity>
 
-      <Modal transparent={true}>
+      <Modal transparent={true} visible={openCategory} onRequestClose={() => { setOpenCategory(false) }}>
         <View style={style.backdrop} />
-        <KeyboardAvoidingView behavior="height">
-          <View style={style.modal}>
-            <CategoryScreen />
-          </View>
-        </KeyboardAvoidingView>
+        <View style={style.modal}>
+          <CategoryScreen />
+        </View>
       </Modal>
     </View>
   );

@@ -86,7 +86,7 @@ const CustomButtonAnimated: React.FC<CustomButtonAnimatedProps> = (props) => {
   }
 
   React.useMemo(() => {
-    callback()
+    if (animatedStep == "loading") callback()
   }, [props.loadingEnd])
 
   return (
