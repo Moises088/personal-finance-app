@@ -1,24 +1,24 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { ThemeContext } from '../../../contexts/themeContext';
 import { CategoryEntity } from '../../../interfaces/services/category.interface';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { styles } from './styles';
 
-const CategoryItem: React.FC<{ item: CategoryEntity }> = ({ item }) => {
+const CategoryItem: React.FC<{ item: CategoryEntity, selectItem(item: CategoryEntity): void }> = ({ item, selectItem }) => {
 
     const { theme } = React.useContext(ThemeContext);
     const style = styles(theme);
 
     return (
-        <View style={style.container}>
+        <TouchableOpacity style={style.container} activeOpacity={0.9} onPress={() => selectItem(item)}>
             <View style={style.containerRow}>
                 <View style={[style.containerIcon, { backgroundColor: item.color }]}>
                     <FontAwesome5 name={item.icon} size={16} color={theme.text.primary} />
                 </View>
                 <Text style={style.name}>{item.name}</Text>
             </View>
-        </View>
+        </TouchableOpacity>
     )
 }
 export default CategoryItem;

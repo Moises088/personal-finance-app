@@ -3,15 +3,17 @@ import { View, Text, TouchableOpacity, Modal } from 'react-native';
 import { ThemeContext } from '../../../contexts/themeContext';
 import CustomInput from '../../global/custom-input';
 import { styles } from './styles';
-import { MaterialIcons, MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
+import { MaterialIcons, MaterialCommunityIcons, Ionicons, FontAwesome5 } from '@expo/vector-icons';
 import CategoryScreen from '../../../screens/category/categoryScreen';
+import { CategoryEntity } from '../../../interfaces/services/category.interface';
 
 const FinanceDetails: React.FC = () => {
 
   const { theme } = React.useContext(ThemeContext);
   const style = styles(theme);
 
-  const [openCategory, setOpenCategory] = React.useState<boolean>(false)
+  const [openCategory, setOpenCategory] = React.useState<boolean>(false);
+  const [category, setCategory] = React.useState<CategoryEntity>();
 
   return (
     <View style={style.container}>
@@ -47,12 +49,23 @@ const FinanceDetails: React.FC = () => {
         <MaterialIcons name="keyboard-arrow-right" size={19} color={theme.text.primary} />
       </TouchableOpacity>
 
-      <TouchableOpacity style={style.containerSelect} activeOpacity={.5} onPress={() => { setOpenCategory(true) }}>
+      <TouchableOpacity
+        style={[style.containerSelect, category ? { backgroundColor: category.color } : {}]}
+        activeOpacity={.5}
+        onPress={() => { setOpenCategory(true) }}
+      >
         <View style={style.containerSelectIcon}>
           <View style={style.selectIcon}>
             <MaterialIcons name="category" size={19} color={theme.button.primary} />
           </View>
-          <Text style={style.selectText}>Categoria</Text>
+          {!category ? (
+            <Text style={style.selectText}>Categoria</Text>
+          ) : (
+            <>
+              <FontAwesome5 name={category.icon} color={theme.text.primary} size={17} style={{ marginLeft: 10 }} />
+              <Text style={style.selectText}>{category.name}</Text>
+            </>
+          )}
         </View>
         <MaterialIcons name="keyboard-arrow-right" size={19} color={theme.text.primary} />
       </TouchableOpacity>
@@ -60,7 +73,10 @@ const FinanceDetails: React.FC = () => {
       <Modal transparent={true} visible={openCategory} onRequestClose={() => { setOpenCategory(false) }}>
         <View style={style.backdrop} />
         <View style={style.modal}>
-          <CategoryScreen />
+          <CategoryScreen selectCategory={category => {
+            setCategory(category);
+            setOpenCategory(false);
+          }} />
         </View>
       </Modal>
     </View>

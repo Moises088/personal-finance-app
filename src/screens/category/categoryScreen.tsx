@@ -13,7 +13,7 @@ import { AppCategoryService } from '../../services/category';
 import AlertError from '../../components/global/alert-error';
 import { CategoryEntity } from '../../interfaces/services/category.interface';
 
-const CategoryScreen: React.FC = () => {
+const CategoryScreen: React.FC<{ selectCategory?: (category: CategoryEntity) => void }> = (props) => {
     const { theme } = React.useContext(ThemeContext);
     const style = styles(theme);
 
@@ -62,6 +62,12 @@ const CategoryScreen: React.FC = () => {
         } finally { setLoadingEnd(!loadingEnd) }
     }
 
+    const selectItem = (category: CategoryEntity) => {
+        if (props?.selectCategory) {
+            props.selectCategory(category)
+        }
+    }
+
     return (
         <View style={style.container}>
             <HeaderStack title='Categorias' onRequestClose={() => { }} />
@@ -72,7 +78,7 @@ const CategoryScreen: React.FC = () => {
 
             <FlatList
                 data={categories}
-                renderItem={({ item }) => <CategoryItem item={item} />}
+                renderItem={({ item }) => <CategoryItem item={item} selectItem={selectItem} />}
                 keyExtractor={(item, index) => index.toString()}
             />
 
