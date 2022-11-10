@@ -1,4 +1,4 @@
-export interface Services<T> {
+export interface Services<T, Dto> {
     /**
      * Find all itens.
      * @returns A Promise for itens array.
@@ -17,11 +17,11 @@ export interface Services<T> {
      * @param createDto Body needed to create a new item.
      * @returns A Promise for new item.
     */
-    create(createDto: T): Promise<T>;
+    create(createDto: Dto): Promise<T>;
 
     /**
      * Update item.
      * @param updateDto Body needed to update item.
     */
-    update(updateDto: T): Promise<void>;
+    update(updateDto: Dto): Promise<void>;
 }

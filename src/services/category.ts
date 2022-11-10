@@ -1,5 +1,5 @@
 import { ASYNC_CATEGORIES } from '../constants/storage.constant';
-import { CategoryEntity } from '../interfaces/services/category.interface';
+import { CategoryDto, CategoryEntity } from '../interfaces/services/category.interface';
 import { Services } from '../interfaces/services/service.interface';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -17,7 +17,7 @@ class Category implements CategoryEntity {
     }
 }
 
-class CategoryService implements Services<CategoryEntity> {
+class CategoryService implements Services<CategoryEntity, CategoryDto> {
     public async find(): Promise<CategoryEntity[]> {
         const categories = await AsyncStorage.getItem(ASYNC_CATEGORIES);
         if (categories) return JSON.parse(categories);
@@ -33,7 +33,7 @@ class CategoryService implements Services<CategoryEntity> {
         return categories[categories.length - 1];
     }
 
-    public async create({ name, color, icon }: CategoryEntity): Promise<CategoryEntity> {
+    public async create({ name, color, icon }: CategoryDto): Promise<CategoryEntity> {
         const categories = await this.find();
 
         const { category } = this.onCreateCategory(categories, { name, color, icon })
@@ -48,7 +48,7 @@ class CategoryService implements Services<CategoryEntity> {
         return
     }
 
-    public onCreateCategory(categories: CategoryEntity[], { name, color, icon }: CategoryEntity) {
+    public onCreateCategory(categories: CategoryEntity[], { name, color, icon }: CategoryDto) {
         const filter = categories.filter(category => category.name == name);
         if (filter.length) throw new Error('Categoria já criada');
 

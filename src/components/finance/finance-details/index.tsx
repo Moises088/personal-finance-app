@@ -15,6 +15,16 @@ const FinanceDetails: React.FC = () => {
   const [openCategory, setOpenCategory] = React.useState<boolean>(false);
   const [category, setCategory] = React.useState<CategoryEntity>();
 
+  const CategorySelection: React.FC = () => {
+    if (!category) return <Text style={style.selectText}>Categoria</Text>
+    return (
+      <>
+        <FontAwesome5 name={category.icon} color={theme.text.primary} size={17} style={{ marginLeft: 10 }} />
+        <Text style={style.selectText}>{category.name}</Text>
+      </>
+    )
+  }
+
   return (
     <View style={style.container}>
       <View style={style.containerInput}>
@@ -58,14 +68,7 @@ const FinanceDetails: React.FC = () => {
           <View style={style.selectIcon}>
             <MaterialIcons name="category" size={19} color={theme.button.primary} />
           </View>
-          {!category ? (
-            <Text style={style.selectText}>Categoria</Text>
-          ) : (
-            <>
-              <FontAwesome5 name={category.icon} color={theme.text.primary} size={17} style={{ marginLeft: 10 }} />
-              <Text style={style.selectText}>{category.name}</Text>
-            </>
-          )}
+          <CategorySelection />
         </View>
         <MaterialIcons name="keyboard-arrow-right" size={19} color={theme.text.primary} />
       </TouchableOpacity>
