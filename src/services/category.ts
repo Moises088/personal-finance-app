@@ -10,7 +10,7 @@ class Category implements CategoryEntity {
     public icon: string;
 
     constructor(id: number, name: string, color: string, icon: string) {
-        this.id = id++;
+        this.id = id + 1;
         this.name = name;
         this.color = color;
         this.icon = icon;
@@ -33,21 +33,29 @@ class CategoryService implements Services<CategoryEntity> {
         return categories[categories.length - 1];
     }
 
-    public async create({ name, color, icon }: CategoryEntity): Promise<void> {
+    public async create({ name, color, icon }: CategoryEntity): Promise<CategoryEntity> {
         const categories = await this.find();
 
-        const filter = categories.filter(category => category.name == name);
-        if (filter.length) throw new Error('Categoria já criada')
-
-        const lastCategory = this.findLast(categories);
-        const category = new Category(lastCategory?.id ?? 0, name, color, icon);
+        const { category } = this.onCreateCategory(categories, { name, color, icon })
         categories.push(category);
 
-        await AsyncStorage.setItem(ASYNC_CATEGORIES, JSON.stringify(categories))
+        await AsyncStorage.setItem(ASYNC_CATEGORIES, JSON.stringify(categories));
+
+        return category;
     }
 
     public async update(updateDto: CategoryEntity): Promise<void> {
         return
+    }
+
+    public onCreateCategory(categories: CategoryEntity[], { name, color, icon }: CategoryEntity) {
+        const filter = categories.filter(category => category.name == name);
+        if (filter.length) throw new Error('Categoria já criada');
+
+        const lastCategory = this.findLast(categories);
+        const category = new Category(lastCategory?.id ?? 0, name, color, icon);
+
+        return { category }
     }
 
 }

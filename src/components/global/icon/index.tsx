@@ -15,7 +15,8 @@ const SelectIcon: React.FC<IconProps> = (props) => {
         "heart", "hand-holding-usd", "key","map", "lightbulb", "shopping-cart", "truck", 
         "user", "car", "plane", "hotel", "credit-card","suitcase", "phone", "stethoscope", 
         "gas-pump", "android", "apple", "baby-carriage", "birthday-cake","bitcoin", "bone", 
-        "bus", "car-crash", "cat", "wallet", "code", "coins", "couch"
+        "bus", "car-crash", "cat", "wallet", "code", "coins", "couch", "dumbbell", "amazon",
+        "baby", "biking"
     ];
     const [borderActive, setBorderActive] = React.useState<string>('');
 
