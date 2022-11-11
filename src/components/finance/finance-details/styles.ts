@@ -41,10 +41,10 @@ export const styles = (theme: ThemesConfig) => {
             alignItems: 'center',
             justifyContent: 'space-between',
             backgroundColor: theme.background.primary,
-            paddingLeft: 4,
+            paddingLeft: 0,
             paddingRight: 10,
             marginBottom: 4,
-            opacity: .8
+            opacity: .8,
         },
         selectText: {
             color: '#FFF',

@@ -1,4 +1,5 @@
 import { KeyboardTypeOptions, StyleProp, TextStyle, ViewStyle } from "react-native";
+import { TextInputMaskTypeProp } from "react-native-masked-text";
 
 export interface CustomInputProps {
     icon: JSX.Element;
@@ -11,4 +12,7 @@ export interface CustomInputProps {
     value?: string | undefined;
     style?: StyleProp<ViewStyle>;
     styleInput?: StyleProp<TextStyle>;
+    mask?: TextInputMaskTypeProp;
+    maskCustom?: string;
+    onPressIcon?: () => void;
 }

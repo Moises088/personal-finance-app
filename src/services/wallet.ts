@@ -22,6 +22,7 @@ class WalletService implements Services<WalletEntity, WalletDto>{
 
     public async findOne(id: number): Promise<WalletEntity | undefined> {
         const wallets = await this.find();
+        if (!wallets.length) return await this.create({ name: "Principal" })
         return wallets.find(wallet => wallet.id == id);
     }
 

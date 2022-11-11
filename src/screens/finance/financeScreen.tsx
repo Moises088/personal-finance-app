@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, View, Text } from 'react-native';
+import { SafeAreaView, View, Text, Keyboard } from 'react-native';
 import GlobalPicker from '../../components/global/picker';
 import { FINANCE_OPTIONS } from '../../constants/finance.constants';
 import { ThemeContext } from '../../contexts/themeContext';
@@ -27,8 +27,29 @@ const FinanceScreen: React.FC = () => {
   const [financeType, setFinanceType] = React.useState<string>();
   const [money, setMoney] = React.useState<string>();
   const [loadingEnd, setLoadingEnd] = React.useState<boolean>(false);
+  const [keyboardVisible, setKeyboardVisible] = React.useState<boolean>(false);
 
   const inputRef = React.useRef<any>();
+
+  React.useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        setKeyboardVisible(true); // or some other action
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setKeyboardVisible(false); // or some other action
+      }
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, [])
 
   React.useEffect(() => {
     if (!financeType) setFinanceType(params.event)
@@ -89,15 +110,17 @@ const FinanceScreen: React.FC = () => {
       <FinanceDetails
       />
 
-      <View style={style.containerButton}>
-        <CustomButtonAnimated
-          buttonText='Salvar'
-          background={backgrounFinanceType(financeType)}
-          onPress={saveFinance}
-          isLoadingButton={true}
-          loadingEnd={loadingEnd}
-        />
-      </View>
+      {!keyboardVisible && (
+        <View style={style.containerButton}>
+          <CustomButtonAnimated
+            buttonText='Salvar'
+            background={backgrounFinanceType(financeType)}
+            onPress={saveFinance}
+            isLoadingButton={true}
+            loadingEnd={loadingEnd}
+          />
+        </View>
+      )}
     </SafeAreaView>
   );
 }

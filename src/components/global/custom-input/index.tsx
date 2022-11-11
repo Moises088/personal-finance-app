@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, TextInput, Animated } from 'react-native';
+import { TextInputMask, TextInputMaskOptionProp } from 'react-native-masked-text';
 import { CustomInputProps } from '../../../interfaces/screens/custom-input.interface';
 import styles from './styles';
 
@@ -41,6 +42,11 @@ const CustomInput: React.FC<CustomInputProps> = (props: CustomInputProps) => {
     ]).start();
   }
 
+  const getOptions = (): TextInputMaskOptionProp | undefined => {
+    if (!props.maskCustom?.length) return undefined
+    return { mask: props.maskCustom }
+  }
+
   return (
     <Animated.View style={[
       styles.container,
@@ -50,21 +56,45 @@ const CustomInput: React.FC<CustomInputProps> = (props: CustomInputProps) => {
       <Animated.View style={[
         styles.inputIcon,
         { transform: [{ rotate: spin }] }
-      ]}>
+      ]}
+        onTouchEnd={() => {
+          if (props.onPressIcon) {
+            props.onPressIcon()
+          }
+        }}
+      >
         {props.icon}
       </Animated.View>
-      <TextInput
-        style={[styles.input, props?.styleInput ? props.styleInput : {}]}
-        placeholder={props.placeholder}
-        keyboardType={props.keyboard}
-        onBlur={() => onFocus(0.99)}
-        onFocus={() => onFocus(1)}
-        secureTextEntry={props.secureTextEntry}
-        autoCapitalize={props.autoCapitalize}
-        onChangeText={text => props.onChangeText(text)}
-        value={props.value}
-        placeholderTextColor={props.placeholderTextColor}
-      />
+
+      {props.mask ? (
+        <TextInputMask
+          style={[styles.input, props?.styleInput ? props.styleInput : {}]}
+          placeholder={props.placeholder}
+          keyboardType={props.keyboard}
+          onBlur={() => onFocus(0.99)}
+          onFocus={() => onFocus(1)}
+          secureTextEntry={props.secureTextEntry}
+          autoCapitalize={props.autoCapitalize}
+          onChangeText={text => props.onChangeText(text)}
+          value={props.value}
+          placeholderTextColor={props.placeholderTextColor}
+          type={props.mask}
+          options={getOptions()}
+        />
+      ) : (
+        <TextInput
+          style={[styles.input, props?.styleInput ? props.styleInput : {}]}
+          placeholder={props.placeholder}
+          keyboardType={props.keyboard}
+          onBlur={() => onFocus(0.99)}
+          onFocus={() => onFocus(1)}
+          secureTextEntry={props.secureTextEntry}
+          autoCapitalize={props.autoCapitalize}
+          onChangeText={text => props.onChangeText(text)}
+          value={props.value}
+          placeholderTextColor={props.placeholderTextColor}
+        />
+      )}
     </Animated.View>
   );
 }
