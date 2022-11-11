@@ -29,7 +29,12 @@ class WalletService implements Services<WalletEntity, WalletDto>{
     public async create(createDto: WalletDto): Promise<WalletEntity> {
         const wallets = await this.find();
 
-        const { wallet } = this.onCreateWallet(wallets, createDto)
+        const filter = wallets.filter(wallet => wallet.name == createDto.name);
+        if (filter.length) throw new Error('Carteira já criada');
+
+        const lastWallet = this.findLast(wallets);
+        const wallet = new Wallet(lastWallet?.id ?? 0, createDto.name);
+
         wallets.push(wallet);
 
         await AsyncStorage.setItem(ASYNC_WALLETS, JSON.stringify(wallets));
@@ -39,16 +44,6 @@ class WalletService implements Services<WalletEntity, WalletDto>{
 
     public async update(updateDto: WalletDto): Promise<void> {
         return
-    }
-
-    public onCreateWallet(wallets: WalletEntity[], { name }: WalletDto) {
-        const filter = wallets.filter(wallet => wallet.name == name);
-        if (filter.length) throw new Error('Carteira já criada');
-
-        const lastWallet = this.findLast(wallets);
-        const wallet = new Wallet(lastWallet?.id ?? 0, name);
-
-        return { wallet }
     }
 
     protected findLast(wallets: WalletEntity[]): WalletEntity | undefined {

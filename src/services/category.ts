@@ -36,7 +36,11 @@ class CategoryService implements Services<CategoryEntity, CategoryDto> {
     public async create({ name, color, icon }: CategoryDto): Promise<CategoryEntity> {
         const categories = await this.find();
 
-        const { category } = this.onCreateCategory(categories, { name, color, icon })
+        const filter = categories.filter(category => category.name == name);
+        if (filter.length) throw new Error('Categoria já criada');
+
+        const lastCategory = this.findLast(categories);
+        const category = new Category(lastCategory?.id ?? 0, name, color, icon);
         categories.push(category);
 
         await AsyncStorage.setItem(ASYNC_CATEGORIES, JSON.stringify(categories));
@@ -47,17 +51,6 @@ class CategoryService implements Services<CategoryEntity, CategoryDto> {
     public async update(updateDto: CategoryEntity): Promise<void> {
         return
     }
-
-    public onCreateCategory(categories: CategoryEntity[], { name, color, icon }: CategoryDto) {
-        const filter = categories.filter(category => category.name == name);
-        if (filter.length) throw new Error('Categoria já criada');
-
-        const lastCategory = this.findLast(categories);
-        const category = new Category(lastCategory?.id ?? 0, name, color, icon);
-
-        return { category }
-    }
-
 }
 
 export const AppCategoryService = new CategoryService()
