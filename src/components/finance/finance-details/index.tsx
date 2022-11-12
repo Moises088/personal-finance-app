@@ -8,12 +8,14 @@ import CategoryScreen from '../../../screens/category/categoryScreen';
 import { CategoryEntity } from '../../../interfaces/services/category.interface';
 import { AppWalletService } from '../../../services/wallet';
 import { WalletEntity } from '../../../interfaces/services/wallet.interface';
+import DatetimePicker from '../../global/datetime-picker';
 
 const FinanceDetails: React.FC = () => {
 
   const { theme } = React.useContext(ThemeContext);
   const style = styles(theme);
 
+  const [isDatePickerVisible, setDatePickerVisibility] = React.useState<boolean>(false)
   const [openCategory, setOpenCategory] = React.useState<boolean>(false);
   const [category, setCategory] = React.useState<CategoryEntity>();
   const [wallet, setWallet] = React.useState<WalletEntity>();
@@ -103,7 +105,7 @@ const FinanceDetails: React.FC = () => {
               mask='custom'
               maskCustom='99/99/9999'
               keyboard='numeric'
-              onPressIcon={() => alert("Abrir data")}
+              onPressIcon={() => setDatePickerVisibility(true)}
             />
           </View>
 
@@ -119,6 +121,14 @@ const FinanceDetails: React.FC = () => {
           }} />
         </View>
       </Modal>
+
+      <DatetimePicker
+        isDatePickerVisible={isDatePickerVisible}
+        onChange={(date) => {
+          console.log("Date", date);
+          setDatePickerVisibility(false)
+        }}
+      />
     </View>
   );
 }
