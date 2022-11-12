@@ -37,7 +37,8 @@ class FinanceService implements Services<FinanceEntity, FinanceDto>{
     }
 
     public async findOne(id: number): Promise<FinanceEntity | undefined> {
-        throw new Error("Method not implemented.");
+        const finances = await this.find();
+        return finances.find(finance => finance.id == id);
     }
 
     public async create(createDto: FinanceDto): Promise<FinanceEntity> {
@@ -55,8 +56,8 @@ class FinanceService implements Services<FinanceEntity, FinanceDto>{
         throw new Error("Method not implemented.");
     }
 
-    protected findLast(categories: FinanceEntity[]): FinanceEntity | undefined {
-        return categories[categories.length - 1];
+    protected findLast(finances: FinanceEntity[]): FinanceEntity | undefined {
+        return finances[finances.length - 1];
     }
 }
 

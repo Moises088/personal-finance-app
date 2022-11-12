@@ -14,7 +14,7 @@ type MockProps = {
   ASYNC_FINANCES: FinanceEntity[];
 }
 
-const Mock: MockProps = {
+export const AsyncMock: MockProps = {
   ASYNC_CATEGORIES: [{ id: 1, name: 'Bike', color: '#d44', icon: 'biking' }],
   ASYNC_WALLETS: [{ name: 'Principal', id: 1 }],
   ASYNC_FINANCES: [
@@ -23,9 +23,9 @@ const Mock: MockProps = {
 }
 
 AsyncStorageMock.getItem = jest.fn((key, callback): Promise<string | null> => {
-  if (key == ASYNC_CATEGORIES) return new Promise(resolve => resolve(JSON.stringify(Mock["ASYNC_CATEGORIES"])))
-  if (key == ASYNC_WALLETS) return new Promise(resolve => resolve(JSON.stringify(Mock["ASYNC_WALLETS"])))
-  if (key == ASYNC_FINANCES) return new Promise(resolve => resolve(JSON.stringify(Mock["ASYNC_FINANCES"])))
+  if (key == ASYNC_CATEGORIES) return new Promise(resolve => resolve(JSON.stringify(AsyncMock["ASYNC_CATEGORIES"])))
+  if (key == ASYNC_WALLETS) return new Promise(resolve => resolve(JSON.stringify(AsyncMock["ASYNC_WALLETS"])))
+  if (key == ASYNC_FINANCES) return new Promise(resolve => resolve(JSON.stringify(AsyncMock["ASYNC_FINANCES"])))
   return new Promise(resolve => resolve(JSON.stringify([])));
 });
 

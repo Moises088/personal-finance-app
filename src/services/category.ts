@@ -20,8 +20,7 @@ class Category implements CategoryEntity {
 class CategoryService implements Services<CategoryEntity, CategoryDto> {
     public async find(): Promise<CategoryEntity[]> {
         const categories = await AsyncStorage.getItem(ASYNC_CATEGORIES);
-        if (categories) return JSON.parse(categories);
-        return [];
+        return JSON.parse(categories ?? JSON.stringify([]));
     }
 
     public async findOne(id: number): Promise<CategoryEntity | undefined> {

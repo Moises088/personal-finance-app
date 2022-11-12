@@ -1,7 +1,33 @@
 import { FinanceDto } from "../../src/interfaces/services/finance.interface";
 import { AppFinanceService } from "../../src/services/finance";
+import { AsyncMock } from "../../__mocks__/asynstorage.mock";
+
+const sameFinance = AsyncMock['ASYNC_FINANCES'][0];
 
 describe("services/finance", () => {
+    describe("method find", () => {
+        it("find finances and result must be Finance array", async () => {
+            const finances = await AppFinanceService.find();
+            expect(finances).toEqual(
+                expect.arrayContaining([
+                    expect.objectContaining({ ...sameFinance, id: 1 })
+                ])
+            )
+        })
+    })
+
+    describe("method findOne", () => {
+        it("find where id = 1 result must be Finance", async () => {
+            const finance = await AppFinanceService.findOne(1);
+            expect(finance).toEqual({ ...sameFinance, id: 1 })
+        })
+
+        it("find where id = 2 result must be undefined", async () => {
+            const finance = await AppFinanceService.findOne(2);
+            expect(finance).toBeUndefined()
+        })
+    })
+
     describe("method create", () => {
         it("create new finance", async () => {
             const finance: FinanceDto = {
