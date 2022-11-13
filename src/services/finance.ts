@@ -14,6 +14,7 @@ class Finance implements FinanceEntity {
     walletId: number;
     paidAt: string;
     isPaid: boolean;
+    type: "INCOME" | "EXPENSE";
     createdAt: string;
     updatedAt?: string;
 
@@ -22,6 +23,7 @@ class Finance implements FinanceEntity {
         this.name = createFinanceDto.name;
         this.categoryId = createFinanceDto.categoryId;
         this.walletId = createFinanceDto.walletId;
+        this.type = createFinanceDto.type;
         this.isPaid = createFinanceDto.isPaid;
         this.value = getPipeMoneyNumber(createFinanceDto.money);
         this.paidAt = createFinanceDto.paid;
@@ -54,6 +56,10 @@ class FinanceService implements Services<FinanceEntity, FinanceDto>{
 
     public async update(updateDto: FinanceDto): Promise<void> {
         throw new Error("Method not implemented.");
+    }
+
+    public getFinancesBalance(month: string, year: string, walletId: number) {
+        console.log("getFinancesBalance", month, year, walletId)
     }
 
     protected findLast(finances: FinanceEntity[]): FinanceEntity | undefined {

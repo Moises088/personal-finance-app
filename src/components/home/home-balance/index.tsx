@@ -4,11 +4,24 @@ import { ThemeContext } from '../../../contexts/themeContext';
 import { styles } from './styles';
 import { Feather } from '@expo/vector-icons';
 import { COLOR_DANGER, COLOR_SUCCESS } from '../../../constants/colors';
+import { AppFinanceService } from '../../../services/finance';
+import { FinancesContext } from '../../../contexts/financesContext';
 
 const HomeBalance: React.FC = () => {
 
   const { theme } = React.useContext(ThemeContext);
   const style = styles(theme);
+
+  const { filteredMonth, filteredYear } = React.useContext(FinancesContext);
+
+  React.useEffect(() => {
+    getFinancesBalance()
+  }, [filteredMonth, filteredYear])
+
+  const getFinancesBalance = async () => {
+    console.log("getFinancesBalance() ", filteredMonth, filteredYear)
+    // AppFinanceService.getFinancesBalance
+  }
 
   return (
     <View style={style.container}>

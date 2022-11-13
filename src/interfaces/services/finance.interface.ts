@@ -4,6 +4,7 @@ interface Finance {
     categoryId: number;
     walletId: number;
     isPaid: boolean;
+    type: 'INCOME' | 'EXPENSE'
 }
 export interface FinanceDto extends Finance {
     paid: string;

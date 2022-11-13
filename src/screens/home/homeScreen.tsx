@@ -4,6 +4,7 @@ import HomeBalance from '../../components/home/home-balance';
 import HomeExpenses from '../../components/home/home-expenses';
 import HomeHeader from '../../components/home/home-header';
 import HomeIncomes from '../../components/home/home-incomes';
+import { FinancesContext } from '../../contexts/financesContext';
 import { ThemeContext } from '../../contexts/themeContext';
 import { styles } from './styles';
 

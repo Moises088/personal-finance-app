@@ -16,21 +16,24 @@ import AlertError from '../../components/global/alert-error';
 import { getPipeTransformDateStringNumber, getPipeTransformDateStringPT, validateDateString } from '../../utils/date.util';
 import { FinanceDto } from '../../interfaces/services/finance.interface';
 import { AppFinanceService } from '../../services/finance';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
 
 type ParamRoute = {
   Detail: {
-    event: string;
+    event: 'INCOME' | 'EXPENSE';
   };
 }
 
 const FinanceScreen: React.FC = () => {
 
+  const navigation = useNavigation<StackNavigationProp<any>>();
   const { params } = useRoute<RouteProp<ParamRoute>>();
   const { theme } = React.useContext(ThemeContext);
   const style = styles(theme);
 
   const [visibleFinanceType, setVisibleFinanceType] = React.useState<boolean>(false)
-  const [financeType, setFinanceType] = React.useState<string>();
+  const [financeType, setFinanceType] = React.useState<'INCOME' | 'EXPENSE'>();
   const [money, setMoney] = React.useState<string>();
   const [loadingEnd, setLoadingEnd] = React.useState<boolean>(false);
   const [keyboardVisible, setKeyboardVisible] = React.useState<boolean>(false);
@@ -81,7 +84,7 @@ const FinanceScreen: React.FC = () => {
 
       setValidation(erros)
 
-      if (!wallet || !category || !money || !title || !description || !paidDate) return
+      if (!wallet || !category || !money || !title || !description || !paidDate || !financeType) return
 
       if (!erros.length) {
         const body: FinanceDto = {
@@ -91,13 +94,16 @@ const FinanceScreen: React.FC = () => {
           name: title,
           description,
           paid: getPipeTransformDateStringNumber(paidDate),
-          isPaid
+          isPaid,
+          type: financeType
         }
 
-        AppFinanceService.create(body)
+        const created = await AppFinanceService.create(body)
+        navigation.goBack()
+        // navigation.navigate("FinanceHistoricScreen", { id: created.id })
       }
     } catch (error: any) {
-      // if (error?.message) setValidation([error.message])
+      if (error?.message) setValidation([error.message])
     } finally { setLoadingEnd(!loadingEnd) }
   }
 

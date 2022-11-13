@@ -37,7 +37,8 @@ describe("services/finance", () => {
                 isPaid: true,
                 name: 'Conta',
                 paid: getPipeTransformDateStringNumber('10/11/2022'),
-                money: "R$20.50"
+                money: "R$20.50",
+                type: 'INCOME'
             }
             const newfinance = await AppFinanceService.create(finance);
             expect(newfinance.id).toEqual(2);

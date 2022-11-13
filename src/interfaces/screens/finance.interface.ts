@@ -15,3 +15,10 @@ export interface FinanceDetailsProps {
     setIsPaid(isPaid: boolean): void;
     isPaid: boolean | undefined;
 }
+
+export interface FinancesContextData {
+    filteredMonth: string;
+    filteredYear: string;
+    setFilteredMonth(filteredMonth: string): void
+    setFilteredYear(filteredYear: string): void
+}
