@@ -6,7 +6,7 @@ interface Finance {
     isPaid: boolean;
 }
 export interface FinanceDto extends Finance {
-    paid: number;
+    paid: string;
     money: string;
 }
 export interface FinanceEntity extends Finance {

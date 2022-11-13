@@ -1,5 +1,6 @@
 import { FinanceDto } from "../../src/interfaces/services/finance.interface";
 import { AppFinanceService } from "../../src/services/finance";
+import { getPipeTransformDateStringNumber, getPipeTransformDateStringPT } from "../../src/utils/date.util";
 import { AsyncMock } from "../../__mocks__/asynstorage.mock";
 
 const sameFinance = AsyncMock['ASYNC_FINANCES'][0];
@@ -35,7 +36,7 @@ describe("services/finance", () => {
                 walletId: 1,
                 isPaid: true,
                 name: 'Conta',
-                paid: 1668132564359,
+                paid: getPipeTransformDateStringNumber('10/11/2022'),
                 money: "R$20.50"
             }
             const newfinance = await AppFinanceService.create(finance);
@@ -43,7 +44,7 @@ describe("services/finance", () => {
             expect(newfinance.value).toEqual(20.50);
             expect(typeof newfinance.value).toBe('number');
             expect(typeof newfinance.createdAt).toBe('string');
-            expect(newfinance.paidAt).toBe('2022-11-10 23:09:24');
+            expect(newfinance.paidAt).toBe('2022-11-10 00:00:00');
         })
     })
 })

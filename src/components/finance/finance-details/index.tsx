@@ -5,20 +5,19 @@ import CustomInput from '../../global/custom-input';
 import { styles } from './styles';
 import { MaterialIcons, MaterialCommunityIcons, Ionicons, FontAwesome5, AntDesign } from '@expo/vector-icons';
 import CategoryScreen from '../../../screens/category/categoryScreen';
-import { CategoryEntity } from '../../../interfaces/services/category.interface';
 import { AppWalletService } from '../../../services/wallet';
-import { WalletEntity } from '../../../interfaces/services/wallet.interface';
 import DatetimePicker from '../../global/datetime-picker';
+import { getPipeDateStringPT } from '../../../utils/date.util';
+import { FinanceDetailsProps } from '../../../interfaces/screens/finance.interface';
+import BouncyCheckbox from 'react-native-bouncy-checkbox';
 
-const FinanceDetails: React.FC = () => {
+const FinanceDetails: React.FC<FinanceDetailsProps> = (props) => {
 
   const { theme } = React.useContext(ThemeContext);
   const style = styles(theme);
 
   const [isDatePickerVisible, setDatePickerVisibility] = React.useState<boolean>(false)
   const [openCategory, setOpenCategory] = React.useState<boolean>(false);
-  const [category, setCategory] = React.useState<CategoryEntity>();
-  const [wallet, setWallet] = React.useState<WalletEntity>();
 
   React.useEffect(() => {
     findWallet();
@@ -26,22 +25,22 @@ const FinanceDetails: React.FC = () => {
 
   const findWallet = async () => {
     const getWallet = await AppWalletService.findOne(1);
-    setWallet(getWallet)
+    props.setWallet(getWallet)
   }
 
   const CategorySelection: React.FC = () => {
-    if (!category) return <Text style={style.selectText}>Categoria</Text>
+    if (!props.category) return <Text style={style.selectText}>Categoria</Text>
     return (
       <>
-        <FontAwesome5 name={category.icon} color={theme.text.primary} size={17} style={{ marginLeft: 10 }} />
-        <Text style={style.selectText}>{category.name}</Text>
+        <FontAwesome5 name={props.category.icon} color={theme.text.primary} size={17} style={{ marginLeft: 10 }} />
+        <Text style={style.selectText}>{props.category.name}</Text>
       </>
     )
   }
 
   const WalletSelection: React.FC = () => {
-    if (!wallet) return <Text style={style.selectText}>Carteira</Text>
-    return <Text style={style.selectText}>{wallet.name}</Text>
+    if (!props.wallet) return <Text style={style.selectText}>Carteira</Text>
+    return <Text style={style.selectText}>{props.wallet.name}</Text>
   }
 
   return (
@@ -51,7 +50,7 @@ const FinanceDetails: React.FC = () => {
           <View style={style.containerInput}>
             <CustomInput
               icon={<MaterialIcons name="title" size={20} color={theme.button.primary} />}
-              onChangeText={() => { }}
+              onChangeText={(text) => { props.setTitle(text) }}
               style={style.input}
               styleInput={style.inputText}
               placeholder="Titulo"
@@ -62,7 +61,7 @@ const FinanceDetails: React.FC = () => {
           <View style={style.containerInput}>
             <CustomInput
               icon={<MaterialCommunityIcons name="subtitles-outline" size={19} color={theme.button.primary} />}
-              onChangeText={() => { }}
+              onChangeText={(text) => { props.setDescription(text) }}
               style={style.input}
               styleInput={style.inputText}
               placeholder="Descrição"
@@ -81,7 +80,7 @@ const FinanceDetails: React.FC = () => {
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={[style.containerSelect, category ? { backgroundColor: category.color } : {}]}
+            style={[style.containerSelect, props.category ? { backgroundColor: props.category.color } : {}]}
             activeOpacity={.5}
             onPress={() => { setOpenCategory(true) }}
           >
@@ -97,7 +96,8 @@ const FinanceDetails: React.FC = () => {
           <View style={style.containerInput}>
             <CustomInput
               icon={<AntDesign name="calendar" size={20} color={theme.button.primary} />}
-              onChangeText={() => { }}
+              onChangeText={(text) => { props.setPaidDate(text) }}
+              value={props.paidDate}
               style={style.input}
               styleInput={style.inputText}
               placeholder="Data de pagamento"
@@ -109,6 +109,18 @@ const FinanceDetails: React.FC = () => {
             />
           </View>
 
+          <View style={[style.containerInput, { marginLeft: 22, marginTop: 0 }]}>
+            <BouncyCheckbox
+              onPress={() => { props.setIsPaid(!props.isPaid) }}
+              text={"Foi pago"}
+              textStyle={style.checkText}
+              fillColor={theme.button.primary}
+              style={{ marginTop: 20 }}
+              isChecked={props.isPaid}
+              disableBuiltInState={true}
+            />
+          </View>
+
         </KeyboardAvoidingView>
       </ScrollView>
 
@@ -116,7 +128,7 @@ const FinanceDetails: React.FC = () => {
         <View style={style.backdrop} />
         <View style={style.modal}>
           <CategoryScreen selectCategory={category => {
-            setCategory(category);
+            props.setCategory(category);
             setOpenCategory(false);
           }} />
         </View>
@@ -125,8 +137,9 @@ const FinanceDetails: React.FC = () => {
       <DatetimePicker
         isDatePickerVisible={isDatePickerVisible}
         onChange={(date) => {
-          console.log("Date", date);
-          setDatePickerVisibility(false)
+          setDatePickerVisibility(false);
+          if (!date) return
+          props.setPaidDate(getPipeDateStringPT(date.getTime()))
         }}
       />
     </View>

@@ -71,6 +71,10 @@ export const styles = (theme: ThemesConfig) => {
             height: WINDOW_HEIGTH - 90,
             backgroundColor: theme.background.primary,
             overflow: 'hidden'
+        },
+        checkText: {
+            marginLeft: -8,
+            textDecorationLine: "none",
         }
     })
 };

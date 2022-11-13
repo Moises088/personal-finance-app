@@ -10,6 +10,12 @@ import { useRoute, RouteProp } from "@react-navigation/native";
 import { TextInputMask } from 'react-native-masked-text';
 import FinanceDetails from '../../components/finance/finance-details';
 import CustomButtonAnimated from '../../components/global/custom-button-animated';
+import { WalletEntity } from '../../interfaces/services/wallet.interface';
+import { CategoryEntity } from '../../interfaces/services/category.interface';
+import AlertError from '../../components/global/alert-error';
+import { getPipeTransformDateStringNumber, getPipeTransformDateStringPT, validateDateString } from '../../utils/date.util';
+import { FinanceDto } from '../../interfaces/services/finance.interface';
+import { AppFinanceService } from '../../services/finance';
 
 type ParamRoute = {
   Detail: {
@@ -29,21 +35,20 @@ const FinanceScreen: React.FC = () => {
   const [loadingEnd, setLoadingEnd] = React.useState<boolean>(false);
   const [keyboardVisible, setKeyboardVisible] = React.useState<boolean>(false);
 
+  const [category, setCategory] = React.useState<CategoryEntity>();
+  const [wallet, setWallet] = React.useState<WalletEntity>();
+  const [paidDate, setPaidDate] = React.useState<string>();
+  const [title, setTitle] = React.useState<string>();
+  const [description, setDescription] = React.useState<string>();
+  const [isPaid, setIsPaid] = React.useState<boolean>(false);
+
+  const [validation, setValidation] = React.useState<string[]>([]);
+
   const inputRef = React.useRef<any>();
 
   React.useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
-      () => {
-        setKeyboardVisible(true); // or some other action
-      }
-    );
-    const keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
-      () => {
-        setKeyboardVisible(false); // or some other action
-      }
-    );
+    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => { setKeyboardVisible(true); });
+    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => { setKeyboardVisible(false); });
 
     return () => {
       keyboardDidHideListener.remove();
@@ -65,9 +70,35 @@ const FinanceScreen: React.FC = () => {
   }
 
   const saveFinance = async () => {
-    setLoadingEnd(false)
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setLoadingEnd(true)
+    try {
+      const erros = [];
+      if (!money || !money?.trim()?.length) erros.push("Valor é obrigatório")
+      if (!title || !title?.trim()?.length) erros.push("Título é obrigatório")
+      if (!category?.id) erros.push("Categoria é obrigatória")
+      if (!wallet?.id) erros.push("Carteira é obrigatória")
+      if (!paidDate || paidDate?.length < 10) erros.push("Preencha a data corretamente")
+      if (paidDate?.length == 10) erros.push(...validateDateString(getPipeTransformDateStringPT(paidDate)));
+
+      setValidation(erros)
+
+      if (!wallet || !category || !money || !title || !description || !paidDate) return
+
+      if (!erros.length) {
+        const body: FinanceDto = {
+          walletId: wallet.id,
+          categoryId: category.id,
+          money,
+          name: title,
+          description,
+          paid: getPipeTransformDateStringNumber(paidDate),
+          isPaid
+        }
+
+        AppFinanceService.create(body)
+      }
+    } catch (error: any) {
+      // if (error?.message) setValidation([error.message])
+    } finally { setLoadingEnd(!loadingEnd) }
   }
 
   return (
@@ -107,7 +138,21 @@ const FinanceScreen: React.FC = () => {
         />
       </View>
 
+      <AlertError errors={validation} />
+
       <FinanceDetails
+        category={category}
+        setCategory={setCategory}
+        wallet={wallet}
+        setWallet={setWallet}
+        paidDate={paidDate}
+        setPaidDate={setPaidDate}
+        title={title}
+        setTitle={setTitle}
+        description={description}
+        setDescription={setDescription}
+        setIsPaid={setIsPaid}
+        isPaid={isPaid}
       />
 
       {!keyboardVisible && (

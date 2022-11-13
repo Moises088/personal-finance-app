@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ASYNC_FINANCES } from "../constants/storage.constant";
 import { FinanceDto, FinanceEntity } from "../interfaces/services/finance.interface";
 import { Services } from "../interfaces/services/service.interface";
-import { getPipeDateString } from "../utils/date.util";
+import { getPipeDateTimeString } from "../utils/date.util";
 import { getPipeMoneyNumber } from "../utils/money.util";
 
 class Finance implements FinanceEntity {
@@ -24,8 +24,8 @@ class Finance implements FinanceEntity {
         this.walletId = createFinanceDto.walletId;
         this.isPaid = createFinanceDto.isPaid;
         this.value = getPipeMoneyNumber(createFinanceDto.money);
-        this.paidAt = getPipeDateString(createFinanceDto.paid);
-        this.createdAt = getPipeDateString();
+        this.paidAt = createFinanceDto.paid;
+        this.createdAt = getPipeDateTimeString();
     }
 }
 
