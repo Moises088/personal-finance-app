@@ -48,4 +48,26 @@ describe("services/finance", () => {
             expect(newfinance.paidAt).toBe('2022-11-10 00:00:00');
         })
     })
+
+    describe("method getFinancesBalance", () => {
+        it("get balance nov 2022", async () => {
+            const balance = await AppFinanceService.getFinancesBalance('11', '2022', 1);
+            expect(balance.total).toEqual(-10);
+            expect(balance.totalExpense).toEqual(20);
+            expect(balance.totalIncome).toEqual(10);
+            expect(balance.finances).toEqual(
+                expect.arrayContaining([
+                    expect.objectContaining(sameFinance)
+                ])
+            )
+        })
+
+        it("get balance withou params", async () => {
+            const balance = await AppFinanceService.getFinancesBalance('', '', 0);
+            expect(balance.total).toEqual(0);
+            expect(balance.totalExpense).toEqual(0);
+            expect(balance.totalIncome).toEqual(0);
+            expect(balance.finances.length).toEqual(0)
+        })
+    })
 })

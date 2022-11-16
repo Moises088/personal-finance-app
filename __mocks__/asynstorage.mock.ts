@@ -18,7 +18,8 @@ export const AsyncMock: MockProps = {
   ASYNC_CATEGORIES: [{ id: 1, name: 'Bike', color: '#d44', icon: 'biking' }],
   ASYNC_WALLETS: [{ name: 'Principal', id: 1 }],
   ASYNC_FINANCES: [
-    { id: 1, categoryId: 1, walletId: 1, createdAt: '2022-11-10 00:00:00', isPaid: true, name: 'Conta', paidAt: '2022-11-10 00:00:00', value: 20.00 }
+    { id: 1, categoryId: 1, walletId: 1, createdAt: '2022-11-10 00:00:00', isPaid: true, name: 'Conta', paidAt: '2022-11-10 00:00:00', value: 20.00, type: 'EXPENSE' },
+    { id: 1, categoryId: 1, walletId: 1, createdAt: '2022-11-11 00:00:00', isPaid: true, name: 'Conta1', paidAt: '2022-11-11 00:00:00', value: 10.00, type: 'INCOME' },
   ]
 }
 
