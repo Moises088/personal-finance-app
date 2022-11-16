@@ -1,3 +1,5 @@
+import { CategoryEntity } from "./category.interface";
+
 interface Finance {
     name: string;
     description?: string;
@@ -18,9 +20,13 @@ export interface FinanceEntity extends Finance {
     updatedAt?: string;
 }
 
+export interface FinancesBalanceEntity extends FinanceEntity {
+    category: CategoryEntity | undefined;
+}
+
 export interface FinanceBalance {
     total: number;
     totalIncome: number;
     totalExpense: number;
-    finances: FinanceEntity[];
+    finances: FinancesBalanceEntity[];
 }

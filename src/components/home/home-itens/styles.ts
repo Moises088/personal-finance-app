@@ -18,9 +18,9 @@ export const styles = (theme: ThemesConfig) => {
             color: theme.text.primary
         },
         containerIcon: {
-            width: 20,
-            height: 20,
-            borderRadius: 20,
+            width: 24,
+            height: 24,
+            borderRadius: 24,
             alignItems: 'center',
             justifyContent: 'center',
             marginRight: 7

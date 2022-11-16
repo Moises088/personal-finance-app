@@ -1,9 +1,10 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ASYNC_FINANCES } from "../constants/storage.constant";
-import { FinanceBalance, FinanceDto, FinanceEntity } from "../interfaces/services/finance.interface";
+import { FinanceBalance, FinanceDto, FinanceEntity, FinancesBalanceEntity } from "../interfaces/services/finance.interface";
 import { Services } from "../interfaces/services/service.interface";
 import { getPipeDateTimeString } from "../utils/date.util";
 import { getPipeMoneyNumber } from "../utils/money.util";
+import { AppCategoryService } from "./category";
 
 class Finance implements FinanceEntity {
     id: number;
@@ -71,8 +72,9 @@ class FinanceService implements Services<FinanceEntity, FinanceDto>{
         }
 
         const finances = await this.find();
+        const categories = await AppCategoryService.find()
 
-        const financesFilter = finances.filter(finance => {
+        const financesFilter = finances.map((finance) => {
             const [date] = finance.paidAt.split(" ");
             const [getYear, getMonth] = date.split("-");
 
@@ -85,15 +87,18 @@ class FinanceService implements Services<FinanceEntity, FinanceDto>{
                     total -= finance.value;
                     totalExpense += finance.value;
                 }
-                return finance;
+
+                const category = categories.find(c => c.id == finance.categoryId);
+
+                return { ...finance, category };
             }
-        });
+        }).filter(item => item) as FinancesBalanceEntity[];
 
         return {
             total,
             totalIncome,
             totalExpense,
-            finances: financesFilter
+            finances: financesFilter.sort((a, b) => b.id - a.id)
         }
     }
 
