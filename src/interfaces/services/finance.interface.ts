@@ -17,3 +17,10 @@ export interface FinanceEntity extends Finance {
     createdAt: string;
     updatedAt?: string;
 }
+
+export interface FinanceBalance {
+    total: number;
+    totalIncome: number;
+    totalExpense: number;
+    finances: FinanceEntity[];
+}

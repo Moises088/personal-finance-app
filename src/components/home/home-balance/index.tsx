@@ -4,24 +4,15 @@ import { ThemeContext } from '../../../contexts/themeContext';
 import { styles } from './styles';
 import { Feather } from '@expo/vector-icons';
 import { COLOR_DANGER, COLOR_SUCCESS } from '../../../constants/colors';
-import { AppFinanceService } from '../../../services/finance';
 import { FinancesContext } from '../../../contexts/financesContext';
+import { getPipeMoneyString } from '../../../utils/money.util';
 
 const HomeBalance: React.FC = () => {
 
   const { theme } = React.useContext(ThemeContext);
   const style = styles(theme);
 
-  const { filteredMonth, filteredYear } = React.useContext(FinancesContext);
-
-  React.useEffect(() => {
-    getFinancesBalance()
-  }, [filteredMonth, filteredYear])
-
-  const getFinancesBalance = async () => {
-    console.log("getFinancesBalance() ", filteredMonth, filteredYear)
-    // AppFinanceService.getFinancesBalance
-  }
+  const { finances } = React.useContext(FinancesContext);
 
   return (
     <View style={style.container}>
@@ -29,7 +20,7 @@ const HomeBalance: React.FC = () => {
         <Text style={style.textTitle}>Saldo</Text>
       </View>
       <View style={style.containerValue}>
-        <Text style={style.textValue}>R$ 100,00</Text>
+        <Text style={style.textValue}>R$ {getPipeMoneyString(finances?.total)}</Text>
       </View>
       <View style={style.containerBalance}>
 
@@ -37,14 +28,14 @@ const HomeBalance: React.FC = () => {
           <View style={[style.containerIcon, { backgroundColor: COLOR_SUCCESS }]}>
             <Feather name="trending-up" size={15} color="#FFF" />
           </View>
-          <Text style={style.textBalance}>R$ 1290,00</Text>
+          <Text style={style.textBalance}>R$ {getPipeMoneyString(finances?.totalIncome)}</Text>
         </View>
 
         <View style={style.containerBalanceSide}>
           <View style={[style.containerIcon, { backgroundColor: COLOR_DANGER }]}>
             <Feather name="trending-down" size={15} color="#FFF" />
           </View>
-          <Text style={style.textBalance}>R$ 1190,00</Text>
+          <Text style={style.textBalance}>R$ {getPipeMoneyString(finances?.totalExpense)}</Text>
         </View>
       </View>
     </View>

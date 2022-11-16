@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ASYNC_FINANCES } from "../constants/storage.constant";
-import { FinanceDto, FinanceEntity } from "../interfaces/services/finance.interface";
+import { FinanceBalance, FinanceDto, FinanceEntity } from "../interfaces/services/finance.interface";
 import { Services } from "../interfaces/services/service.interface";
 import { getPipeDateTimeString } from "../utils/date.util";
 import { getPipeMoneyNumber } from "../utils/money.util";
@@ -58,8 +58,43 @@ class FinanceService implements Services<FinanceEntity, FinanceDto>{
         throw new Error("Method not implemented.");
     }
 
-    public getFinancesBalance(month: string, year: string, walletId: number) {
-        console.log("getFinancesBalance", month, year, walletId)
+    public async getFinancesBalance(month: string, year: string, walletId: number): Promise<FinanceBalance> {
+        let total = 0;
+        let totalIncome = 0;
+        let totalExpense = 0;
+
+        if (!month || !year || !walletId) return {
+            total,
+            totalIncome,
+            totalExpense,
+            finances: []
+        }
+
+        const finances = await this.find();
+
+        const financesFilter = finances.filter(finance => {
+            const [date] = finance.paidAt.split(" ");
+            const [getYear, getMonth] = date.split("-");
+
+            if (finance.walletId == walletId && getYear == year && getMonth == month && finance.isPaid == true) {
+                if (finance.type == "INCOME") {
+                    total += finance.value;
+                    totalIncome += finance.value;
+                }
+                if (finance.type == "EXPENSE") {
+                    total -= finance.value;
+                    totalExpense += finance.value;
+                }
+                return finance;
+            }
+        });
+
+        return {
+            total,
+            totalIncome,
+            totalExpense,
+            finances: financesFilter
+        }
     }
 
     protected findLast(finances: FinanceEntity[]): FinanceEntity | undefined {

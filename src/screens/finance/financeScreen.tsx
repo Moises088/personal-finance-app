@@ -18,6 +18,7 @@ import { FinanceDto } from '../../interfaces/services/finance.interface';
 import { AppFinanceService } from '../../services/finance';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
+import { FinancesContext } from '../../contexts/financesContext';
 
 type ParamRoute = {
   Detail: {
@@ -48,6 +49,8 @@ const FinanceScreen: React.FC = () => {
   const [validation, setValidation] = React.useState<string[]>([]);
 
   const inputRef = React.useRef<any>();
+
+  const { getFinancesBalance } = React.useContext(FinancesContext)
 
   React.useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => { setKeyboardVisible(true); });
@@ -84,7 +87,7 @@ const FinanceScreen: React.FC = () => {
 
       setValidation(erros)
 
-      if (!wallet || !category || !money || !title || !description || !paidDate || !financeType) return
+      if (!wallet || !category || !money || !title || !paidDate || !financeType) return
 
       if (!erros.length) {
         const body: FinanceDto = {
@@ -98,11 +101,14 @@ const FinanceScreen: React.FC = () => {
           type: financeType
         }
 
-        const created = await AppFinanceService.create(body)
+        const created = await AppFinanceService.create(body);
+        console.log(created)
+        await getFinancesBalance()
         navigation.goBack()
         // navigation.navigate("FinanceHistoricScreen", { id: created.id })
       }
     } catch (error: any) {
+      console.error(error)
       if (error?.message) setValidation([error.message])
     } finally { setLoadingEnd(!loadingEnd) }
   }

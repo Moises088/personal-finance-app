@@ -1,4 +1,5 @@
 import { CategoryEntity } from "../services/category.interface";
+import { FinanceBalance } from "../services/finance.interface";
 import { WalletEntity } from "../services/wallet.interface";
 
 export interface FinanceDetailsProps {
@@ -19,6 +20,8 @@ export interface FinanceDetailsProps {
 export interface FinancesContextData {
     filteredMonth: string;
     filteredYear: string;
-    setFilteredMonth(filteredMonth: string): void
-    setFilteredYear(filteredYear: string): void
+    setFilteredMonth(filteredMonth: string): void;
+    setFilteredYear(filteredYear: string): void;
+    getFinancesBalance: () => Promise<FinanceBalance>;
+    finances: FinanceBalance | undefined;
 }

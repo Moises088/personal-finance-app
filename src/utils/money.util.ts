@@ -9,6 +9,16 @@ export const getPipeMoneyNumber = (money: string): number => {
 }
 
 /**
+ * 
+ * @param money is money number
+ * @returns money string 0,00
+ */
+export const getPipeMoneyString = (money: number | undefined): string => {
+    if (!money) return "0,00"
+    return money.toFixed(2).replace(".", ",")
+}
+
+/**
  * @author https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Math/round#exemplos
  * @returns decimal rounding
  */
