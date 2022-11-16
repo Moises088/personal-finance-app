@@ -1,6 +1,5 @@
 import React from 'react';
 import { SafeAreaView, View, Text, Keyboard } from 'react-native';
-import GlobalPicker from '../../components/global/picker';
 import { FINANCE_OPTIONS } from '../../constants/finance.constants';
 import { ThemeContext } from '../../contexts/themeContext';
 import { styles } from './styles';
@@ -8,23 +7,17 @@ import { Ionicons } from '@expo/vector-icons';
 import { COLOR_DANGER, COLOR_SUCCESS } from '../../constants/colors';
 import { useRoute, RouteProp } from "@react-navigation/native";
 import { TextInputMask } from 'react-native-masked-text';
-import FinanceDetails from '../../components/finance/finance-details';
-import CustomButtonAnimated from '../../components/global/custom-button-animated';
-import { WalletEntity } from '../../interfaces/services/wallet.interface';
-import { CategoryEntity } from '../../interfaces/services/category.interface';
-import AlertError from '../../components/global/alert-error';
 import { getPipeTransformDateStringNumber, getPipeTransformDateStringPT, validateDateString } from '../../utils/date.util';
 import { FinanceDto } from '../../interfaces/services/finance.interface';
 import { AppFinanceService } from '../../services/finance';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import { FinancesContext } from '../../contexts/financesContext';
-
-type ParamRoute = {
-  Detail: {
-    event: 'INCOME' | 'EXPENSE';
-  };
-}
+import { FinanceForms, ParamRoute } from '../../interfaces/screens/finance.interface';
+import GlobalPicker from '../../components/global/picker';
+import FinanceDetails from '../../components/finance/finance-details';
+import CustomButtonAnimated from '../../components/global/custom-button-animated';
+import AlertError from '../../components/global/alert-error';
 
 const FinanceScreen: React.FC = () => {
 
@@ -35,17 +28,10 @@ const FinanceScreen: React.FC = () => {
 
   const [visibleFinanceType, setVisibleFinanceType] = React.useState<boolean>(false)
   const [financeType, setFinanceType] = React.useState<'INCOME' | 'EXPENSE'>();
-  const [money, setMoney] = React.useState<string>();
   const [loadingEnd, setLoadingEnd] = React.useState<boolean>(false);
   const [keyboardVisible, setKeyboardVisible] = React.useState<boolean>(false);
 
-  const [category, setCategory] = React.useState<CategoryEntity>();
-  const [wallet, setWallet] = React.useState<WalletEntity>();
-  const [paidDate, setPaidDate] = React.useState<string>();
-  const [title, setTitle] = React.useState<string>();
-  const [description, setDescription] = React.useState<string>();
-  const [isPaid, setIsPaid] = React.useState<boolean>(false);
-
+  const [financeForm, setFinanceForm] = React.useState<FinanceForms>({ isPaid: false } as FinanceForms)
   const [validation, setValidation] = React.useState<string[]>([]);
 
   const inputRef = React.useRef<any>();
@@ -77,38 +63,27 @@ const FinanceScreen: React.FC = () => {
 
   const saveFinance = async () => {
     try {
+      const { category, description, isPaid, money, paidDate, title: name } = financeForm;
+
       const erros = [];
       if (!money || !money?.trim()?.length) erros.push("Valor é obrigatório")
-      if (!title || !title?.trim()?.length) erros.push("Título é obrigatório")
+      if (!name || !name?.trim()?.length) erros.push("Título é obrigatório")
       if (!category?.id) erros.push("Categoria é obrigatória")
-      if (!wallet?.id) erros.push("Carteira é obrigatória")
       if (!paidDate || paidDate?.length < 10) erros.push("Preencha a data corretamente")
       if (paidDate?.length == 10) erros.push(...validateDateString(getPipeTransformDateStringPT(paidDate)));
-
       setValidation(erros)
 
-      if (!wallet || !category || !money || !title || !paidDate || !financeType) return
+      if (!category || !money || !paidDate || !name || !financeType) return;
 
-      if (!erros.length) {
-        const body: FinanceDto = {
-          walletId: wallet.id,
-          categoryId: category.id,
-          money,
-          name: title,
-          description,
-          paid: getPipeTransformDateStringNumber(paidDate),
-          isPaid,
-          type: financeType
-        }
+      const paid = getPipeTransformDateStringNumber(paidDate);
+      const body: FinanceDto = { walletId: 1, categoryId: category.id, money, name, description, paid, isPaid, type: financeType }
+      const created = await AppFinanceService.create(body);
 
-        const created = await AppFinanceService.create(body);
-        console.log(created)
-        await getFinancesBalance()
-        navigation.goBack()
-        // navigation.navigate("FinanceHistoricScreen", { id: created.id })
-      }
+      await getFinancesBalance()
+      navigation.goBack()
+      // navigation.navigate("FinanceHistoricScreen", { id: created.id })
+
     } catch (error: any) {
-      console.error(error)
       if (error?.message) setValidation([error.message])
     } finally { setLoadingEnd(!loadingEnd) }
   }
@@ -143,8 +118,8 @@ const FinanceScreen: React.FC = () => {
             unit: '',
             suffixUnit: ''
           }}
-          value={money}
-          onChangeText={(text: string) => setMoney(text)}
+          value={financeForm.money}
+          onChangeText={(money: string) => setFinanceForm(prev => ({ ...prev, money }))}
           style={style.valueInput}
           ref={inputRef}
         />
@@ -153,18 +128,18 @@ const FinanceScreen: React.FC = () => {
       <AlertError errors={validation} />
 
       <FinanceDetails
-        category={category}
-        setCategory={setCategory}
-        wallet={wallet}
-        setWallet={setWallet}
-        paidDate={paidDate}
-        setPaidDate={setPaidDate}
-        title={title}
-        setTitle={setTitle}
-        description={description}
-        setDescription={setDescription}
-        setIsPaid={setIsPaid}
-        isPaid={isPaid}
+        wallet={financeForm.wallet}
+        setWallet={wallet => setFinanceForm(prev => ({ ...prev, wallet }))}
+        category={financeForm.category}
+        setCategory={category => setFinanceForm(prev => ({ ...prev, category }))}
+        paidDate={financeForm.paidDate}
+        setPaidDate={paidDate => setFinanceForm(prev => ({ ...prev, paidDate }))}
+        title={financeForm.title}
+        setTitle={title => setFinanceForm(prev => ({ ...prev, title }))}
+        description={financeForm.description}
+        setDescription={description => setFinanceForm(prev => ({ ...prev, description }))}
+        isPaid={financeForm.isPaid}
+        setIsPaid={isPaid => setFinanceForm(prev => ({ ...prev, isPaid }))}
       />
 
       {!keyboardVisible && (

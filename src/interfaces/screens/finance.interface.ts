@@ -25,3 +25,19 @@ export interface FinancesContextData {
     getFinancesBalance: () => Promise<FinanceBalance>;
     finances: FinanceBalance | undefined;
 }
+
+export type ParamRoute = {
+    Detail: {
+        event: 'INCOME' | 'EXPENSE';
+    };
+}
+
+export interface FinanceForms {
+    money: string | undefined;
+    paidDate: string | undefined;
+    title: string | undefined;
+    description: string | undefined;
+    category: CategoryEntity | undefined;
+    wallet: WalletEntity | undefined;
+    isPaid: boolean
+}
