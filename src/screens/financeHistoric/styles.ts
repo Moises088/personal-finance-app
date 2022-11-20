@@ -3,6 +3,8 @@ import { ThemesConfig } from '../../interfaces/screens/themes.interace';
 import Constants from 'expo-constants'
 import { WINDOW_WIDTH } from '../../constants/screen.contants';
 
+const CHART = WINDOW_WIDTH - 50;
+
 export const styles = (theme: ThemesConfig) => {
     return StyleSheet.create({
         container: {
@@ -10,41 +12,19 @@ export const styles = (theme: ThemesConfig) => {
             backgroundColor: theme.background.primary,
             paddingTop: Constants.statusBarHeight
         },
-        headerDate: {
-            padding: 10
+        containerChart: {
+            width: CHART,
+            height: CHART,
+            alignItems: "center",
+            justifyContent: "center",
+            marginLeft: 15,
+            marginTop: 35,
+            position: "relative"
         },
-        containerCarouselMonth: {
-            flexDirection: 'row',
-            alignItems: 'center',
-            height: 45,
-            marginTop: 10
-        },
-        carouselMonthArrow: {
-            backgroundColor: theme.background.secondary,
-            width: 28,
-            height: 28,
-            borderRadius: 28,
-            marginHorizontal: 5,
-            alignItems: 'center',
-            justifyContent: 'center'
-        },
-        carouselMonth: {
-            width: WINDOW_WIDTH - 76,
-            height: 45
-        },
-        carouselItem: {
-            height: 30,
-            marginTop: 7.5,
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: (WINDOW_WIDTH - 96) / 2,
-            marginRight: 10,
-            borderRadius: 20,
-        },
-        carouselItemText: {
-            fontWeight: "600",
-            color: "#FFF",
-            fontSize: 14
+        containerChartInside: {
+            width: CHART - 36,
+            height: CHART - 36,
+            position: 'absolute'
         }
     })
 };

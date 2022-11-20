@@ -7,8 +7,7 @@ export const styles = (theme: ThemesConfig) => {
     return StyleSheet.create({
         container: {
             flex: 1,
-            backgroundColor: theme.background.primary,
-            paddingTop: Constants.statusBarHeight
+            backgroundColor: theme.background.primary
         },
         headerDate: {
             padding: 10
