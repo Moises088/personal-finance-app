@@ -64,7 +64,7 @@ class FinanceService implements Services<FinanceEntity, FinanceDto>{
         let totalIncome = 0;
         let totalExpense = 0;
 
-        if (!month?.length || !year?.length || !walletId) return {
+        if (!month || !year || !walletId) return {
             total,
             totalIncome,
             totalExpense,

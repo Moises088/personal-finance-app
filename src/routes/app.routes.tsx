@@ -5,6 +5,7 @@ import HomeScreen from "../screens/home/homeScreen";
 import CustomBottomTab from "../components/bottomTab/custom-bottom-tab";
 import ProfileScreen from "../screens/profile/profileScreen";
 import FinanceScreen from "../screens/finance/financeScreen";
+import FinanceHistoricScreen from "../screens/financeHistoric/financeHistoricScreen";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -24,6 +25,7 @@ const AppRoutes = () => {
         <Stack.Navigator>
             <Stack.Screen name="HomeScreen" component={TabRoutes} options={{ headerShown: false }} />
             <Stack.Screen name="FinanceScreen" component={FinanceScreen} options={{ headerShown: false, }} />
+            <Stack.Screen name="FinanceHistoricScreen" component={FinanceHistoricScreen} options={{ headerShown: false, }} />
         </Stack.Navigator>
     );
 }

@@ -31,4 +31,10 @@ export const PROFILE_LIST = [
         navigate: "WalletScreen",
         icon: (color: string, size: number) => <Ionicons name="wallet-outline" size={size} color={color} />
     },
+    {
+        title: "Histórico Financeiro",
+        divisor: false,
+        navigate: "FinanceHistoricScreen",
+        icon: (color: string, size: number) => <MaterialIcons name="history" size={size} color={color} />
+    },
 ]

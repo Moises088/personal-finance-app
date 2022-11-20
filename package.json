@@ -26,7 +26,8 @@
     "react-native-bouncy-checkbox": "^3.0.5",
     "react-native-gesture-handler": "~2.5.0",
     "react-native-masked-text": "^1.13.0",
-    "react-native-web": "~0.18.7"
+    "react-native-web": "~0.18.7",
+    "react-native-svg": "12.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
