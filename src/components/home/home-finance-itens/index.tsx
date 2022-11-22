@@ -6,6 +6,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { styles } from './styles';
 import { getPipeMoneyString } from '../../../utils/money.util';
 import { COLOR_DANGER } from '../../../constants/colors';
+import { getPipeTransformDateStringExtense } from '../../../utils/date.util';
 
 const BACKGROUN_IMAGE = require("../../../../assets/imgs/waves.png")
 
@@ -30,6 +31,9 @@ const HomeFinanceItens: React.FC<{ item: FinancesBalanceEntity }> = ({ item }) =
         <Text style={[style.text, { color: item.type == "INCOME" ? theme.text.primary : COLOR_DANGER, fontSize: 22 }]}>
           {item.type == "INCOME" ? "+" : "-"} R$ {getPipeMoneyString(item.value)}
         </Text>
+      </View>
+      <View style={style.containerDate}>
+        <Text style={{ color: theme.text.primary }} >{getPipeTransformDateStringExtense(item.createdAt)}</Text>
       </View>
     </View>
   );

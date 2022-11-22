@@ -46,6 +46,12 @@ export const styles = (theme: ThemesConfig) => {
             padding: 10,
             paddingHorizontal: 15,
             marginTop: 10
+        },
+        containerDate: {
+            position: "absolute",
+            bottom: 10,
+            right: 10,
+            opacity: 0.8
         }
     })
 };

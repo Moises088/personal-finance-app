@@ -1,3 +1,6 @@
+import moment from "moment";
+import 'moment/locale/pt-br';
+
 /**
  * 
  * @param date is date number
@@ -5,17 +8,9 @@
  * @returns date string of the type yyyy-mm-dd hh:mm:ss
  */
 export const getPipeDateTimeString = (date: number = Date.now(), time: boolean = true): string => {
-    const transformDate = new Date(date);
-
-    const day = String(transformDate.getDate()).padStart(2, "0");
-    const month = String(transformDate.getMonth() + 1).padStart(2, "0");
-    const hours = String(transformDate.getHours()).padStart(2, "0");
-    const minutes = String(transformDate.getMinutes()).padStart(2, "0");
-    const seconds = String(transformDate.getSeconds()).padStart(2, "0");
-
-    if (!time) return `${transformDate.getFullYear()}-${month}-${day}`;
-
-    return `${transformDate.getFullYear()}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    const transformDate = moment(date);
+    if (!time) return transformDate.format("YYYY-MM-DD");
+    return transformDate.format("YYYY-MM-DD HH:mm:ss");
 }
 
 /**
@@ -24,10 +19,8 @@ export const getPipeDateTimeString = (date: number = Date.now(), time: boolean =
  * @returns date string of the type dd/mm/yyyy
  */
 export const getPipeDateStringPT = (date: number = Date.now()): string => {
-    const onlyDate = getPipeDateTimeString(date, false);
-    const [year, month, day] = onlyDate.split("-");
-
-    return `${day}/${month}/${year}`;
+    const transformDate = moment(date);
+    return transformDate.format("DD/MM/YYYY");
 }
 
 /**
@@ -47,6 +40,16 @@ export const getPipeTransformDateStringPT = (date: string): string => {
  */
 export const getPipeTransformDateStringNumber = (date: string): string => {
     return getPipeTransformDateStringPT(date) + " 00:00:00";
+}
+
+/**
+ * 
+ * @param date is yyyy-mm-dd hh:mm:ss
+ * @returns date string DD MM. Ex: 22 Ago
+ */
+export const getPipeTransformDateStringExtense = (date: string): string => {
+    const getDate = moment(date);
+    return getDate.locale("pt-br").format("DD MMM")
 }
 
 /**
