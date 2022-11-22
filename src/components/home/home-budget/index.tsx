@@ -29,7 +29,7 @@ const HomeBudget: React.FC = () => {
         <BudgetCard />
       </View>
 
-      <TouchableOpacity style={style.containerBalance} onPress={() => { }}>
+      <TouchableOpacity style={style.containerBalance} onPress={() => { navigation.navigate("BudgetScreen") }}>
         <Text style={style.textTitle}>Ver mais</Text>
       </TouchableOpacity>
     </View>
