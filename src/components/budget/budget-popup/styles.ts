@@ -7,7 +7,8 @@ export const styles = (theme: ThemesConfig) => {
             backgroundColor: theme.background.tertiary,
             borderRadius: 10,
             marginTop: 10,
-            padding: 10
+            padding: 10,
+            zIndex: 1
         },
         content: {
             flexDirection: "row"
