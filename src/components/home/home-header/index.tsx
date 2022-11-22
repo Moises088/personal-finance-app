@@ -48,6 +48,7 @@ const HomeHeader: React.FC = () => {
           setSelectedItem={setFilteredYear}
           visible={visibleYear}
           setVisible={setVisibleYear}
+          containerStyle={{ justifyContent: 'flex-end', }}
         />
       </View>
     </View>

@@ -2,7 +2,6 @@ import moment from "moment";
 import 'moment/locale/pt-br';
 
 /**
- * 
  * @param date is date number
  * @param time if false returns date without time
  * @returns date string of the type yyyy-mm-dd hh:mm:ss
@@ -14,17 +13,16 @@ export const getPipeDateTimeString = (date: number = Date.now(), time: boolean =
 }
 
 /**
- * 
  * @param date is date number
- * @returns date string of the type dd/mm/yyyy
+ * @param format date format string
+ * @returns moment string
  */
-export const getPipeDateStringPT = (date: number = Date.now()): string => {
+export const getPipeCustomDateString = (date: number | string = Date.now(), format: string): string => {
     const transformDate = moment(date);
-    return transformDate.format("DD/MM/YYYY");
+    return transformDate.format(format);
 }
 
 /**
- * 
  * @param date is dd/mm/yyyy
  * @returns date string of the type yyyy-mm-dd
  */
@@ -34,7 +32,6 @@ export const getPipeTransformDateStringPT = (date: string): string => {
 }
 
 /**
- * 
  * @param date is dd/mm/yyyy
  * @returns date string yyyy-mm-dd 00:00:00
  */
@@ -43,7 +40,6 @@ export const getPipeTransformDateStringNumber = (date: string): string => {
 }
 
 /**
- * 
  * @param date is yyyy-mm-dd hh:mm:ss
  * @returns date string DD MM. Ex: 22 Ago
  */
@@ -53,7 +49,6 @@ export const getPipeTransformDateStringExtense = (date: string): string => {
 }
 
 /**
- * 
  * @param date is yyyy-mm-dd
  * @returns error string array
  */

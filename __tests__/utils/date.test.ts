@@ -1,4 +1,4 @@
-import { getPipeDateStringPT, getPipeDateTimeString, getPipeTransformDateStringNumber, getPipeTransformDateStringPT, validateDateString } from "../../src/utils/date.util";
+import { getPipeCustomDateString, getPipeDateTimeString, getPipeTransformDateStringNumber, getPipeTransformDateStringPT, validateDateString } from "../../src/utils/date.util";
 
 describe("utils/date", () => {
     it("getPipeDateTimeString date number 1668132564359 result must be '2022-11-10 23:09:24'", () => {
@@ -11,9 +11,9 @@ describe("utils/date", () => {
         expect(getPipeDateTimeString(date, false)).toEqual('2022-11-10');
     })
 
-    it("getPipeDateStringPT date number 1668132564359 result must be '10/11/2022'", () => {
+    it("getPipeCustomDateString date number 1668132564359 result must be '10/11/2022'", () => {
         const date = 1668132564359;
-        expect(getPipeDateStringPT(date)).toEqual('10/11/2022');
+        expect(getPipeCustomDateString(date, "DD/MM/YYYY")).toEqual('10/11/2022');
     })
 
     it("getPipeTransformDateStringPT date string '10/11/2022' result must be '2022-11-10'", () => {

@@ -5,6 +5,8 @@ import { COLOR_DANGER, COLOR_SUCCESS } from '../../constants/colors';
 import { ThemeContext } from '../../contexts/themeContext';
 import { AntDesign } from '@expo/vector-icons';
 import { styles } from './styles';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
 
 const IMAGE_BUDGET = require("../../../assets/imgs/budget-popup-removebg.png")
 
@@ -16,9 +18,11 @@ const BudgetScreen: React.FC = () => {
   const { theme } = React.useContext(ThemeContext);
   const style = styles(theme);
 
+  const navigation = useNavigation<StackNavigationProp<any>>()
+
   return (
     <View style={style.container}>
-      <TouchableOpacity style={style.createdButton} activeOpacity={0.8}>
+      <TouchableOpacity style={style.createdButton} activeOpacity={0.8} onPress={() => { navigation.navigate("CreateBudgetScreen") }}>
         <Text style={style.textButton}>+ Novo orçamento</Text>
       </TouchableOpacity>
 

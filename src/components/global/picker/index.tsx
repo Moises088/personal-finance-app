@@ -6,7 +6,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { PickerProps } from '../../../interfaces/screens/picker.interface';
 import { styles } from './styles';
 
-const GlobalPicker: React.FC<PickerProps> = ({ itens, setSelectedItem, selectedItem, visible }) => {
+const GlobalPicker: React.FC<PickerProps> = ({ itens, setSelectedItem, selectedItem, visible, textStyle, containerStyle }) => {
 
     const { theme } = React.useContext(ThemeContext);
     const style = styles(theme);
@@ -32,8 +32,8 @@ const GlobalPicker: React.FC<PickerProps> = ({ itens, setSelectedItem, selectedI
 
     return (
         <>
-            <TouchableOpacity style={style.containerValue} onPress={() => setVisibleModal(true)}>
-                <Text style={style.text}>{findLabel(toggleCheckBox)}</Text>
+            <TouchableOpacity style={[style.containerValue, containerStyle ?? {}]} onPress={() => setVisibleModal(true)}>
+                <Text style={[style.text, textStyle ?? {}]}>{findLabel(toggleCheckBox)}</Text>
                 <MaterialIcons name="keyboard-arrow-down" style={{ marginTop: 3 }} size={18} color={theme.text.primary} />
             </TouchableOpacity>
 

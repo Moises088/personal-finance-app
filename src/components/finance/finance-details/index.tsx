@@ -7,7 +7,7 @@ import { MaterialIcons, MaterialCommunityIcons, Ionicons, FontAwesome5, AntDesig
 import CategoryScreen from '../../../screens/category/categoryScreen';
 import { AppWalletService } from '../../../services/wallet';
 import DatetimePicker from '../../global/datetime-picker';
-import { getPipeDateStringPT } from '../../../utils/date.util';
+import { getPipeCustomDateString } from '../../../utils/date.util';
 import { FinanceDetailsProps } from '../../../interfaces/screens/finance.interface';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 
@@ -139,7 +139,7 @@ const FinanceDetails: React.FC<FinanceDetailsProps> = (props) => {
         onChange={(date) => {
           setDatePickerVisibility(false);
           if (!date) return
-          props.setPaidDate(getPipeDateStringPT(date.getTime()))
+          props.setPaidDate(getPipeCustomDateString(date.getTime(), "DD/MM/YYYY"))
         }}
       />
     </View>

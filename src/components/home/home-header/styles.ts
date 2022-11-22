@@ -10,13 +10,13 @@ export const styles = (theme: ThemesConfig) => {
             justifyContent: 'space-between',
             paddingHorizontal: 15,
             paddingTop: 10,
-            height: 80,
+            height: 80
         },
         containerButton: {
             width: 120,
             height: 40,
             alignItems: 'center',
-            justifyContent: 'center',
+            justifyContent: 'center'
         }
     })
 };

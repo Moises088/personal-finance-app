@@ -5,10 +5,12 @@ import { ThemesConfig } from '../../../interfaces/screens/themes.interace';
 export const styles = (theme: ThemesConfig) => {
     return StyleSheet.create({
         containerValue: {
-            flex: 1,
+            // flex: 1,
+            width: "100%",
+            // backgroundColor: 'red',
             height: 40,
             alignItems: 'center',
-            justifyContent: 'center',
+            // justifyContent: 'center',
             flexDirection: 'row'
         },
         text: {
