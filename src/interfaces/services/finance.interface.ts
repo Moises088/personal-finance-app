@@ -30,3 +30,8 @@ export interface FinanceBalance {
     totalExpense: number;
     finances: FinancesBalanceEntity[];
 }
+
+export interface FinanceBalancePerCategory {
+    category: CategoryEntity | undefined;
+    total: number;
+}

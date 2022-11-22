@@ -99,6 +99,7 @@ export const styles = (theme: ThemesConfig) => {
             height: 40,
             borderRadius: 6,
             backgroundColor: theme.background.tertiary,
+            marginBottom: 20
         },
         backdrop: {
             position: 'relative',

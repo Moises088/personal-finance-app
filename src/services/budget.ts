@@ -1,9 +1,11 @@
-import { BudgetDto, BudgetEntity } from "../interfaces/services/budget.interface";
+import { BudgetDto, BudgetEntity, BudgetsBalanceCategory, BudgetsBalanceEntity } from "../interfaces/services/budget.interface";
 import { Services } from "../interfaces/services/service.interface";
 import { getPipeDateTimeString } from "../utils/date.util";
 import { getPipeMoneyNumber } from "../utils/money.util";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ASYNC_BUDGETS } from "../constants/storage.constant";
+import { AppCategoryService } from "./category";
+import { AppFinanceService } from "./finance";
 
 class Budget implements BudgetEntity {
     id: number;
@@ -29,6 +31,30 @@ class BudgetService implements Services<BudgetEntity, BudgetDto>{
     public async find(): Promise<BudgetEntity[]> {
         const budgets = await AsyncStorage.getItem(ASYNC_BUDGETS);
         return JSON.parse(budgets ?? JSON.stringify([]));
+    }
+
+    public async getBudgetBalance(month: string, year: string): Promise<BudgetsBalanceEntity | undefined> {
+        const budgets = await this.find();
+        const budget = budgets.find(budget => budget.month == month && budget.year == year);
+        const { categories, totalExpense } = await AppFinanceService.getFinancesBalancePerCategory(month, year, 1);
+
+        if (!budget?.categories) return;
+
+        const budgetCategoriesFilter: BudgetsBalanceCategory[] = []
+        for (const budgetCategory of budget.categories) {
+            const findCategory = categories.find(c => c.category?.id == budgetCategory.categoryId);
+            if (!findCategory) {
+                const category = await AppCategoryService.findOne(budgetCategory.categoryId);
+                if (!category) continue
+                budgetCategoriesFilter.push({ ...budgetCategory, category, used: 0 });
+                continue
+            }
+
+            const { category, total } = findCategory;
+            budgetCategoriesFilter.push({ ...budgetCategory, category, used: total })
+        }
+
+        return { ...budget, categories: budgetCategoriesFilter, totalExpense }
     }
 
     public async findOne(id: number): Promise<BudgetEntity | undefined> {

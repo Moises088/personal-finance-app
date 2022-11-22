@@ -24,9 +24,9 @@ const HomeBudget: React.FC = () => {
       <BudgetPopup />
 
       <View style={style.containerBudget}>
+        {/* <BudgetCard />
         <BudgetCard />
-        <BudgetCard />
-        <BudgetCard />
+        <BudgetCard /> */}
       </View>
 
       <TouchableOpacity style={style.containerBalance} onPress={() => { navigation.navigate("BudgetScreen") }}>

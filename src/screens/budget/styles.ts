@@ -66,13 +66,13 @@ export const styles = (theme: ThemesConfig) => {
         },
         valueInfo: {
             marginTop: 10,
-            width: "32%",
+            minWidth: "32%",
             marginRight: "1%"
         },
         value: {
             letterSpacing: 0.6,
             marginTop: 3,
-            fontSize: 16
+            fontSize: 14
         },
         budgetCards: {
             marginHorizontal: 12,

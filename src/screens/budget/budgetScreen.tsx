@@ -7,6 +7,10 @@ import { AntDesign } from '@expo/vector-icons';
 import { styles } from './styles';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
+import { AppBudgetService } from '../../services/budget';
+import { AppCategoryService } from '../../services/category';
+import { BudgetsBalanceEntity } from '../../interfaces/services/budget.interface';
+import { getPipeMoneyNumber, getPipeMoneyString } from '../../utils/money.util';
 
 const IMAGE_BUDGET = require("../../../assets/imgs/budget-popup-removebg.png")
 
@@ -19,6 +23,18 @@ const BudgetScreen: React.FC = () => {
   const style = styles(theme);
 
   const navigation = useNavigation<StackNavigationProp<any>>()
+
+  const [budgetBalance, setBudgetBalance] = React.useState<BudgetsBalanceEntity>()
+
+  React.useEffect(() => {
+    find()
+  }, [])
+
+  const find = async () => {
+    const budget = await AppBudgetService.getBudgetBalance("11", "2022");
+    if (!budget) return;
+    setBudgetBalance(budget)
+  }
 
   return (
     <View style={style.container}>
@@ -46,36 +62,42 @@ const BudgetScreen: React.FC = () => {
           <Text style={[style.bannerText, { fontSize: 16 }]}>Novembro 2021</Text>
         </TouchableOpacity>
 
-        <View style={style.containerValue}>
-          <Text style={[style.bannerText, { fontSize: 16 }]}>
-            Orçamento atual
-          </Text>
+        {budgetBalance && (
+          <>
+            <View style={style.containerValue}>
+              <Text style={[style.bannerText, { fontSize: 16 }]}>
+                Orçamento atual
+              </Text>
 
-          <View style={style.valueContainerInfo}>
-            <View style={style.valueInfo}>
-              <Text style={{ color: theme.text.primary }}>Total</Text>
-              <Text style={[style.value, { color: theme.text.primary }]}>R$ 2000</Text>
+              <View style={style.valueContainerInfo}>
+                <View style={style.valueInfo}>
+                  <Text style={{ color: theme.text.primary }}>Total</Text>
+                  <Text style={[style.value, { color: theme.text.primary }]}>
+                    R$ {getPipeMoneyString((budgetBalance.value ?? 0))}
+                  </Text>
+                </View>
+                <View style={style.valueInfo}>
+                  <Text style={{ color: theme.text.primary }}>Gasto</Text>
+                  <Text style={[style.value, { color: COLOR_DANGER }]}>
+                    -R$ {getPipeMoneyString((budgetBalance.totalExpense ?? 0))}
+                  </Text>
+                </View>
+                <View style={style.valueInfo}>
+                  <Text style={{ color: theme.text.primary }}>Restante</Text>
+                  <Text style={[style.value, { color: COLOR_SUCCESS }]}>
+                    +R$ {getPipeMoneyString(((budgetBalance.value ?? 0) - (budgetBalance.totalExpense ?? 0)))}
+                  </Text>
+                </View>
+              </View>
             </View>
-            <View style={style.valueInfo}>
-              <Text style={{ color: theme.text.primary }}>Gasto</Text>
-              <Text style={[style.value, { color: COLOR_DANGER }]}>-R$ 1000</Text>
-            </View>
-            <View style={style.valueInfo}>
-              <Text style={{ color: theme.text.primary }}>Restante</Text>
-              <Text style={[style.value, { color: COLOR_SUCCESS }]}>+R$ 1000</Text>
-            </View>
-          </View>
-        </View>
 
-        <View style={style.budgetCards}>
-          <BudgetCard />
-          <BudgetCard />
-          <BudgetCard />
-          <BudgetCard />
-          <BudgetCard />
-          <BudgetCard />
-          <BudgetCard />
-        </View>
+            <View style={style.budgetCards}>
+              {budgetBalance.categories.map((category, index) => (
+                <BudgetCard key={index} item={category} />
+              ))}
+            </View>
+          </>
+        )}
       </ScrollView>
     </View>
   );
