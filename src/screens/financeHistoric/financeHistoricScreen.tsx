@@ -1,13 +1,16 @@
 import React from 'react';
 import { View, TouchableOpacity, Text, ScrollView } from 'react-native';
 import { ThemeContext } from '../../contexts/themeContext';
-import { styles } from './styles';
+import { CHART_STROKE, CHART_WIDTH, styles } from './styles';
 import { AppFinanceService } from '../../services/finance';
 import CarouselDatePicker from '../../components/global/carousel-date-picker';
 import { FinanceBalance } from '../../interfaces/services/finance.interface';
 import DonutChart from '../../components/global/donut-chart';
 import { COLOR_DANGER, COLOR_SUCCESS } from '../../constants/colors';
 import { WINDOW_WIDTH } from '../../constants/screen.contants';
+import { getPipeMoneyString } from '../../utils/money.util';
+import { Feather } from '@expo/vector-icons';
+import BudgetPopup from '../../components/budget/budget-popup';
 
 const FinanceHistoricScreen: React.FC = () => {
 
@@ -19,7 +22,13 @@ const FinanceHistoricScreen: React.FC = () => {
     const getFinances = async (activeMonth: string) => {
         const [month, year] = activeMonth.split("-");
         const getFinancesBalance = await AppFinanceService.getFinancesBalance(month, year, 1);
-        setFinances(getFinancesBalance)
+        setFinances(getFinancesBalance);
+    }
+
+    const getFinancePercente = (balance: number | undefined): number => {
+        if (!finances || !balance) return 0;
+        const total = finances.totalIncome + finances.totalExpense;
+        return (balance * 100) / total;
     }
 
     return (
@@ -28,22 +37,41 @@ const FinanceHistoricScreen: React.FC = () => {
                 <CarouselDatePicker onChangeDate={getFinances} />
                 <View style={style.containerChart}>
                     <DonutChart
-                        radius={(WINDOW_WIDTH - 50) / 2}
-                        strokeWidth={20}
+                        radius={CHART_WIDTH / 2}
+                        strokeWidth={CHART_STROKE}
                         color={COLOR_SUCCESS}
                         strokeColor={theme.background.secondary}
-                        total={20}
+                        total={getFinancePercente(finances?.totalIncome)}
                     />
 
                     <View style={style.containerChartInside}>
                         <DonutChart
-                            radius={(WINDOW_WIDTH - 86) / 2}
-                            strokeWidth={20}
+                            radius={(CHART_WIDTH - (CHART_STROKE * 2)) / 2}
+                            strokeWidth={CHART_STROKE}
                             color={COLOR_DANGER}
                             strokeColor={theme.background.secondary}
-                            total={80}
+                            total={getFinancePercente(finances?.totalExpense)}
                         />
                     </View>
+
+                    <View style={style.containerChartValue}>
+                        <Text numberOfLines={1} style={style.titleMoney}>R$ {getPipeMoneyString(finances?.total)}</Text>
+                    </View>
+                </View>
+
+                <View style={style.containerBalance}>
+                    <View style={style.containerBalanceValue}>
+                        <Feather name="trending-up" size={18} color={COLOR_SUCCESS} />
+                        <Text style={[style.balanceValue, { color: COLOR_SUCCESS }]}>R$ {getPipeMoneyString(finances?.totalIncome)}</Text>
+                    </View>
+                    <View style={style.containerBalanceValue}>
+                        <Feather name="trending-down" size={18} color={COLOR_DANGER} />
+                        <Text style={[style.balanceValue, { color: COLOR_DANGER }]}>-R$ {getPipeMoneyString(finances?.totalExpense)}</Text>
+                    </View>
+                </View>
+
+                <View style={style.content}>
+                    <BudgetPopup />
                 </View>
             </ScrollView>
         </View>
