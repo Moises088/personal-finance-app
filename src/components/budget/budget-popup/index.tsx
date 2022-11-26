@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, Image, Text } from 'react-native';
+import { BudgetsContext } from '../../../contexts/budgetsContext';
 import { ThemeContext } from '../../../contexts/themeContext';
+import { getPipeMoneyString } from '../../../utils/money.util';
 import ProgressBar from '../../global/progress-bar';
 import { styles } from './styles';
 
@@ -15,18 +17,28 @@ const BudgetPopup: React.FC = () => {
     const { theme } = React.useContext(ThemeContext)
     const style = styles(theme);
 
+    const { budgets } = React.useContext(BudgetsContext);
+    const progress = parseFloat(((budgets?.totalExpense ?? 0) * 100 / (budgets?.value ?? 0)).toFixed(2));
+
     return (
         <View style={style.container}>
-            <View style={style.content}>
-                <View style={style.containerImage}>
-                    <Image source={IMAGE_BUDGET} style={style.image} />
-                </View>
+            {budgets && (
+                <View style={style.content}>
+                    <View style={style.containerImage}>
+                        <Image source={IMAGE_BUDGET} style={style.image} />
+                    </View>
 
-                <View style={style.containerInfo}>
-                    <Text style={style.title}>Seu orçamento</Text>
-                    <ProgressBar backColor={theme.background.secondary} barColor={theme.button.primary} progress={80} barText="R$ 1000,00/1200,00" />
+                    <View style={style.containerInfo}>
+                        <Text style={style.title}>Seu orçamento</Text>
+                        <ProgressBar
+                            backColor={theme.background.secondary}
+                            barColor={theme.button.primary}
+                            progress={progress}
+                            barText={`R$ ${getPipeMoneyString(budgets?.value)}/${getPipeMoneyString(budgets?.totalExpense)}`}
+                        />
+                    </View>
                 </View>
-            </View>
+            )}
         </View>
     );
 }
