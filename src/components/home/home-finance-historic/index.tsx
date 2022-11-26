@@ -27,13 +27,6 @@ const HomeFinanceHistoric: React.FC = () => {
         {finances?.finances?.map((finance, i) => {
           if (i < 5) return <FinanceHistoricCard key={i} finance={finance} />
         })}
-        {/* <Carousel itens={
-          finances?.finances?.map((item, i) => {
-            if (i < 10) return <HomeFinanceItens key={i} item={item} />
-          }) as JSX.Element[] ?? []
-        }
-          width={250}
-        /> */}
       </View>
       <TouchableOpacity style={style.containerBalance} onPress={() => navigation.navigate("FinanceHistoricScreen")}>
         <Text style={style.textTitle}>Ver mais</Text>

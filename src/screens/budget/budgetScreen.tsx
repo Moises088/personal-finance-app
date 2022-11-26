@@ -7,10 +7,8 @@ import { AntDesign } from '@expo/vector-icons';
 import { styles } from './styles';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
-import { AppBudgetService } from '../../services/budget';
-import { AppCategoryService } from '../../services/category';
-import { BudgetsBalanceEntity } from '../../interfaces/services/budget.interface';
-import { getPipeMoneyNumber, getPipeMoneyString } from '../../utils/money.util';
+import { getPipeMoneyString } from '../../utils/money.util';
+import { BudgetsContext } from '../../contexts/budgetsContext';
 
 const IMAGE_BUDGET = require("../../../assets/imgs/budget-popup-removebg.png")
 
@@ -22,19 +20,8 @@ const BudgetScreen: React.FC = () => {
   const { theme } = React.useContext(ThemeContext);
   const style = styles(theme);
 
-  const navigation = useNavigation<StackNavigationProp<any>>()
-
-  const [budgetBalance, setBudgetBalance] = React.useState<BudgetsBalanceEntity>()
-
-  React.useEffect(() => {
-    find()
-  }, [])
-
-  const find = async () => {
-    const budget = await AppBudgetService.getBudgetBalance("11", "2022");
-    if (!budget) return;
-    setBudgetBalance(budget)
-  }
+  const navigation = useNavigation<StackNavigationProp<any>>();
+  const { budgets: budgetBalance } = React.useContext(BudgetsContext);
 
   return (
     <View style={style.container}>

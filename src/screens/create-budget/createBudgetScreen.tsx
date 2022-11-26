@@ -17,6 +17,7 @@ import { COLOR_SUCCESS } from '../../constants/colors';
 import { useNavigation } from '@react-navigation/native';
 import CustomButtonAnimated from '../../components/global/custom-button-animated';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { BudgetsContext } from '../../contexts/budgetsContext';
 
 const INPUT_MASK_OPTIONS = {
   precision: 2,
@@ -40,6 +41,7 @@ const CreateBudgetScreen: React.FC = () => {
 
   const navigation = useNavigation<StackNavigationProp<any>>()
 
+  const { getBudgetsBalance } = React.useContext(BudgetsContext);
   const { theme } = React.useContext(ThemeContext);
   const style = styles(theme);
 
@@ -72,7 +74,7 @@ const CreateBudgetScreen: React.FC = () => {
     if (!filteredMonth) erros.push("Mês é obrigatório")
     if (!filteredYear) erros.push("Ano é obrigatório")
     setValidation(erros)
-    
+
     if (erros.length) {
       setLoadingEnd(!loadingEnd)
       return;
@@ -81,6 +83,7 @@ const CreateBudgetScreen: React.FC = () => {
     try {
       const budgetDto: BudgetDto = { month: filteredMonth, year: filteredYear, categories: categoriesDto, total }
       await AppBudgetService.create(budgetDto)
+      await getBudgetsBalance()
       navigation.goBack()
     } catch (error: any) {
       if (error?.message) setValidation([error.message])

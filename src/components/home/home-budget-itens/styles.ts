@@ -16,12 +16,12 @@ export const styles = (theme: ThemesConfig) => {
             marginLeft: 2
         },
         backgroundImage: {
-            position: "absolute", 
-            top: 0, 
+            position: "absolute",
+            top: 0,
             left: 0,
-            width: "100%", 
-            height: 150, 
-            opacity: 0.05 
+            width: "100%",
+            height: 150,
+            opacity: 0.05
         },
         containerTitle: {
             flexDirection: 'row',
@@ -32,7 +32,8 @@ export const styles = (theme: ThemesConfig) => {
         text: {
             color: theme.text.primary,
             fontSize: 18,
-            fontWeight: "bold"
+            fontWeight: "bold",
+            letterSpacing: 0.6
         },
         containerIcon: {
             width: 45,
@@ -45,13 +46,15 @@ export const styles = (theme: ThemesConfig) => {
         containerMoney: {
             padding: 10,
             paddingHorizontal: 15,
-            marginTop: 10
         },
-        containerDate: {
-            position: "absolute",
-            bottom: 10,
-            right: 10,
-            opacity: 0.8
+        label: {
+            color: theme.text.primary,
+            fontSize: 12,
+            opacity: 0.5
+        },
+        containerProgress: {
+            width: "90%",
+            marginLeft: "5%"
         }
     })
 };

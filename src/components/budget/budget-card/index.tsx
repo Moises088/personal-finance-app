@@ -13,8 +13,6 @@ const BudgetCard: React.FC<{ item: BudgetsBalanceCategory }> = ({ item }) => {
 
     const progress = parseFloat(((item.used * 100) / item.total).toFixed(2));
 
-    console.log("item", item, progress)
-
     return (
         <View style={style.container}>
             <View style={style.containerIcon}>

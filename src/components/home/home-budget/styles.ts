@@ -39,9 +39,6 @@ export const styles = (theme: ThemesConfig) => {
             borderRadius: 10
         },
         containerBudget: {
-            borderWidth: 1,
-            borderColor: theme.background.tertiary,
-            marginTop: -12,
             padding: 10,
             paddingTop: 18,
             borderRadius: 10,
