@@ -13,7 +13,7 @@ export const styles = (theme: ThemesConfig) => {
         },
         containerScroll: {
             flex: 1,
-            marginBottom: 60
+            paddingBottom: 60
         },
         createdButton: {
             margin: 20,
@@ -98,6 +98,11 @@ export const styles = (theme: ThemesConfig) => {
             paddingHorizontal: 5,
             borderRadius: 6,
             marginRight: 4
+        },
+        containerButton: {
+            width: "70%",
+            marginLeft: "15%",
+            marginTop: 40
         }
     })
 };

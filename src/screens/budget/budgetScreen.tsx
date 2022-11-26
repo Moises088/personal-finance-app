@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, ScrollView, TouchableOpacity, Text, Image } from 'react-native';
+import { View, ScrollView, TouchableOpacity, Text, Image, Alert } from 'react-native';
 import BudgetCard from '../../components/budget/budget-card';
 import { COLOR_DANGER, COLOR_SUCCESS } from '../../constants/colors';
 import { ThemeContext } from '../../contexts/themeContext';
@@ -12,6 +12,8 @@ import { BudgetsContext } from '../../contexts/budgetsContext';
 import GlobalPicker from '../../components/global/picker';
 import { DATE_MONTH, DATE_YEAR } from '../../constants/date.constants';
 import { FinancesContext } from '../../contexts/financesContext';
+import CustomButtonAnimated from '../../components/global/custom-button-animated';
+import CustomButton from '../../components/global/custom-button';
 
 const IMAGE_BUDGET = require("../../../assets/imgs/budget-popup-removebg.png")
 
@@ -25,10 +27,32 @@ const BudgetScreen: React.FC = () => {
 
   const [visibleMonth, setVisibleMonth] = React.useState<boolean>(false)
   const [visibleYear, setVisibleYear] = React.useState<boolean>(false)
+  const [loadingEnd, setLoadingEnd] = React.useState<boolean>(false);
 
   const navigation = useNavigation<StackNavigationProp<any>>();
   const { filteredMonth, filteredYear, setFilteredMonth, setFilteredYear } = React.useContext(FinancesContext);
-  const { budgets: budgetBalance } = React.useContext(BudgetsContext);
+  const { budgets: budgetBalance, deleteBudget } = React.useContext(BudgetsContext);
+
+  const requestDeleteBudget = () => {
+    setLoadingEnd(!loadingEnd)
+    Alert.alert(
+      "Deseja apagar o orçamento",
+      "",
+      [
+        {
+          text: "Não",
+          onPress: () => { },
+          style: "cancel"
+        },
+        {
+          text: "Sim",
+          onPress: () => {
+            if (budgetBalance?.id) deleteBudget(budgetBalance.id)
+          }
+        }
+      ]
+    );
+  }
 
   return (
     <View style={style.container}>
@@ -107,6 +131,15 @@ const BudgetScreen: React.FC = () => {
               {budgetBalance.categories.map((category, index) => (
                 <BudgetCard key={index} item={category} />
               ))}
+            </View>
+
+            <View style={style.containerButton}>
+              <CustomButton
+                style={{ backgroundColor: COLOR_DANGER, height: 35 }}
+                customStyle='btn'
+                buttonText='Deletar orçamento'
+                onPress={requestDeleteBudget}
+              />
             </View>
           </>
         )}

@@ -21,8 +21,13 @@ export const BudgetsProvider = ({ children }: any) => {
         return budgetsBalance;
     }
 
+    const deleteBudget = async (id: number) => {
+        await AppBudgetService.delete(id);
+        await getBudgetsBalance()
+    }
+
     return (
-        <BudgetsContext.Provider value={{ budgets, getBudgetsBalance }}>
+        <BudgetsContext.Provider value={{ budgets, getBudgetsBalance, deleteBudget }}>
             {children}
         </BudgetsContext.Provider>
     );

@@ -57,6 +57,14 @@ class BudgetService implements Services<BudgetEntity, BudgetDto>{
         return { ...budget, categories: budgetCategoriesFilter, totalExpense }
     }
 
+    public async delete(id: number) {
+        const budgets = await this.find();
+        const remove = budgets.filter(budget => budget.id !== id);
+        await AsyncStorage.setItem(ASYNC_BUDGETS, JSON.stringify(remove));
+
+        return
+    }
+
     public async findOne(id: number): Promise<BudgetEntity | undefined> {
         const budgets = await this.find();
         return budgets.find(budget => budget.id == id);

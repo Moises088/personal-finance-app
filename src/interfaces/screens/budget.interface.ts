@@ -14,4 +14,5 @@ export interface BudgetForms {
 export interface BudgetsContextData {
     budgets: BudgetsBalanceEntity | undefined;
     getBudgetsBalance(): Promise<BudgetsBalanceEntity | undefined>;
+    deleteBudget(id: number): Promise<void>;
 }
