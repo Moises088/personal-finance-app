@@ -11,24 +11,26 @@ import { getPipeMoneyString } from '../../utils/money.util';
 import { Feather, FontAwesome5 } from '@expo/vector-icons';
 import BudgetPopup from '../../components/budget/budget-popup';
 import FinanceHistoricCard from '../../components/finance/finance-historic-card';
+import { FinancesContext } from '../../contexts/financesContext';
 
 const FinanceHistoricScreen: React.FC = () => {
 
     const { theme } = React.useContext(ThemeContext);
     const style = styles(theme);
 
-    const [finances, setFinances] = React.useState<FinanceBalance>()
-
-    const getFinances = async (activeMonth: string) => {
-        const [month, year] = activeMonth.split("-");
-        const getFinancesBalance = await AppFinanceService.getFinancesBalance(month, year, 1);
-        setFinances(getFinancesBalance);
-    }
+    const { finances, getFinancesBalance, setFilteredMonth, setFilteredYear } = React.useContext(FinancesContext);
 
     const getFinancePercente = (balance: number | undefined): number => {
         if (!finances || !balance) return 0;
         const total = finances.totalIncome + finances.totalExpense;
         return (balance * 100) / total;
+    }
+
+    const getFinances = async (activeMonth: string) => {
+        const [month, year] = activeMonth.split("-");
+        setFilteredMonth(month)
+        setFilteredYear(year)
+        await getFinancesBalance()
     }
 
     return (
