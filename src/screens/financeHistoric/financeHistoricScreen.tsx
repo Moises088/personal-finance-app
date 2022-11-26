@@ -10,6 +10,7 @@ import { COLOR_DANGER, COLOR_SUCCESS } from '../../constants/colors';
 import { getPipeMoneyString } from '../../utils/money.util';
 import { Feather, FontAwesome5 } from '@expo/vector-icons';
 import BudgetPopup from '../../components/budget/budget-popup';
+import FinanceHistoricCard from '../../components/finance/finance-historic-card';
 
 const FinanceHistoricScreen: React.FC = () => {
 
@@ -72,29 +73,7 @@ const FinanceHistoricScreen: React.FC = () => {
                 <View style={style.content}>
                     <BudgetPopup />
                     <View style={{ marginTop: 20 }} />
-                    {finances?.finances?.map((finance, i) => (
-                        <TouchableOpacity key={i}>
-                            <View style={style.itens}>
-                                <View style={style.itemContainer}>
-                                    <View style={style.itemIcon}>
-                                        <FontAwesome5 name={finance.category?.icon} color={theme.text.primary} size={20} />
-                                    </View>
-                                    <Text style={style.itemTitle}>{finance.name}</Text>
-                                </View>
-
-                                <View style={{ alignItems: "flex-end" }}>
-                                    <Text style={[style.itemValue, { color: finance.type == "INCOME" ? theme.text.primary : COLOR_DANGER }]}>
-                                        {finance.type == "INCOME" ? "+" : "-"} R$ {getPipeMoneyString(finance.value)}
-                                    </Text>
-                                    <Feather
-                                        name={finance.type == "INCOME" ? "trending-up" : "trending-down"}
-                                        size={15}
-                                        color={finance.type == "INCOME" ? COLOR_SUCCESS : COLOR_DANGER}
-                                    />
-                                </View>
-                            </View>
-                        </TouchableOpacity>
-                    ))}
+                    {finances?.finances?.map((finance, i) => (<FinanceHistoricCard key={i} finance={finance} />))}
                 </View>
             </ScrollView>
         </View>

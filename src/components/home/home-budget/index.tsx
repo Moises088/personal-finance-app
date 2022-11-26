@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import BudgetPopup from '../../budget/budget-popup';
 import { StackNavigationProp } from '@react-navigation/stack';
 import BudgetCard from '../../budget/budget-card';
+import HomeBudgetItens from '../home-budget-itens';
 
 const HomeBudget: React.FC = () => {
 
@@ -21,9 +22,10 @@ const HomeBudget: React.FC = () => {
         <Text style={style.textTitle}>Orçamento</Text>
       </View>
 
-      <BudgetPopup />
-
       <View style={style.containerBudget}>
+        {[1, 3].map((v) => (
+          <HomeBudgetItens />
+        ))}
         {/* <BudgetCard />
         <BudgetCard />
         <BudgetCard /> */}

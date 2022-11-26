@@ -13,7 +13,7 @@ const BACKGROUN_IMAGE = require("../../../../assets/imgs/waves.png")
 /**
  * @image author https://www.freepik.com/free-vector/wavy-smooth-lines-pattern-background_2451587.htm#query=wave%20line&position=1&from_view=keyword
  */
-const HomeFinanceItens: React.FC<{ item: FinancesBalanceEntity }> = ({ item }) => {
+const HomeBudgetItens: React.FC<any> = () => {
 
   const { theme } = React.useContext(ThemeContext);
   const style = styles(theme);
@@ -22,21 +22,21 @@ const HomeFinanceItens: React.FC<{ item: FinancesBalanceEntity }> = ({ item }) =
     <View style={style.container}>
       <Image source={BACKGROUN_IMAGE} style={style.backgroundImage} />
       <View style={style.containerTitle}>
-        <View style={[style.containerIcon, { backgroundColor: item.category?.color ?? theme.background.primary }]}>
+        {/* <View style={[style.containerIcon, { backgroundColor: item.category?.color ?? theme.background.primary }]}>
           {item.category && (<FontAwesome5 name={item.category.icon} size={22} color={theme.text.primary} />)}
-        </View>
-        <Text style={style.text}>{item.name}</Text>
+        </View> */}
+        {/* <Text style={style.text}>{item.name}</Text> */}
       </View>
       <View style={style.containerMoney}>
-        <Text style={[style.text, { color: item.type == "INCOME" ? theme.text.primary : COLOR_DANGER, fontSize: 22 }]}>
+        {/* <Text style={[style.text, { color: item.type == "INCOME" ? theme.text.primary : COLOR_DANGER, fontSize: 22 }]}>
           {item.type == "INCOME" ? "+" : "-"} R$ {getPipeMoneyString(item.value)}
-        </Text>
+        </Text> */}
       </View>
       <View style={style.containerDate}>
-        <Text style={{ color: theme.text.primary }} >{getPipeTransformDateStringExtense(item.createdAt)}</Text>
+        {/* <Text style={{ color: theme.text.primary }} >{getPipeTransformDateStringExtense(item.createdAt)}</Text> */}
       </View>
     </View>
   );
 }
 
-export default HomeFinanceItens;
+export default HomeBudgetItens;

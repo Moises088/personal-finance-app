@@ -5,8 +5,9 @@ import { styles } from './styles';
 import { FinancesContext } from '../../../contexts/financesContext';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
-import HomeFinanceItens from '../home-finance-itens';
-import Carousel from '../../global/carousel';
+// import HomeFinanceItens from '../home-finance-itens';
+// import Carousel from '../../global/carousel';
+import FinanceHistoricCard from '../../finance/finance-historic-card';
 
 const HomeFinanceHistoric: React.FC = () => {
 
@@ -23,13 +24,16 @@ const HomeFinanceHistoric: React.FC = () => {
         <Text style={style.textTitle}>Histórico</Text>
       </View>
       <View style={style.containerValue}>
-        <Carousel itens={
+        {finances?.finances?.map((finance, i) => {
+          if (i < 5) return <FinanceHistoricCard key={i} finance={finance} />
+        })}
+        {/* <Carousel itens={
           finances?.finances?.map((item, i) => {
             if (i < 10) return <HomeFinanceItens key={i} item={item} />
           }) as JSX.Element[] ?? []
         }
           width={250}
-        />
+        /> */}
       </View>
       <TouchableOpacity style={style.containerBalance} onPress={() => navigation.navigate("FinanceHistoricScreen")}>
         <Text style={style.textTitle}>Ver mais</Text>
