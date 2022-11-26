@@ -77,8 +77,11 @@ class FinanceService implements Services<FinanceEntity, FinanceDto>{
         const financesFilter = finances.map((finance) => {
             const [date] = finance.paidAt.split(" ");
             const [getYear, getMonth] = date.split("-");
+            
+            if(month.length == 1) month = month.padStart(2, "0")
+            const validateDate = getYear == year && getMonth == month;
 
-            if (finance.walletId == walletId && getYear == year && getMonth == month && finance.isPaid == true) {
+            if (finance.walletId == walletId && validateDate && finance.isPaid == true) {
                 if (finance.type == "INCOME") {
                     total += finance.value;
                     totalIncome += finance.value;
