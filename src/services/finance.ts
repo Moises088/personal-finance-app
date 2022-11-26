@@ -55,8 +55,17 @@ class FinanceService implements Services<FinanceEntity, FinanceDto>{
         return finance;
     }
 
-    public async update(updateDto: FinanceDto): Promise<void> {
-        throw new Error("Method not implemented.");
+    public async update(id: number, updateDto: FinanceDto): Promise<void> {
+        const finances = await this.find();
+        let finance = finances.find(finance => finance.id == id);
+        let index = finances.findIndex(finance => finance.id == id);
+        if (!finance) return;
+
+        finance = { ...finance, ...updateDto, value: getPipeMoneyNumber(updateDto.money), paidAt: updateDto.paid }
+        console.log(finance)
+        finances.splice(index, 1, finance);
+
+        await AsyncStorage.setItem(ASYNC_FINANCES, JSON.stringify(finances));
     }
 
     public async getFinancesBalance(month: string, year: string, walletId: number): Promise<FinanceBalance> {
@@ -77,8 +86,8 @@ class FinanceService implements Services<FinanceEntity, FinanceDto>{
         const financesFilter = finances.map((finance) => {
             const [date] = finance.paidAt.split(" ");
             const [getYear, getMonth] = date.split("-");
-            
-            if(month.length == 1) month = month.padStart(2, "0")
+
+            if (month.length == 1) month = month.padStart(2, "0")
             const validateDate = getYear == year && getMonth == month;
 
             if (finance.walletId == walletId && validateDate && finance.isPaid == true) {

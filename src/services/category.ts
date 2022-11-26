@@ -47,7 +47,7 @@ class CategoryService implements Services<CategoryEntity, CategoryDto> {
         return category;
     }
 
-    public async update(updateDto: CategoryEntity): Promise<void> {
+    public async update(id: number, updateDto: CategoryEntity): Promise<void> {
         return
     }
 }

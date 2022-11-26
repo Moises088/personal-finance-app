@@ -6,14 +6,21 @@ import { FontAwesome5, Feather } from '@expo/vector-icons';
 import { FinancesBalanceEntity } from '../../../interfaces/services/finance.interface';
 import { getPipeMoneyString } from '../../../utils/money.util';
 import { COLOR_DANGER, COLOR_SUCCESS } from '../../../constants/colors';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useNavigation } from "@react-navigation/native";
 
 const FinanceHistoricCard: React.FC<{ finance: FinancesBalanceEntity }> = ({ finance }) => {
 
+  const navigation = useNavigation<StackNavigationProp<any>>()
   const { theme } = React.useContext(ThemeContext);
   const style = styles(theme);
 
+  const openFinance = () => {
+    navigation.navigate("FinanceScreen", { event: finance.type, finance })
+  }
+
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={openFinance}>
       <View style={style.itens}>
         <View style={style.itemContainer}>
           <View style={style.itemIcon}>

@@ -21,6 +21,10 @@ describe("utils/money", () => {
         const money = 'R$0,1448';
         expect(getPipeMoneyNumber(money)).toEqual(0.14);
     })
+    it("money number 'R$2.500,50' result must be 2500.50", () => {
+        const money = 'R$2.500,50';
+        expect(getPipeMoneyNumber(money)).toEqual(2500.50);
+    })
     it("money number 10.3 result must be '10,30'", () => {
         const money = 10.3;
         expect(getPipeMoneyString(money)).toEqual("10,30");

@@ -42,7 +42,7 @@ class WalletService implements Services<WalletEntity, WalletDto>{
         return wallet;
     }
 
-    public async update(updateDto: WalletDto): Promise<void> {
+    public async update(id: number, updateDto: WalletDto): Promise<void> {
         return
     }
 

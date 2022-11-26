@@ -7,8 +7,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { COLOR_DANGER, COLOR_SUCCESS } from '../../constants/colors';
 import { useRoute, RouteProp } from "@react-navigation/native";
 import { TextInputMask } from 'react-native-masked-text';
-import { getPipeTransformDateStringNumber, getPipeTransformDateStringPT, validateDateString } from '../../utils/date.util';
-import { FinanceDto } from '../../interfaces/services/finance.interface';
+import { getPipeCustomDateString, getPipeTransformDateStringNumber, getPipeTransformDateStringPT, validateDateString } from '../../utils/date.util';
+import { FinanceDto, FinancesBalanceEntity } from '../../interfaces/services/finance.interface';
 import { AppFinanceService } from '../../services/finance';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
@@ -18,6 +18,8 @@ import GlobalPicker from '../../components/global/picker';
 import FinanceDetails from '../../components/finance/finance-details';
 import CustomButtonAnimated from '../../components/global/custom-button-animated';
 import AlertError from '../../components/global/alert-error';
+import { AppWalletService } from '../../services/wallet';
+import { getPipeMoneyString } from '../../utils/money.util';
 
 const FinanceScreen: React.FC = () => {
 
@@ -49,6 +51,8 @@ const FinanceScreen: React.FC = () => {
   }, [])
 
   React.useEffect(() => {
+    if (params?.finance) setUpdateFinance(params.finance);
+
     if (!financeType) setFinanceType(params.event)
     setTimeout(() => {
       if (inputRef.current) inputRef.current.getElement().focus();
@@ -61,9 +65,27 @@ const FinanceScreen: React.FC = () => {
     return theme.button.primary;
   }
 
+  const setUpdateFinance = async (finance: FinancesBalanceEntity) => {
+    const getWallet = await AppWalletService.findOne(finance.walletId);
+    if (!getWallet) return;
+
+    const form: FinanceForms = {
+      category: finance.category,
+      description: finance.description,
+      isPaid: finance.isPaid,
+      money: getPipeMoneyString(finance.value),
+      paidDate: getPipeCustomDateString(finance.paidAt, "DD/MM/YYYY"),
+      title: finance.name,
+      wallet: getWallet,
+      id: finance.id
+    }
+
+    setFinanceForm(form)
+  }
+
   const saveFinance = async () => {
     try {
-      const { category, description, isPaid, money, paidDate, title: name } = financeForm;
+      const { category, description, isPaid, money, paidDate, title: name, id } = financeForm;
 
       const erros = [];
       if (!money || !money?.trim()?.length) erros.push("Valor é obrigatório")
@@ -77,11 +99,16 @@ const FinanceScreen: React.FC = () => {
 
       const paid = getPipeTransformDateStringNumber(paidDate);
       const body: FinanceDto = { walletId: 1, categoryId: category.id, money, name, description, paid, isPaid, type: financeType }
-      const created = await AppFinanceService.create(body);
+
+      if (id) {
+        await AppFinanceService.update(id, body);
+      } else {
+        await AppFinanceService.create(body);
+      }
+
 
       await getFinancesBalance()
-      navigation.goBack()
-      // navigation.navigate("FinanceHistoricScreen", { id: created.id })
+      navigation.goBack();
 
     } catch (error: any) {
       if (error?.message) setValidation([error.message])

@@ -4,7 +4,8 @@
  * @returns money number with two decimal places
  */
 export const getPipeMoneyNumber = (money: string): number => {
-    const moneyNumbers = money.replace(",", ".").replace(/[^0-9\.]/g, '');
+    let moneyNoPoint = money.replace(".", "")
+    const moneyNumbers = moneyNoPoint.replace(",", ".").replace(/[^0-9\.]/g, '');
     return decimalAdjust('round', parseFloat(moneyNumbers), -2)
 }
 

@@ -21,7 +21,8 @@ export interface Services<T, Dto> {
 
     /**
      * Update item.
+     * @param id id to identify a item.
      * @param updateDto Body needed to update item.
     */
-    update(updateDto: Dto): Promise<void>;
+    update(id: number, updateDto: Dto): Promise<void>;
 }

@@ -55,6 +55,7 @@ const FinanceDetails: React.FC<FinanceDetailsProps> = (props) => {
               styleInput={style.inputText}
               placeholder="Titulo"
               placeholderTextColor="#b3b3b3"
+              value={props.title}
             />
           </View>
 
@@ -66,6 +67,7 @@ const FinanceDetails: React.FC<FinanceDetailsProps> = (props) => {
               styleInput={style.inputText}
               placeholder="Descrição"
               placeholderTextColor="#b3b3b3"
+              value={props.description}
             />
           </View>
 

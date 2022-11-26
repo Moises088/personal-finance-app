@@ -1,5 +1,5 @@
 import { CategoryEntity } from "../services/category.interface";
-import { FinanceBalance } from "../services/finance.interface";
+import { FinanceBalance, FinancesBalanceEntity } from "../services/finance.interface";
 import { WalletEntity } from "../services/wallet.interface";
 
 export interface FinanceDetailsProps {
@@ -29,6 +29,7 @@ export interface FinancesContextData {
 export type ParamRoute = {
     Detail: {
         event: 'INCOME' | 'EXPENSE';
+        finance?: FinancesBalanceEntity
     };
 }
 
@@ -39,5 +40,6 @@ export interface FinanceForms {
     description: string | undefined;
     category: CategoryEntity | undefined;
     wallet: WalletEntity | undefined;
-    isPaid: boolean
+    isPaid: boolean;
+    id?: number
 }
