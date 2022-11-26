@@ -92,6 +92,12 @@ export const styles = (theme: ThemesConfig) => {
             marginRight: 10,
             alignItems: "center",
             justifyContent: "center"
+        },
+        dateBtn: {
+            backgroundColor: theme.background.tertiary,
+            paddingHorizontal: 5,
+            borderRadius: 6,
+            marginRight: 4
         }
     })
 };

@@ -9,6 +9,9 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import { getPipeMoneyString } from '../../utils/money.util';
 import { BudgetsContext } from '../../contexts/budgetsContext';
+import GlobalPicker from '../../components/global/picker';
+import { DATE_MONTH, DATE_YEAR } from '../../constants/date.constants';
+import { FinancesContext } from '../../contexts/financesContext';
 
 const IMAGE_BUDGET = require("../../../assets/imgs/budget-popup-removebg.png")
 
@@ -20,7 +23,11 @@ const BudgetScreen: React.FC = () => {
   const { theme } = React.useContext(ThemeContext);
   const style = styles(theme);
 
+  const [visibleMonth, setVisibleMonth] = React.useState<boolean>(false)
+  const [visibleYear, setVisibleYear] = React.useState<boolean>(false)
+
   const navigation = useNavigation<StackNavigationProp<any>>();
+  const { filteredMonth, filteredYear, setFilteredMonth, setFilteredYear } = React.useContext(FinancesContext);
   const { budgets: budgetBalance } = React.useContext(BudgetsContext);
 
   return (
@@ -42,12 +49,30 @@ const BudgetScreen: React.FC = () => {
           </View>
         </View>
 
-        <TouchableOpacity style={style.containerDate} >
+        <View style={style.containerDate}>
           <View style={style.date}>
             <AntDesign name="calendar" size={20} color={theme.button.primary} />
           </View>
-          <Text style={[style.bannerText, { fontSize: 16 }]}>Novembro 2021</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={style.dateBtn}>
+            <GlobalPicker
+              itens={DATE_MONTH}
+              selectedItem={filteredMonth}
+              setSelectedItem={setFilteredMonth}
+              visible={visibleMonth}
+              setVisible={setVisibleMonth}
+            />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={style.dateBtn}>
+            <GlobalPicker
+              itens={DATE_YEAR}
+              selectedItem={filteredYear}
+              setSelectedItem={setFilteredYear}
+              visible={visibleYear}
+              setVisible={setVisibleYear}
+            />
+          </TouchableOpacity>
+        </View>
 
         {budgetBalance && (
           <>
