@@ -11,7 +11,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ backColor, barColor, progress
 
     return (
         <View style={[style.backDrop, { backgroundColor: backColor }]}>
-            <View style={[style.bar, { width: `${progress}%`, backgroundColor: barColor }]} />
+            <View style={[style.bar, { width: `${progress > 100 ? 100 : progress}%`, backgroundColor: barColor }]} />
             {barText && (
                 <View style={style.barText}>
                     <Text numberOfLines={1} style={style.text}>{barText}</Text>

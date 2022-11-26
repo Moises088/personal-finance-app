@@ -32,6 +32,7 @@ const BudgetScreen: React.FC = () => {
   const navigation = useNavigation<StackNavigationProp<any>>();
   const { filteredMonth, filteredYear, setFilteredMonth, setFilteredYear } = React.useContext(FinancesContext);
   const { budgets: budgetBalance, deleteBudget } = React.useContext(BudgetsContext);
+  const remainder = ((budgetBalance?.value ?? 0) - (budgetBalance?.totalExpense ?? 0));
 
   const requestDeleteBudget = () => {
     setLoadingEnd(!loadingEnd)
@@ -120,8 +121,8 @@ const BudgetScreen: React.FC = () => {
                 </View>
                 <View style={style.valueInfo}>
                   <Text style={{ color: theme.text.primary }}>Restante</Text>
-                  <Text style={[style.value, { color: COLOR_SUCCESS }]}>
-                    +R$ {getPipeMoneyString(((budgetBalance.value ?? 0) - (budgetBalance.totalExpense ?? 0)))}
+                  <Text style={[style.value, { color: remainder >= 0 ? COLOR_SUCCESS : COLOR_DANGER }]}>
+                    R$ {getPipeMoneyString(remainder)}
                   </Text>
                 </View>
               </View>
