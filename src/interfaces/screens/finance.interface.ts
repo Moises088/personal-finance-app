@@ -22,7 +22,7 @@ export interface FinancesContextData {
     filteredYear: string;
     setFilteredMonth(filteredMonth: string): void;
     setFilteredYear(filteredYear: string): void;
-    getFinancesBalance: () => Promise<FinanceBalance>;
+    getFinancesBalance: () => Promise<FinanceBalance | undefined>;
     finances: FinanceBalance | undefined;
     deleteFinance(id: number): Promise<void>
 }
