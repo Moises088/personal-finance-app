@@ -27,8 +27,13 @@ export const AuthProvider = ({ children }: any) => {
         AsyncStorage.setItem(ASYNC_IS_LOGGED, "true")
     }
 
+    const loggout = () => {
+        setIsLogged(false)
+        AsyncStorage.removeItem(ASYNC_IS_LOGGED)
+    }
+
     return (
-        <AuthContext.Provider value={{ login, loginWithoutAccount, isLogged }}>
+        <AuthContext.Provider value={{ login, loginWithoutAccount, isLogged, loggout }}>
             {children}
         </AuthContext.Provider>
     );
