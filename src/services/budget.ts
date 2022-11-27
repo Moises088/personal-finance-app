@@ -85,7 +85,7 @@ class BudgetService implements Services<BudgetEntity, BudgetDto>{
         return budget;
     }
 
-    public async update(id: number, updateDto: BudgetDto): Promise<void> {
+    public async update(id: number, updateDto: BudgetDto): Promise<BudgetEntity | undefined> {
         return
     }
 

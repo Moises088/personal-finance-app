@@ -23,8 +23,8 @@ describe("services/finance", () => {
             expect(finance).toEqual({ ...sameFinance, id: 1 })
         })
 
-        it("find where id = 2 result must be undefined", async () => {
-            const finance = await AppFinanceService.findOne(2);
+        it("find where id = 3 result must be undefined", async () => {
+            const finance = await AppFinanceService.findOne(3);
             expect(finance).toBeUndefined()
         })
     })
@@ -41,7 +41,7 @@ describe("services/finance", () => {
                 type: 'INCOME'
             }
             const newfinance = await AppFinanceService.create(finance);
-            expect(newfinance.id).toEqual(2);
+            expect(newfinance.id).toEqual(3);
             expect(newfinance.value).toEqual(20.50);
             expect(typeof newfinance.value).toBe('number');
             expect(typeof newfinance.createdAt).toBe('string');
@@ -68,6 +68,42 @@ describe("services/finance", () => {
             expect(balance.totalExpense).toEqual(0);
             expect(balance.totalIncome).toEqual(0);
             expect(balance.finances.length).toEqual(0)
+        })
+    })
+
+    describe("method update", () => {
+        const body: FinanceDto = {
+            categoryId: 2,
+            isPaid: false,
+            walletId: 1,
+            money: "1.050,25",
+            name: "Updated",
+            paid: "2022-27-11 00:00:00",
+            type: "INCOME",
+            description: "Test"
+        }
+
+        it("update id 1", async () => {
+            const financeUpdated = await AppFinanceService.update(1, body);
+            expect(financeUpdated?.categoryId).toEqual(2);
+            expect(financeUpdated?.isPaid).toEqual(false);
+            expect(financeUpdated?.walletId).toEqual(1);
+            expect(financeUpdated?.value).toEqual(1050.25);
+            expect(financeUpdated?.paidAt).toEqual("2022-27-11 00:00:00");
+            expect(financeUpdated?.type).toEqual("INCOME");
+            expect(financeUpdated?.description).toEqual("Test");
+        })
+
+        it("update id 3", async () => {
+            const financeUpdated = await AppFinanceService.update(3, body);
+            expect(financeUpdated).toBeUndefined();
+        })
+    })
+
+    describe("method delete", () => {
+        it("id 1", async () => {
+            const finances = await AppFinanceService.delete(1);
+            expect(finances.length).toBe(1);
         })
     })
 })
