@@ -52,4 +52,33 @@ describe("services/budget", () => {
             });
         })
     })
+
+    describe("method getBudgetBalance", () => {
+        it("month 11 and year 2022", async () => {
+            const month = "11";
+            const year = "2022";
+
+            const budgetBalance = await AppBudgetService.getBudgetBalance(month, year);
+            expect(budgetBalance?.id).toBe(1);
+            expect(budgetBalance?.value).toBe(100.5);
+            expect(budgetBalance?.createdAt).toBe("2022-11-10 00:00:00");
+            expect(budgetBalance?.categories?.length).toBe(1);
+            expect(budgetBalance?.totalExpense).toBe(20);
+        })
+
+        it("month 3 and year 2023", async () => {
+            const month = "3";
+            const year = "2023";
+
+            const balance = await AppBudgetService.getBudgetBalance(month, year);
+            expect(balance).toBeUndefined()
+        })
+    })
+
+    describe("method delete", () => {
+        it("id 1", async () => {
+            const budgets = await AppBudgetService.delete(1);
+            expect(budgets.length).toBe(0);
+        })
+    })
 })
