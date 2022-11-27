@@ -22,11 +22,15 @@ const FinanceHistoricCard: React.FC<{ finance: FinancesBalanceEntity }> = ({ fin
   return (
     <TouchableOpacity onPress={openFinance}>
       <View style={style.itens}>
+
         <View style={style.itemContainer}>
           <View style={style.itemIcon}>
             <FontAwesome5 name={finance.category?.icon} color={theme.text.primary} size={20} />
           </View>
-          <Text style={style.itemTitle}>{finance.name}</Text>
+          <View style={style.itemContainerTitle}>
+            <Text style={style.itemTitle} numberOfLines={1}>{finance.category?.name}</Text>
+            <Text style={[style.itemTitle, { fontSize: 13 }]} numberOfLines={1}>{finance.name}</Text>
+          </View>
         </View>
 
         <View style={{ alignItems: "flex-end" }}>

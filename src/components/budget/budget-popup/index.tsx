@@ -1,8 +1,10 @@
+import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
 import { View, Image, Text } from 'react-native';
 import { BudgetsContext } from '../../../contexts/budgetsContext';
 import { ThemeContext } from '../../../contexts/themeContext';
 import { getPipeMoneyString } from '../../../utils/money.util';
+import { useNavigation } from '@react-navigation/native';
 import ProgressBar from '../../global/progress-bar';
 import { styles } from './styles';
 
@@ -14,6 +16,7 @@ const IMAGE_BUDGET = require("../../../../assets/imgs/budget-popup-removebg.png"
  */
 const BudgetPopup: React.FC = () => {
 
+    const navigation = useNavigation<StackNavigationProp<any>>()
     const { theme } = React.useContext(ThemeContext)
     const style = styles(theme);
 
@@ -21,7 +24,7 @@ const BudgetPopup: React.FC = () => {
     const progress = parseFloat(((budgets?.totalExpense ?? 0) * 100 / (budgets?.value ?? 0)).toFixed(2));
 
     return (
-        <View style={style.container}>
+        <View style={style.container} onTouchEnd={() => navigation.navigate("BudgetScreen")}>
             {budgets && (
                 <View style={style.content}>
                     <View style={style.containerImage}>

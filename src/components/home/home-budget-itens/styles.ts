@@ -6,7 +6,7 @@ export const styles = (theme: ThemesConfig) => {
     return StyleSheet.create({
         container: {
             marginTop: 4,
-            height: 150,
+            height: 200,
             width: 250,
             borderRadius: 10,
             backgroundColor: theme.background.tertiary,
@@ -20,7 +20,7 @@ export const styles = (theme: ThemesConfig) => {
             top: 0,
             left: 0,
             width: "100%",
-            height: 150,
+            height: 200,
             opacity: 0.05
         },
         containerTitle: {
@@ -46,6 +46,9 @@ export const styles = (theme: ThemesConfig) => {
         containerMoney: {
             padding: 10,
             paddingHorizontal: 15,
+            height: 100,
+            marginBottom: 10,
+            justifyContent: "center"
         },
         label: {
             color: theme.text.primary,

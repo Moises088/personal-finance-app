@@ -9,11 +9,12 @@ export const styles = (theme: ThemesConfig) => {
             padding: 2,
             flexDirection: "row",
             alignItems: "center",
-            justifyContent: "space-between"
+            justifyContent: "space-between",
         },
         itemContainer: {
             flexDirection: "row",
-            alignItems: "center"
+            alignItems: "center",
+            width: "65%",
         },
         itemIcon: {
             width: 45,
@@ -23,11 +24,14 @@ export const styles = (theme: ThemesConfig) => {
             justifyContent: "center",
             backgroundColor: theme.background.tertiary
         },
+        itemContainerTitle: {
+            width: "100%"
+        },
         itemTitle: {
             marginLeft: 8,
             color: theme.text.primary,
-            fontSize: 19,
-            letterSpacing: 1.05
+            fontSize: 17,
+            letterSpacing: 1
         },
         itemValue: {
             color: theme.text.primary,

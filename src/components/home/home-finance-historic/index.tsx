@@ -5,8 +5,6 @@ import { styles } from './styles';
 import { FinancesContext } from '../../../contexts/financesContext';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
-// import HomeFinanceItens from '../home-finance-itens';
-// import Carousel from '../../global/carousel';
 import FinanceHistoricCard from '../../finance/finance-historic-card';
 
 const HomeFinanceHistoric: React.FC = () => {
