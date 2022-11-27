@@ -24,6 +24,7 @@ export interface FinancesContextData {
     setFilteredYear(filteredYear: string): void;
     getFinancesBalance: () => Promise<FinanceBalance>;
     finances: FinanceBalance | undefined;
+    deleteFinance(id: number): Promise<void>
 }
 
 export type ParamRoute = {

@@ -1,9 +1,9 @@
 import React from 'react';
-import { SafeAreaView, View, Text, Keyboard } from 'react-native';
+import { SafeAreaView, View, Text, Keyboard, TouchableOpacity, Alert } from 'react-native';
 import { FINANCE_OPTIONS } from '../../constants/finance.constants';
 import { ThemeContext } from '../../contexts/themeContext';
 import { styles } from './styles';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, Feather } from '@expo/vector-icons';
 import { COLOR_DANGER, COLOR_SUCCESS } from '../../constants/colors';
 import { useRoute, RouteProp } from "@react-navigation/native";
 import { TextInputMask } from 'react-native-masked-text';
@@ -38,7 +38,7 @@ const FinanceScreen: React.FC = () => {
 
   const inputRef = React.useRef<any>();
 
-  const { getFinancesBalance } = React.useContext(FinancesContext)
+  const { getFinancesBalance, deleteFinance } = React.useContext(FinancesContext)
 
   React.useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => { setKeyboardVisible(true); });
@@ -115,21 +115,47 @@ const FinanceScreen: React.FC = () => {
     } finally { setLoadingEnd(!loadingEnd) }
   }
 
+  const deleted = () => {
+
+    const deletedFinance = async () => {
+      if (financeForm.id) await deleteFinance(financeForm.id)
+      navigation.goBack();
+    }
+
+    Alert.alert(
+      "Deseja apagar a finança",
+      "",
+      [
+        { text: "Não", onPress: () => { } },
+        { text: "Sim", onPress: () => { deletedFinance() } }
+      ]
+    );
+  }
+
   return (
     <SafeAreaView style={style.container}>
       <View style={style.containerHeader}>
-        <View style={[style.headerIcon, { backgroundColor: backgrounFinanceType(financeType) }]}>
-          <Ionicons name="receipt" size={14} color="#FFF" />
+        <View style={style.header}>
+          <View style={[style.headerIcon, { backgroundColor: backgrounFinanceType(financeType) }]}>
+            <Ionicons name="receipt" size={14} color="#FFF" />
+          </View>
+
+          <View style={style.headerPicker}>
+            <GlobalPicker
+              itens={FINANCE_OPTIONS}
+              visible={visibleFinanceType}
+              setVisible={setVisibleFinanceType}
+              setSelectedItem={setFinanceType}
+              selectedItem={financeType}
+            />
+          </View>
         </View>
-        <View style={style.headerPicker}>
-          <GlobalPicker
-            itens={FINANCE_OPTIONS}
-            visible={visibleFinanceType}
-            setVisible={setVisibleFinanceType}
-            setSelectedItem={setFinanceType}
-            selectedItem={financeType}
-          />
-        </View>
+
+        {financeForm.id && (
+          <TouchableOpacity style={style.btnDelete} onPress={deleted}>
+            <Feather name="trash" size={16} color="#FFF" />
+          </TouchableOpacity>
+        )}
       </View>
 
       <View style={style.containerValue}>

@@ -21,6 +21,11 @@ export const FinancesProvider = ({ children }: any) => {
         return financesBalance;
     }
 
+    const deleteFinance = async (id: number) => {
+        await AppFinanceService.delete(id);
+        await getFinancesBalance()
+    }
+
     return (
         <FinancesContext.Provider value={{
             filteredMonth,
@@ -28,7 +33,8 @@ export const FinancesProvider = ({ children }: any) => {
             finances,
             setFilteredMonth,
             setFilteredYear,
-            getFinancesBalance
+            getFinancesBalance,
+            deleteFinance
         }}>
             {children}
         </FinancesContext.Provider>

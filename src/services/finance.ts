@@ -68,6 +68,14 @@ class FinanceService implements Services<FinanceEntity, FinanceDto>{
         await AsyncStorage.setItem(ASYNC_FINANCES, JSON.stringify(finances));
     }
 
+    public async delete(id: number) {
+        const finances = await this.find();
+        const remove = finances.filter(finance => finance.id !== id);
+        await AsyncStorage.setItem(ASYNC_FINANCES, JSON.stringify(remove));
+
+        return
+    }
+
     public async getFinancesBalance(month: string, year: string, walletId: number): Promise<FinanceBalance> {
         let total = 0;
         let totalIncome = 0;
