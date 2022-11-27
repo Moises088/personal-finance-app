@@ -3,4 +3,5 @@ export interface AuthContextData {
     loginWithoutAccount: () => void;
     loggout: () => void;
     isLogged: boolean;
+    load: boolean;
 }

@@ -8,14 +8,20 @@ export const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 export const AuthProvider = ({ children }: any) => {
 
     const [isLogged, setIsLogged] = React.useState<boolean>(false);
+    const [load, setLoad] = React.useState<boolean>(false);
 
     React.useEffect(() => {
         checkIsLogged()
     }, [])
 
     const checkIsLogged = async () => {
-        const isLoggedStorage = await AsyncStorage.getItem(ASYNC_IS_LOGGED)
-        if (isLoggedStorage) setIsLogged(true)
+        try {
+            setLoad(true)
+            const isLoggedStorage = await AsyncStorage.getItem(ASYNC_IS_LOGGED)
+            if (isLoggedStorage) setIsLogged(true)
+        } catch (error) { } finally {
+            setLoad(false)
+        }
     }
 
     const login = (email: string, password: string) => {
@@ -33,7 +39,7 @@ export const AuthProvider = ({ children }: any) => {
     }
 
     return (
-        <AuthContext.Provider value={{ login, loginWithoutAccount, isLogged, loggout }}>
+        <AuthContext.Provider value={{ login, loginWithoutAccount, isLogged, loggout, load }}>
             {children}
         </AuthContext.Provider>
     );

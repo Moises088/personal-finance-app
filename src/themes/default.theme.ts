@@ -15,5 +15,6 @@ export const DefaultTheme: ThemesConfig = {
         primary: "#F9603B",
         secondary: "transparent"
     }
-
 }
+
+// #2166CF
