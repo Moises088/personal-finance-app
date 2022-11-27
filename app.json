@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "personal-finance-app",
+    "name": "Financeiro pessoal",
     "slug": "personal-finance-app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -8,8 +8,8 @@
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "resizeMode": "cover",
+      "backgroundColor": "#141b26"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -32,7 +32,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "836c705c-812c-4968-ab0a-2c99241f7425"
+        "projectId": "c0b2b427-1802-4fab-93a0-88dafd4f3859"
       }
     }
   }
