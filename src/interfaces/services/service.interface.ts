@@ -26,4 +26,11 @@ export interface Services<T, Dto> {
      * @returns Entity updated or void
     */
     update(id: number, updateDto: Dto): Promise<T | undefined>;
+
+    /**
+     * Delete item.
+     * @param id id to identify a item.
+     * @returns Entity[] without deleted item
+    */
+    delete(id: number): Promise<T[]>;
 }

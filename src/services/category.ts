@@ -47,8 +47,12 @@ class CategoryService implements Services<CategoryEntity, CategoryDto> {
         return category;
     }
 
-    public async update(id: number, updateDto: CategoryEntity): Promise<CategoryEntity | void> {
+    public async update(id: number, updateDto: CategoryEntity): Promise<CategoryEntity | undefined> {
         return
+    }
+
+    public async delete(id: number): Promise<CategoryEntity[]> {
+        return []
     }
 }
 

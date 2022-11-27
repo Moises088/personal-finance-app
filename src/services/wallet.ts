@@ -49,6 +49,10 @@ class WalletService implements Services<WalletEntity, WalletDto>{
     protected findLast(wallets: WalletEntity[]): WalletEntity | undefined {
         return wallets[wallets.length - 1];
     }
+
+    public async delete(id: number): Promise<WalletEntity[]> {
+        return []
+    }
 }
 
 export const AppWalletService = new WalletService()
