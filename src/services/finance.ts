@@ -99,14 +99,16 @@ class FinanceService implements Services<FinanceEntity, FinanceDto>{
             if (month.length == 1) month = month.padStart(2, "0")
             const validateDate = getYear == year && getMonth == month;
 
-            if (finance.walletId == walletId && validateDate && finance.isPaid == true) {
-                if (finance.type == "INCOME") {
-                    total += finance.value;
-                    totalIncome += finance.value;
-                }
-                if (finance.type == "EXPENSE") {
-                    total -= finance.value;
-                    totalExpense += finance.value;
+            if (finance.walletId == walletId && validateDate) {
+                if (finance.isPaid) {
+                    if (finance.type == "INCOME") {
+                        total += finance.value;
+                        totalIncome += finance.value;
+                    }
+                    if (finance.type == "EXPENSE") {
+                        total -= finance.value;
+                        totalExpense += finance.value;
+                    }
                 }
 
                 const category = categories.find(c => c.id == finance.categoryId);
