@@ -129,10 +129,15 @@ const FinanceDetails: React.FC<FinanceDetailsProps> = (props) => {
       <Modal transparent={true} visible={openCategory} onRequestClose={() => { setOpenCategory(false) }}>
         <View style={style.backdrop} />
         <View style={style.modal}>
-          <CategoryScreen selectCategory={category => {
-            props.setCategory(category);
-            setOpenCategory(false);
-          }} />
+          <CategoryScreen
+            selectCategory={category => {
+              props.setCategory(category);
+              setOpenCategory(false);
+            }}
+            close={() => {
+              setOpenCategory(false);
+            }}
+          />
         </View>
       </Modal>
 

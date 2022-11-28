@@ -12,10 +12,14 @@ import SelectIcon from '../../components/global/icon';
 import { AppCategoryService } from '../../services/category';
 import AlertError from '../../components/global/alert-error';
 import { CategoryEntity } from '../../interfaces/services/category.interface';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
 
-const CategoryScreen: React.FC<{ selectCategory?: (category: CategoryEntity) => void }> = (props) => {
+const CategoryScreen: React.FC<{ selectCategory?: (category: CategoryEntity) => void, close?: () => void }> = (props) => {
     const { theme } = React.useContext(ThemeContext);
     const style = styles(theme);
+
+    const navigation = useNavigation<StackNavigationProp<any>>();
 
     const [categories, setCategories] = React.useState<CategoryEntity[]>([]);
     const [openCreateCategory, setOpenCreateCategory] = React.useState<boolean>(false);
@@ -68,9 +72,17 @@ const CategoryScreen: React.FC<{ selectCategory?: (category: CategoryEntity) => 
         }
     }
 
+    const navigate = () => {
+        if (!props?.close) {
+            navigation.goBack()
+        } else {
+            props.close()
+        }
+    }
+
     return (
         <View style={style.container}>
-            <HeaderStack title='Categorias' onRequestClose={() => { }} />
+            <HeaderStack title='Categorias' onRequestClose={navigate} />
 
             <TouchableOpacity style={style.button} onPress={() => { setOpenCreateCategory(true) }}>
                 <Text style={style.buttonText}>+ Nova categoria</Text>
