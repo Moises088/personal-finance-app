@@ -8,7 +8,8 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "test": "jest --watch --coverage=false",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "build:apk": "eas build -p android --profile preview"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.17.10",
