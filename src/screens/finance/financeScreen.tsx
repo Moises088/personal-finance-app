@@ -85,12 +85,14 @@ const FinanceScreen: React.FC = () => {
 
   const saveFinance = async () => {
     try {
-      const { category, description, isPaid, money, paidDate, title: name, id } = financeForm;
-
+      let { category, description, isPaid, money, paidDate, title: name, id } = financeForm;
+      
       const erros = [];
+      if (!category?.id) erros.push("Categoria é obrigatória");
+      name = category?.name;
+
       if (!money || !money?.trim()?.length) erros.push("Valor é obrigatório")
-      if (!name || !name?.trim()?.length) erros.push("Título é obrigatório")
-      if (!category?.id) erros.push("Categoria é obrigatória")
+      // if (!name || !name?.trim()?.length) erros.push("Título é obrigatório")
       if (!paidDate || paidDate?.length < 10) erros.push("Preencha a data corretamente")
       if (paidDate?.length == 10) erros.push(...validateDateString(getPipeTransformDateStringPT(paidDate)));
       setValidation(erros)
@@ -181,14 +183,12 @@ const FinanceScreen: React.FC = () => {
       <AlertError errors={validation} />
 
       <FinanceDetails
-        wallet={financeForm.wallet}
-        setWallet={wallet => setFinanceForm(prev => ({ ...prev, wallet }))}
+        // wallet={financeForm.wallet}
+        // setWallet={wallet => setFinanceForm(prev => ({ ...prev, wallet }))}
         category={financeForm.category}
         setCategory={category => setFinanceForm(prev => ({ ...prev, category }))}
         paidDate={financeForm.paidDate}
         setPaidDate={paidDate => setFinanceForm(prev => ({ ...prev, paidDate }))}
-        title={financeForm.title}
-        setTitle={title => setFinanceForm(prev => ({ ...prev, title }))}
         description={financeForm.description}
         setDescription={description => setFinanceForm(prev => ({ ...prev, description }))}
         isPaid={financeForm.isPaid}

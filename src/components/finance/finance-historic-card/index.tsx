@@ -29,7 +29,9 @@ const FinanceHistoricCard: React.FC<{ finance: FinancesBalanceEntity }> = ({ fin
           </View>
           <View style={style.itemContainerTitle}>
             <Text style={style.itemTitle} numberOfLines={1}>{finance.category?.name}</Text>
-            <Text style={[style.itemTitle, { fontSize: 13 }]} numberOfLines={1}>{finance.name}</Text>
+            <Text style={[style.itemTitle, { fontSize: 12, color: finance.isPaid ? COLOR_SUCCESS : COLOR_DANGER }]} numberOfLines={1}>
+              {finance.isPaid ? "Pago" : "Não pago"}
+            </Text>
           </View>
         </View>
 

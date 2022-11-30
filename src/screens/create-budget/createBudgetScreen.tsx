@@ -180,10 +180,15 @@ const CreateBudgetScreen: React.FC = () => {
       <Modal transparent={true} visible={openCategory} onRequestClose={() => { setOpenCategory(false) }}>
         <View style={style.backdrop} />
         <View style={style.modal}>
-          <CategoryScreen selectCategory={category => {
-            setCategory(category);
-            setOpenCategory(false);
-          }} />
+          <CategoryScreen
+            selectCategory={category => {
+              setCategory(category);
+              setOpenCategory(false);
+            }}
+            close={() => {
+              setOpenCategory(false);
+            }}
+          />
         </View>
       </Modal>
     </View>

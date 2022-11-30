@@ -19,14 +19,14 @@ const FinanceDetails: React.FC<FinanceDetailsProps> = (props) => {
   const [isDatePickerVisible, setDatePickerVisibility] = React.useState<boolean>(false)
   const [openCategory, setOpenCategory] = React.useState<boolean>(false);
 
-  React.useEffect(() => {
-    findWallet();
-  }, [])
+  // React.useEffect(() => {
+  //   findWallet();
+  // }, [])
 
-  const findWallet = async () => {
-    const getWallet = await AppWalletService.findOne(1);
-    props.setWallet(getWallet)
-  }
+  // const findWallet = async () => {
+  //   const getWallet = await AppWalletService.findOne(1);
+  //   props.setWallet(getWallet)
+  // }
 
   const CategorySelection: React.FC = () => {
     if (!props.category) return <Text style={style.selectText}>Categoria</Text>
@@ -38,10 +38,10 @@ const FinanceDetails: React.FC<FinanceDetailsProps> = (props) => {
     )
   }
 
-  const WalletSelection: React.FC = () => {
-    if (!props.wallet) return <Text style={style.selectText}>Carteira</Text>
-    return <Text style={style.selectText}>{props.wallet.name}</Text>
-  }
+  // const WalletSelection: React.FC = () => {
+  //   if (!props.wallet) return <Text style={style.selectText}>Carteira</Text>
+  //   return <Text style={style.selectText}>{props.wallet.name}</Text>
+  // }
 
   return (
     <View style={style.container}>
@@ -49,29 +49,17 @@ const FinanceDetails: React.FC<FinanceDetailsProps> = (props) => {
         <KeyboardAvoidingView behavior="padding" style={{ marginBottom: 50 }}>
           <View style={style.containerInput}>
             <CustomInput
-              icon={<MaterialIcons name="title" size={20} color={theme.button.primary} />}
-              onChangeText={(text) => { props.setTitle(text) }}
-              style={style.input}
-              styleInput={style.inputText}
-              placeholder="Titulo"
-              placeholderTextColor="#b3b3b3"
-              value={props.title}
-            />
-          </View>
-
-          <View style={style.containerInput}>
-            <CustomInput
               icon={<MaterialCommunityIcons name="subtitles-outline" size={19} color={theme.button.primary} />}
               onChangeText={(text) => { props.setDescription(text) }}
               style={style.input}
               styleInput={style.inputText}
-              placeholder="Descrição"
+              placeholder="Descrição (opcional)"
               placeholderTextColor="#b3b3b3"
               value={props.description}
             />
           </View>
-
-          <TouchableOpacity style={style.containerSelect} activeOpacity={.5}>
+        
+          {/* <TouchableOpacity style={style.containerSelect} activeOpacity={.5}>
             <View style={style.containerSelectIcon}>
               <View style={style.selectIcon}>
                 <Ionicons name="wallet" size={19} color={theme.button.primary} />
@@ -79,7 +67,7 @@ const FinanceDetails: React.FC<FinanceDetailsProps> = (props) => {
               <WalletSelection />
             </View>
             <MaterialIcons name="keyboard-arrow-right" size={19} color={theme.text.primary} />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           <TouchableOpacity
             style={[style.containerSelect, props.category ? { backgroundColor: props.category.color } : {}]}
@@ -129,10 +117,15 @@ const FinanceDetails: React.FC<FinanceDetailsProps> = (props) => {
       <Modal transparent={true} visible={openCategory} onRequestClose={() => { setOpenCategory(false) }}>
         <View style={style.backdrop} />
         <View style={style.modal}>
-          <CategoryScreen selectCategory={category => {
-            props.setCategory(category);
-            setOpenCategory(false);
-          }} />
+          <CategoryScreen
+            selectCategory={category => {
+              props.setCategory(category);
+              setOpenCategory(false);
+            }}
+            close={() => {
+              setOpenCategory(false);
+            }}
+          />
         </View>
       </Modal>
 
