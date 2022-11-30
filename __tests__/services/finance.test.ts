@@ -1,7 +1,7 @@
+import { AsyncMock } from "../../src/constants/storage.constant";
 import { FinanceDto } from "../../src/interfaces/services/finance.interface";
 import { AppFinanceService } from "../../src/services/finance";
 import { getPipeTransformDateStringNumber, getPipeTransformDateStringPT } from "../../src/utils/date.util";
-import { AsyncMock } from "../../__mocks__/asynstorage.mock";
 
 const sameFinance = AsyncMock['ASYNC_FINANCES'][0];
 
