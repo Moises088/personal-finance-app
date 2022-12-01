@@ -16,5 +16,11 @@ export interface DebtsDto {
 export interface DebtsInstitution {
     name: string;
     color: string;
-    logo: string
+    logo: any
+}
+
+export interface DebtForms {
+    institution: DebtsInstitution;
+    total: string;
+    totalPerMonth: string;
 }
