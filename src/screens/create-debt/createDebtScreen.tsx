@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, ScrollView, Text, View } from 'react-native';
+import { SafeAreaView, ScrollView, Text, TextInput, View } from 'react-native';
 import { TextInputMask } from 'react-native-masked-text';
 import DebtsCard from '../../components/debts/debts-card';
 import AlertError from '../../components/global/alert-error';
@@ -35,10 +35,13 @@ const CreateDebtScreen: React.FC = () => {
   const [validation, setValidation] = React.useState<string[]>([]);
 
   const createDebt = async () => {
-    const { institution, total, totalPerMonth, paidMonthAt } = debtForms;
+    const { institution, total, totalPerMonth, paidMonthAt, institutionName } = debtForms;
 
     const erros = [];
     if (!institution?.name) erros.push("Adicione a instituição");
+    if (institution.name == "OUTRO") {
+      if(!institutionName) erros.push("Nome da instituição é obrigatória")
+    }
     if (!getPipeMoneyNumber(total)) erros.push("O total é obrigatório e maior que zero");
     if (getPipeMoneyNumber(totalPerMonth) > 0) {
       if (!paidMonthAt) erros.push("A data do mês é obrigatória")
@@ -52,8 +55,11 @@ const CreateDebtScreen: React.FC = () => {
 
     try {
       const debtDto: DebtsDto = {
-        institution, paidMonthAt, total: getPipeMoneyNumber(total),
-        totalPerMonth: getPipeMoneyNumber(totalPerMonth), type: "INVOICE"
+        institution, paidMonthAt,
+        total: getPipeMoneyNumber(total),
+        totalPerMonth: getPipeMoneyNumber(totalPerMonth),
+        type: "INVOICE",
+        institutionName
       }
       await AppDebtsService.create(debtDto);
       navigation.goBack()
@@ -87,6 +93,19 @@ const CreateDebtScreen: React.FC = () => {
               />
             </View>
           </View>
+
+          {debtForms.institution.name == "OUTRO" && (
+            <View style={style.containerInput}>
+              <Text style={style.label}>Nome da instituição</Text>
+              <TextInput
+                value={debtForms.institutionName}
+                onChangeText={(institutionName: string) => {
+                  setDebtForms(prev => ({ ...prev, institutionName }));
+                }}
+                style={style.valueInputCategory}
+              />
+            </View>
+          )}
 
           <View style={style.containerInput}>
             <Text style={style.label}>Valor total</Text>

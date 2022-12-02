@@ -24,4 +24,5 @@ export interface DebtForms {
     total: string;
     totalPerMonth: string;
     paidMonthAt: string;
+    institutionName?: string;
 }
