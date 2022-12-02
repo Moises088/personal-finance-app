@@ -44,9 +44,9 @@ export const PROFILE_LIST = [
         icon: (color: string, size: number) => <MaterialCommunityIcons name="finance" size={size} color={color} />
     },
     {
-        title: "CreateDebtScreen",
+        title: "DebtScreen",
         divisor: false,
-        navigate: "CreateDebtScreen",
+        navigate: "DebtScreen",
         icon: (color: string, size: number) => <MaterialCommunityIcons name="finance" size={size} color={color} />
     },
 ]
