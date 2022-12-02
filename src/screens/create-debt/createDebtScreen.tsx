@@ -4,42 +4,62 @@ import { TextInputMask } from 'react-native-masked-text';
 import DebtsCard from '../../components/debts/debts-card';
 import AlertError from '../../components/global/alert-error';
 import CustomButtonAnimated from '../../components/global/custom-button-animated';
+import CustomInput from '../../components/global/custom-input';
 import GlobalPicker from '../../components/global/picker';
 import { DEBTS_INSTITUTION } from '../../constants/debts.constants';
 import { ThemeContext } from '../../contexts/themeContext';
-import { DebtForms, DebtsInstitution } from '../../interfaces/services/debts.interface';
+import { DebtForms, DebtsDto, DebtsInstitution } from '../../interfaces/services/debts.interface';
+import { AppDebtsService } from '../../services/debts';
 import { getPipeMoneyNumber } from '../../utils/money.util';
 import { INPUT_MASK_OPTIONS } from '../create-budget/createBudgetScreen';
+import { AntDesign } from '@expo/vector-icons';
 import { styles } from './styles';
+import DatetimePicker from '../../components/global/datetime-picker';
+import { getPipeCustomDateString } from '../../utils/date.util';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
 
 const CreateDebtScreen: React.FC = () => {
 
   const { theme } = React.useContext(ThemeContext);
   const style = styles(theme);
   const defaultInstitution = DEBTS_INSTITUTION.find(debt => debt.name == "OUTRO") as DebtsInstitution;
-  const form = { institution: defaultInstitution, total: "0", totalPerMonth: "0" } as DebtForms
+  const form = { institution: defaultInstitution, total: "0", totalPerMonth: "0" } as DebtForms;
+  const navigation = useNavigation<StackNavigationProp<any>>();
 
   const [institutionSelected, setInstitutionSelected] = React.useState<string>("OUTRO");
   const [debtForms, setDebtForms] = React.useState<DebtForms>(form);
   const [visibleInstitution, setVisibleInstitution] = React.useState<boolean>(false)
   const [loadingEnd, setLoadingEnd] = React.useState<boolean>(false)
+  const [isDatePickerVisible, setDatePickerVisibility] = React.useState<boolean>(false)
   const [validation, setValidation] = React.useState<string[]>([]);
 
-  const createDebt = () => {
-    const { institution, total, totalPerMonth } = debtForms;
+  const createDebt = async () => {
+    const { institution, total, totalPerMonth, paidMonthAt } = debtForms;
 
     const erros = [];
-    if (!institution?.name) erros.push("Adicione a instituição")
-    if (!getPipeMoneyNumber(total)) erros.push("O total é obrigatório e maior que zero")
+    if (!institution?.name) erros.push("Adicione a instituição");
+    if (!getPipeMoneyNumber(total)) erros.push("O total é obrigatório e maior que zero");
+    if (getPipeMoneyNumber(totalPerMonth) > 0) {
+      if (!paidMonthAt) erros.push("A data do mês é obrigatória")
+    }
     setValidation(erros)
 
-    if (erros.length) return
+    if (erros.length) {
+      setLoadingEnd(!loadingEnd)
+      return
+    }
 
     try {
-
-    } catch (error) {
-
-    }
+      const debtDto: DebtsDto = {
+        institution, paidMonthAt, total: getPipeMoneyNumber(total),
+        totalPerMonth: getPipeMoneyNumber(totalPerMonth), type: "INVOICE"
+      }
+      await AppDebtsService.create(debtDto);
+      navigation.goBack()
+    } catch (error: any) {
+      if (error?.message) setValidation([error.message])
+    } finally { setLoadingEnd(!loadingEnd) }
   }
 
   return (
@@ -92,7 +112,7 @@ const CreateDebtScreen: React.FC = () => {
                 ...INPUT_MASK_OPTIONS,
                 unit: "R$ "
               }}
-              value={debtForms.total}
+              value={debtForms.totalPerMonth}
               onChangeText={(totalPerMonth: string) => {
                 setDebtForms(prev => ({ ...prev, totalPerMonth }));
               }}
@@ -100,7 +120,33 @@ const CreateDebtScreen: React.FC = () => {
             />
           </View>
 
+          <View style={style.containerInput}>
+            <Text style={style.label}>Data de pagamento</Text>
+            <CustomInput
+              icon={<AntDesign name="calendar" size={20} color={theme.button.primary} />}
+              onChangeText={(paidMonthAt) => { setDebtForms(prev => ({ ...prev, paidMonthAt })) }}
+              value={debtForms.paidMonthAt}
+              style={[style.valueInputCategory, { padding: 0 }]}
+              styleInput={{ color: theme.text.primary }}
+              placeholder="Data de pagamento"
+              placeholderTextColor="#b3b3b3"
+              mask='custom'
+              maskCustom='99/99/9999'
+              keyboard='numeric'
+              onPressIcon={() => setDatePickerVisibility(true)}
+            />
+          </View>
+
           <View style={{ height: 30 }} />
+
+          <DatetimePicker
+            isDatePickerVisible={isDatePickerVisible}
+            onChange={(date) => {
+              setDatePickerVisibility(false);
+              if (!date) return
+              setDebtForms(prev => ({ ...prev, paidMonthAt: getPipeCustomDateString(date.getTime(), "DD/MM/YYYY") }))
+            }}
+          />
 
           <CustomButtonAnimated
             buttonText='Salvar'

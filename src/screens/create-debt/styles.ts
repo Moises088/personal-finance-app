@@ -33,7 +33,7 @@ export const styles = (theme: ThemesConfig) => {
             padding: 5,
             paddingHorizontal: 10,
             borderRadius: 8,
-            minHeight: 45,
+            minHeight: 50,
             color: theme.text.primary
         },
         containerForm: {
@@ -49,6 +49,9 @@ export const styles = (theme: ThemesConfig) => {
             color: theme.text.primary,
             marginBottom: 6,
             marginLeft: 2
+        },
+        inputDate: {
+            backgroundColor: 'red'
         }
     })
 };
