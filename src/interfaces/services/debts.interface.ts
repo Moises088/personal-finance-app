@@ -8,12 +8,13 @@ export interface DebtsDto {
     type: "INVOICE" | "BILL" | "LOAN";
     total: number;
     totalPerMonth: number;  
-    institution: DebtsInstitution;
+    institutionId: number;
     institutionName?: string;
     paidMonthAt: string;
 }
 
 export interface DebtsInstitution {
+    id: number;
     name: string;
     color: string;
     logo: any
@@ -29,4 +30,5 @@ export interface DebtForms {
 
 export interface DebtsBalance extends DebtsEntity {
     totalMonth: number;
+    institution: DebtsInstitution
 }

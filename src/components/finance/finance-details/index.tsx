@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Modal, ScrollView, KeyboardAvoidingView } from 'react-native';
+import { View, Text, TouchableOpacity, Modal, ScrollView, KeyboardAvoidingView, Image } from 'react-native';
 import { ThemeContext } from '../../../contexts/themeContext';
 import CustomInput from '../../global/custom-input';
 import { styles } from './styles';
@@ -10,6 +10,8 @@ import DatetimePicker from '../../global/datetime-picker';
 import { getPipeCustomDateString } from '../../../utils/date.util';
 import { FinanceDetailsProps } from '../../../interfaces/screens/finance.interface';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
+import { DEBTS_INSTITUTION } from '../../../constants/debts.constants';
+import { DebtsInstitution } from '../../../interfaces/services/debts.interface';
 
 const FinanceDetails: React.FC<FinanceDetailsProps> = (props) => {
 
@@ -17,31 +19,60 @@ const FinanceDetails: React.FC<FinanceDetailsProps> = (props) => {
   const style = styles(theme);
 
   const [isDatePickerVisible, setDatePickerVisibility] = React.useState<boolean>(false)
-  const [openCategory, setOpenCategory] = React.useState<boolean>(false);
-
-  // React.useEffect(() => {
-  //   findWallet();
-  // }, [])
-
-  // const findWallet = async () => {
-  //   const getWallet = await AppWalletService.findOne(1);
-  //   props.setWallet(getWallet)
-  // }
+  const [openOptions, setOpenOptions] = React.useState<boolean>(false);
+  const [optionsType, setOptionsType] = React.useState<string>("");
 
   const CategorySelection: React.FC = () => {
-    if (!props.category) return <Text style={style.selectText}>Categoria</Text>
-    return (
+    if (props.category) return (
       <>
         <FontAwesome5 name={props.category.icon} color={theme.text.primary} size={17} style={{ marginLeft: 10 }} />
         <Text style={style.selectText}>{props.category.name}</Text>
       </>
     )
+
+    if (props.bill) return (
+      <>
+        <View style={[style.card, { backgroundColor: props.bill.color }, style.minCard]}>
+          <Image source={props.bill.logo} style={[style.cardLogo, style.minLogo]} />
+        </View>
+        <Text style={style.selectText}>{props.bill.name}</Text>
+      </>
+    )
+
+    return <Text style={style.selectText}>Categoria</Text>
   }
 
-  // const WalletSelection: React.FC = () => {
-  //   if (!props.wallet) return <Text style={style.selectText}>Carteira</Text>
-  //   return <Text style={style.selectText}>{props.wallet.name}</Text>
-  // }
+  const Options = () => (
+    <View style={style.containerOptions}>
+      <TouchableOpacity style={style.buttonOption} onPress={() => { setOptionsType("Category") }}>
+        <MaterialIcons name="category" size={26} color={theme.text.primary} />
+        <Text style={style.buttonOptionText}>Categoria</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={style.buttonOption} onPress={() => { setOptionsType("Bill") }}>
+        <FontAwesome5 name="receipt" size={24} color={theme.text.primary} />
+        <Text style={style.buttonOptionText}>Fatura</Text>
+      </TouchableOpacity>
+    </View>
+  )
+
+  const Debts = ({ debit }: { debit: DebtsInstitution }) => (
+    <TouchableOpacity onPress={() => {
+      setOpenOptions(false);
+      setOptionsType("");
+      props.setCategory(undefined);
+      props.setBill(debit)
+    }}>
+      <View style={style.containerInstitution}>
+        <View style={[style.card, { backgroundColor: debit.color }]}>
+          <Image source={debit.logo} style={style.cardLogo} />
+        </View>
+        <View style={{ flex: 1, marginLeft: 10 }}>
+          <Text style={{ color: theme.text.primary, fontSize: 18 }}>{debit.name}</Text>
+        </View>
+      </View>
+    </TouchableOpacity>
+  )
 
   return (
     <View style={style.container}>
@@ -58,21 +89,14 @@ const FinanceDetails: React.FC<FinanceDetailsProps> = (props) => {
               value={props.description}
             />
           </View>
-        
-          {/* <TouchableOpacity style={style.containerSelect} activeOpacity={.5}>
-            <View style={style.containerSelectIcon}>
-              <View style={style.selectIcon}>
-                <Ionicons name="wallet" size={19} color={theme.button.primary} />
-              </View>
-              <WalletSelection />
-            </View>
-            <MaterialIcons name="keyboard-arrow-right" size={19} color={theme.text.primary} />
-          </TouchableOpacity> */}
 
           <TouchableOpacity
             style={[style.containerSelect, props.category ? { backgroundColor: props.category.color } : {}]}
             activeOpacity={.5}
-            onPress={() => { setOpenCategory(true) }}
+            onPress={() => {
+              if (props?.financeType == "INCOME") setOptionsType("Category")
+              setOpenOptions(true)
+            }}
           >
             <View style={style.containerSelectIcon}>
               <View style={style.selectIcon}>
@@ -114,18 +138,41 @@ const FinanceDetails: React.FC<FinanceDetailsProps> = (props) => {
         </KeyboardAvoidingView>
       </ScrollView>
 
-      <Modal transparent={true} visible={openCategory} onRequestClose={() => { setOpenCategory(false) }}>
-        <View style={style.backdrop} />
-        <View style={style.modal}>
-          <CategoryScreen
-            selectCategory={category => {
-              props.setCategory(category);
-              setOpenCategory(false);
-            }}
-            close={() => {
-              setOpenCategory(false);
-            }}
-          />
+      <Modal
+        transparent={true}
+        visible={openOptions}
+        onRequestClose={() => {
+          setOpenOptions(false);
+          setOptionsType("");
+        }}
+      >
+        <View style={style.backdrop} onTouchEnd={() => { setOpenOptions(false); setOptionsType("") }} />
+        <View style={[style.modal, !optionsType?.length ? style.modalOption : {}]}>
+
+          {!optionsType?.length && (
+            <Options />
+          )}
+          {(optionsType == "Category") && (
+            <CategoryScreen
+              selectCategory={category => {
+                props.setBill(undefined)
+                props.setCategory(category);
+                setOpenOptions(false);
+                setOptionsType("")
+              }}
+              close={() => {
+                setOpenOptions(false);
+                setOptionsType("")
+              }}
+            />
+          )}
+          {(optionsType == "Bill") && (
+            <ScrollView>
+              {DEBTS_INSTITUTION.map((debit, i) => (
+                <Debts key={i} debit={debit} />
+              ))}
+            </ScrollView>
+          )}
         </View>
       </Modal>
 

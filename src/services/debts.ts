@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { DEBTS_INSTITUTION } from "../constants/debts.constants";
 import { ASYNC_DEBTS } from "../constants/storage.constant";
 import { DebtsBalance, DebtsDto, DebtsEntity, DebtsInstitution } from "../interfaces/services/debts.interface";
 import { Services } from "../interfaces/services/service.interface";
@@ -9,7 +10,7 @@ class Debts implements DebtsEntity {
     type: "INVOICE" | "BILL" | "LOAN";
     total: number;
     totalPerMonth: number;
-    institution: DebtsInstitution;
+    institutionId: number;
     institutionName?: string;
     paidMonthAt: string;
     createdAt: string;
@@ -20,7 +21,7 @@ class Debts implements DebtsEntity {
         this.type = debtsDto.type;
         this.total = debtsDto.total;
         this.totalPerMonth = debtsDto.totalPerMonth;
-        this.institution = debtsDto.institution;
+        this.institutionId = debtsDto.institutionId;
         this.institutionName = debtsDto.institutionName;
         this.paidMonthAt = debtsDto.paidMonthAt;
         this.createdAt = getPipeDateTimeString();
@@ -67,11 +68,13 @@ class DebtsService implements Services<DebtsEntity, DebtsDto> {
         const debtsBalance: DebtsBalance[] = []
 
         for (const debt of debts) {
-            if(!debt.totalPerMonth) debt.totalPerMonth = debt.total
+            if (!debt.totalPerMonth) debt.totalPerMonth = debt.total
             const totalMonth = Math.ceil(debt.total / debt.totalPerMonth)
+            const institution = DEBTS_INSTITUTION.find(institution => institution.id == debt.institutionId) as DebtsInstitution
             debtsBalance.push({
                 ...debt,
-                totalMonth
+                totalMonth,
+                institution
             })
         }
 

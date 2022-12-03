@@ -40,7 +40,7 @@ const CreateDebtScreen: React.FC = () => {
     const erros = [];
     if (!institution?.name) erros.push("Adicione a instituição");
     if (institution.name == "OUTRO") {
-      if(!institutionName) erros.push("Nome da instituição é obrigatória")
+      if (!institutionName) erros.push("Nome da instituição é obrigatória")
     }
     if (!getPipeMoneyNumber(total)) erros.push("O total é obrigatório e maior que zero");
     if (getPipeMoneyNumber(totalPerMonth) > 0) {
@@ -55,7 +55,8 @@ const CreateDebtScreen: React.FC = () => {
 
     try {
       const debtDto: DebtsDto = {
-        institution, paidMonthAt,
+        institutionId: institution.id,
+        paidMonthAt,
         total: getPipeMoneyNumber(total),
         totalPerMonth: getPipeMoneyNumber(totalPerMonth),
         type: "INVOICE",

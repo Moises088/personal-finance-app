@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { ThemeContext } from '../../../contexts/themeContext';
 import { styles } from './styles';
 import { FontAwesome5, Feather } from '@expo/vector-icons';
@@ -19,16 +19,32 @@ const FinanceHistoricCard: React.FC<{ finance: FinancesBalanceEntity }> = ({ fin
     navigation.navigate("FinanceScreen", { event: finance.type, finance })
   }
 
+  const name = () => {
+    if (finance?.category?.name) return finance.category.name;
+    if (finance?.bill?.name) return finance.bill.name;
+    return ""
+  }
+
+  const icon = () => {
+    if (finance?.category?.icon) return <FontAwesome5 name={finance.category?.icon} color={theme.text.primary} size={20} />;
+    if (finance?.bill?.logo) return (
+      <View style={[style.card, { backgroundColor: finance.bill.color }]}>
+        <Image style={style.cardImage} source={finance.bill.logo} />
+      </View>
+    )
+    return <View />
+  }
+
   return (
     <TouchableOpacity onPress={openFinance}>
       <View style={style.itens}>
 
         <View style={style.itemContainer}>
           <View style={style.itemIcon}>
-            <FontAwesome5 name={finance.category?.icon} color={theme.text.primary} size={20} />
+            {icon()}
           </View>
           <View style={style.itemContainerTitle}>
-            <Text style={style.itemTitle} numberOfLines={1}>{finance.category?.name}</Text>
+            <Text style={style.itemTitle} numberOfLines={1}>{name()}</Text>
             <Text style={[style.itemTitle, { fontSize: 12, color: finance.isPaid ? COLOR_SUCCESS : COLOR_DANGER }]} numberOfLines={1}>
               {finance.isPaid ? "Pago" : "Não pago"}
             </Text>

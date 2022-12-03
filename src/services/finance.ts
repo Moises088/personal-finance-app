@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { DEBTS_INSTITUTION } from "../constants/debts.constants";
 import { ASYNC_FINANCES } from "../constants/storage.constant";
 import { FinanceBalance, FinanceBalancePerCategory, FinanceDto, FinanceEntity, FinancesBalanceEntity } from "../interfaces/services/finance.interface";
 import { Services } from "../interfaces/services/service.interface";
@@ -13,6 +14,7 @@ class Finance implements FinanceEntity {
     value: number;
     categoryId: number;
     walletId: number;
+    billId: number;
     paidAt: string;
     isPaid: boolean;
     type: "INCOME" | "EXPENSE";
@@ -22,13 +24,14 @@ class Finance implements FinanceEntity {
     constructor(createFinanceDto: FinanceDto, lastId: number) {
         this.id = lastId + 1;
         this.name = createFinanceDto.name;
-        this.categoryId = createFinanceDto.categoryId;
+        this.categoryId = createFinanceDto?.categoryId ?? 0;
         this.walletId = createFinanceDto.walletId;
         this.type = createFinanceDto.type;
         this.isPaid = createFinanceDto.isPaid;
         this.value = getPipeMoneyNumber(createFinanceDto.money);
         this.paidAt = createFinanceDto.paid;
         this.createdAt = getPipeDateTimeString();
+        this.billId = createFinanceDto?.billId ?? 0
     }
 }
 
@@ -45,6 +48,8 @@ class FinanceService implements Services<FinanceEntity, FinanceDto>{
     }
 
     public async create(createDto: FinanceDto): Promise<FinanceEntity> {
+        if (!createDto?.categoryId && !createDto?.billId) throw new Error("Categoria ou Fatura é obrigatória")
+
         const finances = await this.find();
         const lastFinance = this.findLast(finances);
 
@@ -112,11 +117,12 @@ class FinanceService implements Services<FinanceEntity, FinanceDto>{
                 }
 
                 const category = categories.find(c => c.id == finance.categoryId);
+                const bill = DEBTS_INSTITUTION.find(bill => bill.id == finance.billId);
 
-                return { ...finance, category };
+                return { ...finance, category, bill };
             }
         }).filter(item => item) as FinancesBalanceEntity[];
-
+        
         return {
             total,
             totalIncome,

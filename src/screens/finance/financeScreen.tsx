@@ -77,7 +77,8 @@ const FinanceScreen: React.FC = () => {
       paidDate: getPipeCustomDateString(finance.paidAt, "DD/MM/YYYY"),
       title: finance.name,
       wallet: getWallet,
-      id: finance.id
+      id: finance.id,
+      bill: finance.bill
     }
 
     setFinanceForm(form)
@@ -85,22 +86,32 @@ const FinanceScreen: React.FC = () => {
 
   const saveFinance = async () => {
     try {
-      let { category, description, isPaid, money, paidDate, title: name, id } = financeForm;
-      
-      const erros = [];
-      if (!category?.id) erros.push("Categoria é obrigatória");
-      name = category?.name;
+      let { category, description, isPaid, money, paidDate, title: name, id, bill } = financeForm;
 
+      const getName = () => {
+        if(category) return category.name;
+        if(bill) return bill.name;
+        return ""
+      }
+
+      const erros = [];
+      if (!category?.id && !bill?.id) erros.push("Categoria ou Fatura é obrigatória");
       if (!money || !money?.trim()?.length) erros.push("Valor é obrigatório")
-      // if (!name || !name?.trim()?.length) erros.push("Título é obrigatório")
       if (!paidDate || paidDate?.length < 10) erros.push("Preencha a data corretamente")
       if (paidDate?.length == 10) erros.push(...validateDateString(getPipeTransformDateStringPT(paidDate)));
       setValidation(erros)
-
-      if (!category || !money || !paidDate || !name || !financeType) return;
+      
+      name = getName();
+      
+      if (!money || !paidDate || !name || !financeType) return;
+      if (!category && !bill) return;
 
       const paid = getPipeTransformDateStringNumber(paidDate);
-      const body: FinanceDto = { walletId: 1, categoryId: category.id, money, name, description, paid, isPaid, type: financeType }
+      const body: FinanceDto = {
+        walletId: 1, categoryId: category?.id ?? 0,
+        money, name, description, paid, isPaid,
+        type: financeType, billId: bill?.id ?? 0
+      }
 
       if (id) {
         await AppFinanceService.update(id, body);
@@ -185,6 +196,7 @@ const FinanceScreen: React.FC = () => {
       <FinanceDetails
         // wallet={financeForm.wallet}
         // setWallet={wallet => setFinanceForm(prev => ({ ...prev, wallet }))}
+        financeType={financeType}
         category={financeForm.category}
         setCategory={category => setFinanceForm(prev => ({ ...prev, category }))}
         paidDate={financeForm.paidDate}
@@ -193,6 +205,8 @@ const FinanceScreen: React.FC = () => {
         setDescription={description => setFinanceForm(prev => ({ ...prev, description }))}
         isPaid={financeForm.isPaid}
         setIsPaid={isPaid => setFinanceForm(prev => ({ ...prev, isPaid }))}
+        bill={financeForm.bill}
+        setBill={bill => setFinanceForm(prev => ({ ...prev, bill }))}
       />
 
       {!keyboardVisible && (
