@@ -34,6 +34,15 @@ class DebtsService implements Services<DebtsEntity, DebtsDto> {
         return JSON.parse(categories ?? JSON.stringify([]));
     }
 
+    public async findInstitutions(): Promise<DebtsInstitution[]> {
+        const debts = await this.find();
+        return debts.map(debt => {
+            const institution = DEBTS_INSTITUTION.find(institution => institution.id == debt.institutionId) as DebtsInstitution
+            if(debt?.institutionName) institution.name = debt.institutionName
+            return institution;
+        });
+    }
+
     public async findOne(id: number): Promise<DebtsEntity | undefined> {
         const debts = await this.find();
         return debts.find(debt => debt.id == id);

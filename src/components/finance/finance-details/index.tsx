@@ -10,8 +10,8 @@ import DatetimePicker from '../../global/datetime-picker';
 import { getPipeCustomDateString } from '../../../utils/date.util';
 import { FinanceDetailsProps } from '../../../interfaces/screens/finance.interface';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
-import { DEBTS_INSTITUTION } from '../../../constants/debts.constants';
 import { DebtsInstitution } from '../../../interfaces/services/debts.interface';
+import { AppDebtsService } from '../../../services/debts';
 
 const FinanceDetails: React.FC<FinanceDetailsProps> = (props) => {
 
@@ -21,6 +21,16 @@ const FinanceDetails: React.FC<FinanceDetailsProps> = (props) => {
   const [isDatePickerVisible, setDatePickerVisibility] = React.useState<boolean>(false)
   const [openOptions, setOpenOptions] = React.useState<boolean>(false);
   const [optionsType, setOptionsType] = React.useState<string>("");
+  const [debtsInstitution, setDebtsInstitution] = React.useState<DebtsInstitution[]>([]);
+
+  React.useEffect(() => {
+    loadDebts()
+  }, [])
+
+  const loadDebts = async () => {
+    const debts = await AppDebtsService.findInstitutions();
+    setDebtsInstitution(debts)
+  }
 
   const CategorySelection: React.FC = () => {
     if (props.category) return (
@@ -42,7 +52,7 @@ const FinanceDetails: React.FC<FinanceDetailsProps> = (props) => {
     return <Text style={style.selectText}>Categoria</Text>
   }
 
-  const Options = () => (
+  const Options: React.FC = () => (
     <View style={style.containerOptions}>
       <TouchableOpacity style={style.buttonOption} onPress={() => { setOptionsType("Category") }}>
         <MaterialIcons name="category" size={26} color={theme.text.primary} />
@@ -56,7 +66,7 @@ const FinanceDetails: React.FC<FinanceDetailsProps> = (props) => {
     </View>
   )
 
-  const Debts = ({ debit }: { debit: DebtsInstitution }) => (
+  const Debts: React.FC<{ debit: DebtsInstitution }> = ({ debit }) => (
     <TouchableOpacity onPress={() => {
       setOpenOptions(false);
       setOptionsType("");
@@ -168,7 +178,7 @@ const FinanceDetails: React.FC<FinanceDetailsProps> = (props) => {
           )}
           {(optionsType == "Bill") && (
             <ScrollView>
-              {DEBTS_INSTITUTION.map((debit, i) => (
+              {debtsInstitution.map((debit, i) => (
                 <Debts key={i} debit={debit} />
               ))}
             </ScrollView>
