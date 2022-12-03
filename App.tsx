@@ -7,6 +7,7 @@ import FinancesProvider from './src/contexts/financesContext';
 import ThemeProvider from './src/contexts/themeContext';
 import Routes from './src/routes/index.routes';
 import * as Updates from 'expo-updates';
+import DebtsProvider from './src/contexts/debtsContext';
 
 export default function App() {
 
@@ -14,7 +15,7 @@ export default function App() {
     updateApp()
   }, [])
 
-  const updateApp = async () =>  {
+  const updateApp = async () => {
     try {
       const { isAvailable } = await Updates.checkForUpdateAsync();
       if (isAvailable) {
@@ -24,18 +25,20 @@ export default function App() {
     } catch (err) {
     }
   }
-  
+
   return (
     <AuthProvider>
       <ThemeProvider>
-        <FinancesProvider>
-          <BudgetsProvider>
-            <NavigationContainer>
-              <Routes />
-              <StatusBar backgroundColor='#141b26' style='light' />
-            </NavigationContainer>
-          </BudgetsProvider>
-        </FinancesProvider>
+        <DebtsProvider>
+          <FinancesProvider>
+            <BudgetsProvider>
+              <NavigationContainer>
+                <Routes />
+                <StatusBar backgroundColor='#141b26' style='light' />
+              </NavigationContainer>
+            </BudgetsProvider>
+          </FinancesProvider>
+        </DebtsProvider>
       </ThemeProvider>
     </AuthProvider>
   );

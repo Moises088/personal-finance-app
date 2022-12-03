@@ -35,4 +35,5 @@ export interface DebtsBalance extends DebtsEntity {
     institution: DebtsInstitution;
     finances: FinancesBalanceEntity[];
     totalPaid: number;
+    totalRemain: number;
 }

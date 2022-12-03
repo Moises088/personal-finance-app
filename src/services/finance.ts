@@ -6,6 +6,7 @@ import { Services } from "../interfaces/services/service.interface";
 import { getPipeDateTimeString } from "../utils/date.util";
 import { getPipeMoneyNumber } from "../utils/money.util";
 import { AppCategoryService } from "./category";
+import { AppDebtsService } from "./debts";
 
 class Finance implements FinanceEntity {
     id: number;
@@ -96,6 +97,7 @@ class FinanceService implements Services<FinanceEntity, FinanceDto>{
 
         const finances = await this.find();
         const categories = await AppCategoryService.find()
+        const bills = await AppDebtsService.find()
 
         const financesFilter = finances.map((finance) => {
             const [date] = finance.paidAt.split(" ");
@@ -117,12 +119,13 @@ class FinanceService implements Services<FinanceEntity, FinanceDto>{
                 }
 
                 const category = categories.find(c => c.id == finance.categoryId);
-                const bill = DEBTS_INSTITUTION.find(bill => bill.id == finance.billId);
+                const getBill = bills.find(bill => bill.id == finance.billId);
+                const bill = DEBTS_INSTITUTION.find(bill => bill.id == getBill?.institutionId);
 
                 return { ...finance, category, bill };
             }
         }).filter(item => item) as FinancesBalanceEntity[];
-        
+
         return {
             total,
             totalIncome,

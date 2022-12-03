@@ -1,38 +1,34 @@
 import React from 'react';
 import { SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
-import { DEBTS_INSTITUTION } from '../../constants/debts.constants';
 import { ThemeContext } from '../../contexts/themeContext';
-import { DebtForms, DebtsBalance, DebtsDto, DebtsEntity, DebtsInstitution } from '../../interfaces/services/debts.interface';
-import { AntDesign } from '@expo/vector-icons';
+import { DebtsBalance } from '../../interfaces/services/debts.interface';
 import { styles } from './styles';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
+import { WINDOW_WIDTH } from '../../constants/screen.contants';
+import { getPipeMoneyString } from '../../utils/money.util';
+import { COLOR_DANGER, COLOR_SUCCESS } from '../../constants/colors';
+import { DebtsContext } from '../../contexts/debtsContext';
+import FinanceHistoricCard from '../../components/finance/finance-historic-card';
 import DebtsCard from '../../components/debts/debts-card';
 import Carousel from '../../components/global/carousel';
-import { WINDOW_WIDTH } from '../../constants/screen.contants';
-import { AppDebtsService } from '../../services/debts';
-import { getPipeMoneyString } from '../../utils/money.util';
-import { COLOR_SUCCESS } from '../../constants/colors';
-import FinanceHistoricCard from '../../components/finance/finance-historic-card';
 
 const DebtScreen: React.FC = () => {
 
   const { theme } = React.useContext(ThemeContext);
   const style = styles(theme);
 
+  const { debts } = React.useContext(DebtsContext);
   const navigation = useNavigation<StackNavigationProp<any>>();
 
-  const [debts, setDebts] = React.useState<DebtsBalance[]>([])
   const [actual, setActual] = React.useState<DebtsBalance>()
 
   React.useEffect(() => {
     load()
-  }, []);
+  }, [debts]);
 
   const load = async () => {
-    const getDebts = await AppDebtsService.getDebtsBalance()
-    const [debt] = getDebts;
-    setDebts(getDebts);
+    const [debt] = debts;
     setActual(debt);
   }
 
@@ -67,9 +63,16 @@ const DebtScreen: React.FC = () => {
                 <Text style={style.info}>R$ {getPipeMoneyString(actual.total)}</Text>
               </View>
 
-              <View style={style.containerInfo}>
-                <Text style={style.label}>Valor pago</Text>
-                <Text style={[style.info, { color: COLOR_SUCCESS }]}>R$ {getPipeMoneyString(actual.totalPaid)}</Text>
+              <View style={{ flexDirection: 'row' }}>
+                <View style={style.containerInfo}>
+                  <Text style={style.label}>Valor pago</Text>
+                  <Text style={[style.info, { color: COLOR_SUCCESS }]}>R$ {getPipeMoneyString(actual.totalPaid)}</Text>
+                </View>
+
+                <View style={style.containerInfo}>
+                  <Text style={style.label}>Valor restante</Text>
+                  <Text style={[style.info, { color: COLOR_DANGER }]}>R$ {getPipeMoneyString(actual.totalRemain)}</Text>
+                </View>
               </View>
 
               <View style={style.containerInfo}>

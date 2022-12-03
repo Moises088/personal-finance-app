@@ -27,7 +27,7 @@ const BarChart: React.FC<{ itens: BarChartProps[] }> = (props) => {
         >
             <View style={{ padding: 20, flexDirection: 'row', alignItems: "flex-end" }}>
                 {itens().map((item, i) => (
-                    <View style={{ alignItems: 'center', marginRight: 12 }}>
+                    <View key={i} style={{ alignItems: 'center', marginRight: 12 }}>
                         {item.icon}
                         <Text style={{ fontSize: 10, color: "#FFF", marginBottom: 3, opacity: 0.6 }}>R$ {getPipeMoneyString(item.total)}</Text>
                         <View

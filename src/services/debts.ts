@@ -42,7 +42,7 @@ class DebtsService implements Services<DebtsEntity, DebtsDto> {
         return debts.map(debt => {
             const institution = DEBTS_INSTITUTION.find(institution => institution.id == debt.institutionId) as DebtsInstitution
             if (debt?.institutionName) institution.name = debt.institutionName
-            return institution;
+            return { ...institution, id: debt.id };
         });
     }
 
@@ -97,14 +97,23 @@ class DebtsService implements Services<DebtsEntity, DebtsDto> {
             let totalPaid = 0;
             financesFilter.map(finance => { if (finance.type == "EXPENSE") totalPaid += finance.value })
 
-            const totalMonth = Math.ceil((debt.total - totalPaid) / debt.totalPerMonth);
+            const getTotalMonth = () => {
+                if ((debt.total - totalPaid) > 0) return Math.ceil((debt.total - totalPaid) / debt.totalPerMonth)
+                return 0
+            }
+
+            let totalRemain = 0;
+            if ((debt.total - totalPaid) > 0) totalRemain = debt.total - totalPaid;
+
+            const totalMonth = getTotalMonth()
 
             debtsBalance.push({
                 ...debt,
                 totalMonth,
                 institution,
                 finances: financesFilter,
-                totalPaid
+                totalPaid,
+                totalRemain
             })
         }
 

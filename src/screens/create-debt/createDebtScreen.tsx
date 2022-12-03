@@ -18,9 +18,11 @@ import DatetimePicker from '../../components/global/datetime-picker';
 import { getPipeCustomDateString } from '../../utils/date.util';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
+import { DebtsContext } from '../../contexts/debtsContext';
 
 const CreateDebtScreen: React.FC = () => {
 
+  const { getDebtsBalance } = React.useContext(DebtsContext);
   const { theme } = React.useContext(ThemeContext);
   const style = styles(theme);
   const defaultInstitution = DEBTS_INSTITUTION.find(debt => debt.name == "OUTRO") as DebtsInstitution;
@@ -63,6 +65,7 @@ const CreateDebtScreen: React.FC = () => {
         institutionName
       }
       await AppDebtsService.create(debtDto);
+      await getDebtsBalance()
       navigation.goBack()
     } catch (error: any) {
       if (error?.message) setValidation([error.message])
