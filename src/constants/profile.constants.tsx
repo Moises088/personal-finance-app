@@ -44,9 +44,9 @@ export const PROFILE_LIST = [
         icon: (color: string, size: number) => <MaterialCommunityIcons name="finance" size={size} color={color} />
     },
     {
-        title: "DebtScreen",
+        title: "Faturas",
         divisor: false,
         navigate: "DebtScreen",
-        icon: (color: string, size: number) => <MaterialCommunityIcons name="finance" size={size} color={color} />
+        icon: (color: string, size: number) => <AntDesign name="creditcard" size={size} color={color} />
     },
 ]
