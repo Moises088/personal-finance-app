@@ -12,6 +12,8 @@ import Carousel from '../../components/global/carousel';
 import { WINDOW_WIDTH } from '../../constants/screen.contants';
 import { AppDebtsService } from '../../services/debts';
 import { getPipeMoneyString } from '../../utils/money.util';
+import { COLOR_SUCCESS } from '../../constants/colors';
+import FinanceHistoricCard from '../../components/finance/finance-historic-card';
 
 const DebtScreen: React.FC = () => {
 
@@ -66,6 +68,11 @@ const DebtScreen: React.FC = () => {
               </View>
 
               <View style={style.containerInfo}>
+                <Text style={style.label}>Valor pago</Text>
+                <Text style={[style.info, { color: COLOR_SUCCESS }]}>R$ {getPipeMoneyString(actual.totalPaid)}</Text>
+              </View>
+
+              <View style={style.containerInfo}>
                 <Text style={style.label}>Valor por mês</Text>
                 <Text style={style.info}>{actual.totalMonth}x R$ {getPipeMoneyString(actual.totalPerMonth)}</Text>
               </View>
@@ -73,6 +80,13 @@ const DebtScreen: React.FC = () => {
               <View style={style.containerInfo}>
                 <Text style={style.label}>Data por mês</Text>
                 <Text style={style.info}>{actual.paidMonthAt}</Text>
+              </View>
+
+              <View style={style.containerInfo}>
+                <Text style={style.label}>Histórico</Text>
+                <View style={{ marginLeft: -8 }}>
+                  {actual?.finances?.map((finance, i) => <FinanceHistoricCard key={i} finance={finance} />)}
+                </View>
               </View>
             </>
           )}

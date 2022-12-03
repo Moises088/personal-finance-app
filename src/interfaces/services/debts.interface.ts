@@ -1,3 +1,5 @@
+import { FinanceEntity, FinancesBalanceEntity } from "./finance.interface";
+
 export interface DebtsEntity extends DebtsDto {
     id: number;
     createdAt: string;
@@ -30,5 +32,7 @@ export interface DebtForms {
 
 export interface DebtsBalance extends DebtsEntity {
     totalMonth: number;
-    institution: DebtsInstitution
+    institution: DebtsInstitution;
+    finances: FinancesBalanceEntity[];
+    totalPaid: number;
 }

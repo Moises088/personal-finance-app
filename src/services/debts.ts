@@ -2,8 +2,11 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { DEBTS_INSTITUTION } from "../constants/debts.constants";
 import { ASYNC_DEBTS } from "../constants/storage.constant";
 import { DebtsBalance, DebtsDto, DebtsEntity, DebtsInstitution } from "../interfaces/services/debts.interface";
+import { FinancesBalanceEntity } from "../interfaces/services/finance.interface";
 import { Services } from "../interfaces/services/service.interface";
 import { getPipeDateTimeString } from "../utils/date.util";
+import { AppCategoryService } from "./category";
+import { AppFinanceService } from "./finance";
 
 class Debts implements DebtsEntity {
     id: number;
@@ -38,7 +41,7 @@ class DebtsService implements Services<DebtsEntity, DebtsDto> {
         const debts = await this.find();
         return debts.map(debt => {
             const institution = DEBTS_INSTITUTION.find(institution => institution.id == debt.institutionId) as DebtsInstitution
-            if(debt?.institutionName) institution.name = debt.institutionName
+            if (debt?.institutionName) institution.name = debt.institutionName
             return institution;
         });
     }
@@ -73,17 +76,35 @@ class DebtsService implements Services<DebtsEntity, DebtsDto> {
     }
 
     public async getDebtsBalance(): Promise<DebtsBalance[]> {
+        const finances = await AppFinanceService.find();
+        const categories = await AppCategoryService.find();
+
         const debts = await this.find();
         const debtsBalance: DebtsBalance[] = []
 
         for (const debt of debts) {
             if (!debt.totalPerMonth) debt.totalPerMonth = debt.total
-            const totalMonth = Math.ceil(debt.total / debt.totalPerMonth)
-            const institution = DEBTS_INSTITUTION.find(institution => institution.id == debt.institutionId) as DebtsInstitution
+            const institution = DEBTS_INSTITUTION.find(institution => institution.id == debt.institutionId) as DebtsInstitution;
+
+            const financesFilter = finances.map(finance => {
+                if (finance.billId == debt.id) {
+                    const category = categories.find(category => category.id == finance.categoryId);
+                    const bill = DEBTS_INSTITUTION.find(institution => institution.id == debt.institutionId)
+                    return { ...finance, category, bill }
+                }
+            }).filter(r => r) as FinancesBalanceEntity[];
+
+            let totalPaid = 0;
+            financesFilter.map(finance => { if (finance.type == "EXPENSE") totalPaid += finance.value })
+
+            const totalMonth = Math.ceil((debt.total - totalPaid) / debt.totalPerMonth);
+
             debtsBalance.push({
                 ...debt,
                 totalMonth,
-                institution
+                institution,
+                finances: financesFilter,
+                totalPaid
             })
         }
 
