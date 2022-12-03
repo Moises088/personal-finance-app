@@ -41,11 +41,32 @@ export const styles = (theme: ThemesConfig) => {
             borderTopLeftRadius: 25,
             borderTopRightRadius: 25
         },
+        containerFormExpand: {
+            
+        },
         title: { 
-            fontSize: 24, 
-            color: "#FFF",
+            fontSize: 18, 
+            color: theme.text.primary,
             marginTop: 15,
-            marginLeft: 8
+            marginLeft: 8,
+            padding: 10,
+            backgroundColor: theme.background.primary,
+            borderRadius: 8,
+            marginBottom: 15
+        },
+        containerInfo: {
+            padding: 10,
+            paddingHorizontal: 15
+        },
+        label: {
+            fontSize: 14, 
+            color: theme.text.primary,
+            opacity: 0.7
+        },
+        info: {
+            fontSize: 19, 
+            color: theme.text.primary,
+            marginTop: 5
         }
     })
 };

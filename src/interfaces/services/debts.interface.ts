@@ -26,3 +26,7 @@ export interface DebtForms {
     paidMonthAt: string;
     institutionName?: string;
 }
+
+export interface DebtsBalance extends DebtsEntity {
+    totalMonth: number;
+}

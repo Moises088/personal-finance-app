@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ASYNC_DEBTS } from "../constants/storage.constant";
-import { DebtsDto, DebtsEntity, DebtsInstitution } from "../interfaces/services/debts.interface";
+import { DebtsBalance, DebtsDto, DebtsEntity, DebtsInstitution } from "../interfaces/services/debts.interface";
 import { Services } from "../interfaces/services/service.interface";
 import { getPipeDateTimeString } from "../utils/date.util";
 
@@ -60,6 +60,22 @@ class DebtsService implements Services<DebtsEntity, DebtsDto> {
         await AsyncStorage.setItem(ASYNC_DEBTS, JSON.stringify(remove));
 
         return remove;
+    }
+
+    public async getDebtsBalance(): Promise<DebtsBalance[]> {
+        const debts = await this.find();
+        const debtsBalance: DebtsBalance[] = []
+
+        for (const debt of debts) {
+            if(!debt.totalPerMonth) debt.totalPerMonth = debt.total
+            const totalMonth = Math.ceil(debt.total / debt.totalPerMonth)
+            debtsBalance.push({
+                ...debt,
+                totalMonth
+            })
+        }
+
+        return debtsBalance
     }
 
     protected findLast(debts: DebtsEntity[]): DebtsEntity | undefined {
