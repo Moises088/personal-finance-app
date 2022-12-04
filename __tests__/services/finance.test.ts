@@ -1,5 +1,6 @@
 import { AsyncMock } from "../../src/constants/storage.constant";
 import { FinanceDto } from "../../src/interfaces/services/finance.interface";
+import { AppBalanceService } from "../../src/services/balance";
 import { AppFinanceService } from "../../src/services/finance";
 import { getPipeTransformDateStringNumber, getPipeTransformDateStringPT } from "../../src/utils/date.util";
 
@@ -38,7 +39,8 @@ describe("services/finance", () => {
                 name: 'Conta',
                 paid: getPipeTransformDateStringNumber('10/11/2022'),
                 money: "R$20,50",
-                type: 'INCOME'
+                type: 'INCOME',
+                billId: 0
             }
             const newfinance = await AppFinanceService.create(finance);
             expect(newfinance.id).toEqual(3);
@@ -51,7 +53,7 @@ describe("services/finance", () => {
 
     describe("method getFinancesBalance", () => {
         it("get balance nov 2022", async () => {
-            const balance = await AppFinanceService.getFinancesBalance('11', '2022', 1);
+            const balance = await AppBalanceService.getFinancesBalance('11', '2022', 1);
             expect(balance.total).toEqual(-10);
             expect(balance.totalExpense).toEqual(20);
             expect(balance.totalIncome).toEqual(10);
@@ -63,7 +65,7 @@ describe("services/finance", () => {
         })
 
         it("get balance withou params", async () => {
-            const balance = await AppFinanceService.getFinancesBalance('', '', 0);
+            const balance = await AppBalanceService.getFinancesBalance('', '', 0);
             expect(balance.total).toEqual(0);
             expect(balance.totalExpense).toEqual(0);
             expect(balance.totalIncome).toEqual(0);
@@ -80,7 +82,8 @@ describe("services/finance", () => {
             name: "Updated",
             paid: "2022-27-11 00:00:00",
             type: "INCOME",
-            description: "Test"
+            description: "Test",
+            billId: 0
         }
 
         it("update id 1", async () => {

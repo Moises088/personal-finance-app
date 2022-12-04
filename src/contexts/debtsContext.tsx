@@ -2,6 +2,7 @@ import React, { createContext } from "react";
 import Loading from "../components/global/loading";
 import { DebtsContextData } from "../interfaces/screens/debts.interface";
 import { DebtsBalance } from "../interfaces/services/debts.interface";
+import { AppBalanceService } from "../services/balance";
 import { AppDebtsService } from "../services/debts";
 
 export const DebtsContext = createContext<DebtsContextData>({} as DebtsContextData);
@@ -18,7 +19,7 @@ export const DebtsProvider = ({ children }: any) => {
     const getDebtsBalance = async () => {
         try {
             setLoading(true)
-            const debtsBalance = await AppDebtsService.getDebtsBalance();
+            const debtsBalance = await AppBalanceService.getDebtsBalance();
             setDebts(debtsBalance)
             return debtsBalance;
         } catch (error) { } finally {

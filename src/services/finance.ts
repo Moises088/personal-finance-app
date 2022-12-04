@@ -1,12 +1,9 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { DEBTS_INSTITUTION } from "../constants/debts.constants";
 import { ASYNC_FINANCES } from "../constants/storage.constant";
-import { FinanceBalance, FinanceBalancePerCategory, FinanceDto, FinanceEntity, FinancesBalanceEntity } from "../interfaces/services/finance.interface";
+import { FinanceDto, FinanceEntity } from "../interfaces/services/finance.interface";
 import { Services } from "../interfaces/services/service.interface";
 import { getPipeDateTimeString } from "../utils/date.util";
 import { getPipeMoneyNumber } from "../utils/money.util";
-import { AppCategoryService } from "./category";
-import { AppDebtsService } from "./debts";
 
 class Finance implements FinanceEntity {
     id: number;
@@ -81,77 +78,6 @@ class FinanceService implements Services<FinanceEntity, FinanceDto>{
         await AsyncStorage.setItem(ASYNC_FINANCES, JSON.stringify(remove));
 
         return remove;
-    }
-
-    public async getFinancesBalance(month: string, year: string, walletId: number): Promise<FinanceBalance> {
-        let total = 0;
-        let totalIncome = 0;
-        let totalExpense = 0;
-
-        if (!month || !year || !walletId) return {
-            total,
-            totalIncome,
-            totalExpense,
-            finances: []
-        }
-
-        const finances = await this.find();
-        const categories = await AppCategoryService.find()
-        const bills = await AppDebtsService.find()
-
-        const financesFilter = finances.map((finance) => {
-            const [date] = finance.paidAt.split(" ");
-            const [getYear, getMonth] = date.split("-");
-
-            if (month.length == 1) month = month.padStart(2, "0")
-            const validateDate = getYear == year && getMonth == month;
-
-            if (finance.walletId == walletId && validateDate) {
-                if (finance.isPaid) {
-                    if (finance.type == "INCOME") {
-                        total += finance.value;
-                        totalIncome += finance.value;
-                    }
-                    if (finance.type == "EXPENSE") {
-                        total -= finance.value;
-                        totalExpense += finance.value;
-                    }
-                }
-
-                const category = categories.find(c => c.id == finance.categoryId);
-                const getBill = bills.find(bill => bill.id == finance.billId);
-                const bill = DEBTS_INSTITUTION.find(bill => bill.id == getBill?.institutionId);
-
-                return { ...finance, category, bill };
-            }
-        }).filter(item => item) as FinancesBalanceEntity[];
-
-        return {
-            total,
-            totalIncome,
-            totalExpense,
-            finances: financesFilter.sort((a, b) => b.id - a.id)
-        }
-    }
-
-    public async getFinancesBalancePerCategory(month: string, year: string, walletId: number): Promise<FinanceBalance & { categories: FinanceBalancePerCategory[] }> {
-        const balances = await this.getFinancesBalance(month, year, walletId);
-        const perCategory: FinanceBalancePerCategory[] = [];
-
-        for (const balance of balances.finances) {
-            const category = perCategory.find(category => category?.category?.id == balance.categoryId);
-            if (category?.total) {
-                category.total += balance.value;
-                continue
-            }
-
-            perCategory.push({
-                category: balance.category,
-                total: balance.value
-            })
-        }
-
-        return { ...balances, categories: perCategory }
     }
 
     protected findLast(finances: FinanceEntity[]): FinanceEntity | undefined {

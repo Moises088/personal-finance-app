@@ -2,7 +2,7 @@ import { AsyncMock } from "../../src/constants/storage.constant";
 import { DebtsDto } from "../../src/interfaces/services/debts.interface";
 import { AppDebtsService } from "../../src/services/debts";
 
-const debt: DebtsDto = { total: 100, totalPerMonth: 10, paidMonthAt: "11-10", type: "INVOICE", institution: { name: "NUBANK", color: "#FFF", logo: "" } }
+const debt: DebtsDto = { total: 100, totalPerMonth: 10, paidMonthAt: "11-10", type: "INVOICE", institutionId: 1 }
 const sameDebt = AsyncMock['ASYNC_DEBTS'][0];
 
 describe("services/debt", () => {
@@ -36,7 +36,7 @@ describe("services/debt", () => {
             expect(newDebt.id).toEqual(2);
             expect(newDebt.total).toEqual(100);
             expect(newDebt.totalPerMonth).toEqual(10);
-            expect(newDebt.institution).toEqual({ name: "NUBANK", color: "#FFF", logo: "" });
+            expect(newDebt.institutionId).toEqual(1);
             expect(newDebt.institutionName).toBeUndefined();
             expect(newDebt.paidMonthAt).toEqual("11-10");
             expect(newDebt.type).toEqual("INVOICE");

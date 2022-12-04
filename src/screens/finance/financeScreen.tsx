@@ -20,6 +20,7 @@ import CustomButtonAnimated from '../../components/global/custom-button-animated
 import AlertError from '../../components/global/alert-error';
 import { AppWalletService } from '../../services/wallet';
 import { getPipeMoneyString } from '../../utils/money.util';
+import { DebtsContext } from '../../contexts/debtsContext';
 
 const FinanceScreen: React.FC = () => {
 
@@ -39,6 +40,7 @@ const FinanceScreen: React.FC = () => {
   const inputRef = React.useRef<any>();
 
   const { getFinancesBalance, deleteFinance } = React.useContext(FinancesContext)
+  const { getDebtsBalance } = React.useContext(DebtsContext)
 
   React.useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => { setKeyboardVisible(true); });
@@ -121,6 +123,7 @@ const FinanceScreen: React.FC = () => {
 
 
       await getFinancesBalance()
+      if(bill?.id) await getDebtsBalance()
       navigation.goBack();
 
     } catch (error: any) {

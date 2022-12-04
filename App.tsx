@@ -29,16 +29,16 @@ export default function App() {
   return (
     <AuthProvider>
       <ThemeProvider>
-        <DebtsProvider>
-          <FinancesProvider>
+        <FinancesProvider>
+          <DebtsProvider>
             <BudgetsProvider>
               <NavigationContainer>
                 <Routes />
                 <StatusBar backgroundColor='#141b26' style='light' />
               </NavigationContainer>
             </BudgetsProvider>
-          </FinancesProvider>
-        </DebtsProvider>
+          </DebtsProvider>
+        </FinancesProvider>
       </ThemeProvider>
     </AuthProvider>
   );
