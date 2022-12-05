@@ -34,7 +34,7 @@ const DebtScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={style.container}>
-      {actual && (
+      {actual ? (
         <View style={{ height: 180 }}>
           <Carousel
             itens={debts.map((debt, i) => (
@@ -46,6 +46,8 @@ const DebtScreen: React.FC = () => {
             onChangeIndex={index => setActual(debts[index])}
           />
         </View>
+      ): (
+        <Text style={style.titleHeader}>Crie novas faturas clicando em adicionar</Text>
       )}
 
       <View style={style.containerForm}>
