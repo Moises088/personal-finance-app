@@ -33,6 +33,12 @@ const DebtScreen: React.FC = () => {
     setActual(debt);
   }
 
+  const name = () => {
+    if (!actual) return ""
+    if (actual.institution.name != "OUTRO") return actual.institution.name;
+    if (actual.institution.name == "OUTRO") return actual.institutionName;
+  }
+
   return (
     <SafeAreaView style={style.container}>
       {actual ? (
@@ -64,7 +70,7 @@ const DebtScreen: React.FC = () => {
                 <Text style={style.btnText}> Atualizar</Text>
               </TouchableOpacity>
 
-              <Text style={style.title}>{actual.institution.name}</Text>
+              <Text style={style.title}>{name()}</Text>
 
               <View style={style.containerInfo}>
                 <Text style={style.label}>Valor total</Text>
