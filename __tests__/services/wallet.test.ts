@@ -1,6 +1,6 @@
+import { AsyncMock } from "../../src/constants/storage.constant";
 import { WalletDto, WalletEntity } from "../../src/interfaces/services/wallet.interface";
 import { AppWalletService } from "../../src/services/wallet";
-import { AsyncMock } from "../../__mocks__/asynstorage.mock";
 
 const wallet: WalletDto = { name: "Secundária" };
 const sameWallet: WalletDto = AsyncMock['ASYNC_WALLETS'][0];

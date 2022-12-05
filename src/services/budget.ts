@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ASYNC_BUDGETS } from "../constants/storage.constant";
 import { AppCategoryService } from "./category";
 import { AppFinanceService } from "./finance";
+import { AppBalanceService } from "./balance";
 
 class Budget implements BudgetEntity {
     id: number;
@@ -36,7 +37,7 @@ class BudgetService implements Services<BudgetEntity, BudgetDto>{
     public async getBudgetBalance(month: string, year: string): Promise<BudgetsBalanceEntity | undefined> {
         const budgets = await this.find();
         const budget = budgets.find(budget => budget.month == month && budget.year == year);
-        const { categories, totalExpense } = await AppFinanceService.getFinancesBalancePerCategory(month, year, 1);
+        const { categories, totalExpense } = await AppBalanceService.getFinancesBalancePerCategory(month, year, 1);
 
         if (!budget?.categories) return;
 

@@ -1,6 +1,6 @@
+import { AsyncMock } from "../../src/constants/storage.constant";
 import { BudgetDto } from "../../src/interfaces/services/budget.interface";
 import { AppBudgetService } from "../../src/services/budget";
-import { AsyncMock } from "../../__mocks__/asynstorage.mock";
 
 const budget: BudgetDto = { month: "12", year: "2022", total: "10,50", categories: [{ categoryId: 1, total: 10 }] };
 const sameBudget = AsyncMock['ASYNC_BUDGETS'][0];

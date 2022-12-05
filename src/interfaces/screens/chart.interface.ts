@@ -5,3 +5,10 @@ export interface DonutChartProps {
     strokeColor: string;
     total: number;
 }
+
+export interface BarChartProps {
+    icon: JSX.Element;
+    total: number;
+    heigth?: number;
+    color: string;
+}

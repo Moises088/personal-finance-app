@@ -75,6 +75,59 @@ export const styles = (theme: ThemesConfig) => {
         checkText: {
             marginLeft: -8,
             textDecorationLine: "none",
+        },
+        modalOption: {
+            height: WINDOW_HEIGTH / 3,
+            minHeight: 200
+        },
+        containerOptions: {
+            height: WINDOW_HEIGTH / 3,
+            minHeight: 200,
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center'
+        },
+        buttonOption: {
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: WINDOW_WIDTH * 0.25,
+            height: WINDOW_WIDTH * 0.25,
+            borderRadius: 300,
+            minWidth: 100,
+            minHeight: 100,
+            backgroundColor: theme.background.tertiary,
+            marginHorizontal: WINDOW_WIDTH * 0.05
+        },
+        buttonOptionText: {
+            color: theme.text.primary,
+            marginTop: 8,
+            fontSize: 16,
+            fontWeight: '600'
+        },
+        card: {
+            width: 80,
+            height: 45,
+            borderRadius: 5,
+            alignItems: "center",
+            justifyContent: "center"
+        },
+        minCard: {
+            height: 30,
+            width: 50
+        },
+        minLogo: {
+            height: 25,
+            width: 25
+        },
+        cardLogo: {
+            width: 40,
+            height: 40
+        },
+        containerInstitution: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            margin: 10
         }
     })
 };

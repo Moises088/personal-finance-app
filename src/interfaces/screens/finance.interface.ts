@@ -1,9 +1,11 @@
 import { CategoryEntity } from "../services/category.interface";
+import { DebtsInstitution } from "../services/debts.interface";
 import { FinanceBalance, FinancesBalanceEntity } from "../services/finance.interface";
 import { WalletEntity } from "../services/wallet.interface";
 
 export interface FinanceDetailsProps {
-    setCategory(category: CategoryEntity): void;
+    financeType: "INCOME" | "EXPENSE" | undefined;
+    setCategory(category?: CategoryEntity): void;
     category: CategoryEntity | undefined;
     // setWallet(wallet: WalletEntity | undefined): void;
     // wallet: WalletEntity | undefined;
@@ -13,6 +15,8 @@ export interface FinanceDetailsProps {
     description: string | undefined;
     setIsPaid(isPaid: boolean): void;
     isPaid: boolean | undefined;
+    setBill(bill?: DebtsInstitution): void;
+    bill: DebtsInstitution | undefined;
 }
 
 export interface FinancesContextData {
@@ -40,5 +44,6 @@ export interface FinanceForms {
     category: CategoryEntity | undefined;
     wallet: WalletEntity | undefined;
     isPaid: boolean;
-    id?: number
+    id?: number;
+    bill: DebtsInstitution | undefined;
 }

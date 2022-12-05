@@ -20,6 +20,8 @@ import CustomButtonAnimated from '../../components/global/custom-button-animated
 import AlertError from '../../components/global/alert-error';
 import { AppWalletService } from '../../services/wallet';
 import { getPipeMoneyString } from '../../utils/money.util';
+import { DebtsContext } from '../../contexts/debtsContext';
+import { DebtsInstitution } from '../../interfaces/services/debts.interface';
 
 const FinanceScreen: React.FC = () => {
 
@@ -39,6 +41,7 @@ const FinanceScreen: React.FC = () => {
   const inputRef = React.useRef<any>();
 
   const { getFinancesBalance, deleteFinance } = React.useContext(FinancesContext)
+  const { getDebtsBalance } = React.useContext(DebtsContext)
 
   React.useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => { setKeyboardVisible(true); });
@@ -69,6 +72,9 @@ const FinanceScreen: React.FC = () => {
     const getWallet = await AppWalletService.findOne(finance.walletId);
     if (!getWallet) return;
 
+    let bill: DebtsInstitution | undefined;
+    if (finance.bill) bill = { ...finance.bill, id: finance.billId }
+
     const form: FinanceForms = {
       category: finance.category,
       description: finance.description,
@@ -77,7 +83,8 @@ const FinanceScreen: React.FC = () => {
       paidDate: getPipeCustomDateString(finance.paidAt, "DD/MM/YYYY"),
       title: finance.name,
       wallet: getWallet,
-      id: finance.id
+      id: finance.id,
+      bill
     }
 
     setFinanceForm(form)
@@ -85,22 +92,32 @@ const FinanceScreen: React.FC = () => {
 
   const saveFinance = async () => {
     try {
-      let { category, description, isPaid, money, paidDate, title: name, id } = financeForm;
-      
-      const erros = [];
-      if (!category?.id) erros.push("Categoria é obrigatória");
-      name = category?.name;
+      let { category, description, isPaid, money, paidDate, title: name, id, bill } = financeForm;
 
+      const getName = () => {
+        if (category) return category.name;
+        if (bill) return bill.name;
+        return ""
+      }
+
+      const erros = [];
+      if (!category?.id && !bill?.id) erros.push("Categoria ou Fatura é obrigatória");
       if (!money || !money?.trim()?.length) erros.push("Valor é obrigatório")
-      // if (!name || !name?.trim()?.length) erros.push("Título é obrigatório")
       if (!paidDate || paidDate?.length < 10) erros.push("Preencha a data corretamente")
       if (paidDate?.length == 10) erros.push(...validateDateString(getPipeTransformDateStringPT(paidDate)));
       setValidation(erros)
 
-      if (!category || !money || !paidDate || !name || !financeType) return;
+      name = getName();
+
+      if (!money || !paidDate || !name || !financeType) return;
+      if (!category && !bill) return;
 
       const paid = getPipeTransformDateStringNumber(paidDate);
-      const body: FinanceDto = { walletId: 1, categoryId: category.id, money, name, description, paid, isPaid, type: financeType }
+      const body: FinanceDto = {
+        walletId: 1, categoryId: category?.id ?? 0,
+        money, name, description, paid, isPaid,
+        type: financeType, billId: bill?.id ?? 0
+      }
 
       if (id) {
         await AppFinanceService.update(id, body);
@@ -108,8 +125,8 @@ const FinanceScreen: React.FC = () => {
         await AppFinanceService.create(body);
       }
 
-
       await getFinancesBalance()
+      if (bill?.id) await getDebtsBalance()
       navigation.goBack();
 
     } catch (error: any) {
@@ -185,6 +202,7 @@ const FinanceScreen: React.FC = () => {
       <FinanceDetails
         // wallet={financeForm.wallet}
         // setWallet={wallet => setFinanceForm(prev => ({ ...prev, wallet }))}
+        financeType={financeType}
         category={financeForm.category}
         setCategory={category => setFinanceForm(prev => ({ ...prev, category }))}
         paidDate={financeForm.paidDate}
@@ -193,6 +211,8 @@ const FinanceScreen: React.FC = () => {
         setDescription={description => setFinanceForm(prev => ({ ...prev, description }))}
         isPaid={financeForm.isPaid}
         setIsPaid={isPaid => setFinanceForm(prev => ({ ...prev, isPaid }))}
+        bill={financeForm.bill}
+        setBill={bill => setFinanceForm(prev => ({ ...prev, bill }))}
       />
 
       {!keyboardVisible && (
