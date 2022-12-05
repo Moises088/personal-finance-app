@@ -61,7 +61,17 @@ class DebtsService implements Services<DebtsEntity, DebtsDto> {
     }
 
     public async update(id: number, updateDto: DebtsDto): Promise<DebtsEntity | undefined> {
-        return
+        const debts = await this.find();
+        let debt = debts.find(debt => debt.id == id);
+        let index = debts.findIndex(debt => debt.id == id);
+        if (!debt) return;
+
+        debt = { ...debt, ...updateDto }
+        debts.splice(index, 1, debt);
+
+        await AsyncStorage.setItem(ASYNC_DEBTS, JSON.stringify(debts));
+
+        return debt
     }
 
     public async delete(id: number): Promise<DebtsEntity[]> {
