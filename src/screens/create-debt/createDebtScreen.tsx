@@ -154,7 +154,7 @@ const CreateDebtScreen: React.FC = () => {
               placeholder="Data de pagamento"
               placeholderTextColor="#b3b3b3"
               mask='custom'
-              maskCustom='99/99/9999'
+              maskCustom='99/99'
               keyboard='numeric'
               onPressIcon={() => setDatePickerVisibility(true)}
             />
@@ -167,7 +167,7 @@ const CreateDebtScreen: React.FC = () => {
             onChange={(date) => {
               setDatePickerVisibility(false);
               if (!date) return
-              setDebtForms(prev => ({ ...prev, paidMonthAt: getPipeCustomDateString(date.getTime(), "DD/MM/YYYY") }))
+              setDebtForms(prev => ({ ...prev, paidMonthAt: getPipeCustomDateString(date.getTime(), "DD/MM") }))
             }}
           />
 

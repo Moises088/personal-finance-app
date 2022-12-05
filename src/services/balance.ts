@@ -18,7 +18,7 @@ class BalanceService {
             const institution = DEBTS_INSTITUTION.find(institution => institution.id == debt.institutionId) as DebtsInstitution;
 
             const financesFilter = finances.map(finance => {
-                if (finance.billId == debt.id) {
+                if (finance.billId == debt.id && finance.isPaid) {
                     const category = categories.find(category => category.id == finance.categoryId);
                     const bill = DEBTS_INSTITUTION.find(institution => institution.id == debt.institutionId)
                     return { ...finance, category, bill }

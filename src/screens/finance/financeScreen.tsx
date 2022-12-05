@@ -21,6 +21,7 @@ import AlertError from '../../components/global/alert-error';
 import { AppWalletService } from '../../services/wallet';
 import { getPipeMoneyString } from '../../utils/money.util';
 import { DebtsContext } from '../../contexts/debtsContext';
+import { DebtsInstitution } from '../../interfaces/services/debts.interface';
 
 const FinanceScreen: React.FC = () => {
 
@@ -71,6 +72,9 @@ const FinanceScreen: React.FC = () => {
     const getWallet = await AppWalletService.findOne(finance.walletId);
     if (!getWallet) return;
 
+    let bill: DebtsInstitution | undefined;
+    if (finance.bill) bill = { ...finance.bill, id: finance.billId }
+
     const form: FinanceForms = {
       category: finance.category,
       description: finance.description,
@@ -80,7 +84,7 @@ const FinanceScreen: React.FC = () => {
       title: finance.name,
       wallet: getWallet,
       id: finance.id,
-      bill: finance.bill
+      bill
     }
 
     setFinanceForm(form)
@@ -91,8 +95,8 @@ const FinanceScreen: React.FC = () => {
       let { category, description, isPaid, money, paidDate, title: name, id, bill } = financeForm;
 
       const getName = () => {
-        if(category) return category.name;
-        if(bill) return bill.name;
+        if (category) return category.name;
+        if (bill) return bill.name;
         return ""
       }
 
@@ -102,9 +106,9 @@ const FinanceScreen: React.FC = () => {
       if (!paidDate || paidDate?.length < 10) erros.push("Preencha a data corretamente")
       if (paidDate?.length == 10) erros.push(...validateDateString(getPipeTransformDateStringPT(paidDate)));
       setValidation(erros)
-      
+
       name = getName();
-      
+
       if (!money || !paidDate || !name || !financeType) return;
       if (!category && !bill) return;
 
@@ -121,9 +125,8 @@ const FinanceScreen: React.FC = () => {
         await AppFinanceService.create(body);
       }
 
-
       await getFinancesBalance()
-      if(bill?.id) await getDebtsBalance()
+      if (bill?.id) await getDebtsBalance()
       navigation.goBack();
 
     } catch (error: any) {
