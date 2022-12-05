@@ -34,7 +34,7 @@ export const styles = (theme: ThemesConfig) => {
             paddingHorizontal: 10,
             flexDirection: 'row',
             alignItems: 'center',
-            backgroundColor: 'rgba(0,0,0,0.1)'
+            backgroundColor: 'rgba(0,0,0,0.3)'
             // borderTopWidth: .5,
             // borderColor: theme.background.secondary,
         },

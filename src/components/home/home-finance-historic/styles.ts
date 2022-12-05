@@ -28,7 +28,7 @@ export const styles = (theme: ThemesConfig) => {
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: 'rgba(0,0,0,0.1)'
+            backgroundColor: 'rgba(0,0,0,0.3)'
         }
     })
 };

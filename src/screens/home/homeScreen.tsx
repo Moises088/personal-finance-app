@@ -1,7 +1,8 @@
 import React from 'react';
-import { SafeAreaView, ScrollView } from 'react-native';
+import { SafeAreaView, ScrollView, Image } from 'react-native';
 import HomeBalance from '../../components/home/home-balance';
 import HomeBudget from '../../components/home/home-budget';
+import HomeDebts from '../../components/home/home-debts';
 import HomeFinanceHistoric from '../../components/home/home-finance-historic';
 import HomeHeader from '../../components/home/home-header';
 import { ThemeContext } from '../../contexts/themeContext';
@@ -19,6 +20,7 @@ const HomeScreen: React.FC = () => {
         <HomeBalance />
         <HomeBudget />
         <HomeFinanceHistoric />
+        <HomeDebts />
       </ScrollView>
     </SafeAreaView>
   );

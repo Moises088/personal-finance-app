@@ -1,6 +1,6 @@
+import { AsyncMock } from "../../src/constants/storage.constant";
 import { CategoryDto } from "../../src/interfaces/services/category.interface";
 import { AppCategoryService } from "../../src/services/category";
-import { AsyncMock } from "../../__mocks__/asynstorage.mock";
 
 const category: CategoryDto = { color: "#3f93eb", icon: "dumbbel", name: "Academia" }
 const sameCategory: CategoryDto = AsyncMock['ASYNC_CATEGORIES'][0];

@@ -4,12 +4,18 @@ import { styles } from './styles';
 import { ThemeContext } from '../../../contexts/themeContext';
 import { CarouselProps } from '../../../interfaces/screens/carousel.interface';
 
-const Carousel: React.FC<CarouselProps> = ({ itens, width }) => {
+const Carousel: React.FC<CarouselProps> = ({ itens, width, onChangeIndex }) => {
 
     const { theme } = React.useContext(ThemeContext);
     const style = styles(theme);
 
     const scrollRef = React.useRef<any>();
+
+    const onScroll = (contentOffsetX: number) => {
+        if (contentOffsetX % width === 0 || (itens.length - 1) - (contentOffsetX / width) < 0.5) {
+            if(onChangeIndex) onChangeIndex(Math.ceil(contentOffsetX / width))
+        }
+    }
 
     return (
         <View style={style.container}>
@@ -22,6 +28,7 @@ const Carousel: React.FC<CarouselProps> = ({ itens, width }) => {
                         pagingEnabled
                         snapToInterval={width}
                         ref={scrollRef}
+                        onScroll={(event) => onScroll(event.nativeEvent.contentOffset.x)}
                     >
                         {itens.map(item => (item))}
                     </ScrollView>

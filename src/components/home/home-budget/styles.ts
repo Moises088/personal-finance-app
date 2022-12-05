@@ -34,7 +34,7 @@ export const styles = (theme: ThemesConfig) => {
             flexDirection: 'row',
             justifyContent: "center",
             alignItems: 'center',
-            backgroundColor: 'rgba(0,0,0,0.1)',
+            backgroundColor: 'rgba(0,0,0,0.3)',
             zIndex: 0,
             borderRadius: 10
         },

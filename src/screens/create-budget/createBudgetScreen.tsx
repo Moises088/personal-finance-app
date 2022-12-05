@@ -19,7 +19,7 @@ import CustomButtonAnimated from '../../components/global/custom-button-animated
 import { StackNavigationProp } from '@react-navigation/stack';
 import { BudgetsContext } from '../../contexts/budgetsContext';
 
-const INPUT_MASK_OPTIONS = {
+export const INPUT_MASK_OPTIONS = {
   precision: 2,
   separator: ',',
   delimiter: '.',
