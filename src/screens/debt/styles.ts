@@ -19,6 +19,13 @@ export const styles = (theme: ThemesConfig) => {
             width: WINDOW_WIDTH - 50,
             paddingHorizontal: 10,
         },
+        titleHeader: {
+            color: theme.text.primary,
+            fontSize: 20,
+            textAlign: "center",
+            letterSpacing: 1,
+            padding: 20
+        },
         btn: {
             backgroundColor: COLOR_SUCCESS,
             padding: 5,
