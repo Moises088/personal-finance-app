@@ -36,6 +36,11 @@ export const styles = (theme: ThemesConfig) => {
             marginBottom: 10,
             alignItems: "center"
         },
+        btnReload: {
+            flexDirection: 'row',
+            justifyContent: 'center',
+            backgroundColor: '#6232a8'
+        },
         btnText: {
             color: theme.text.primary
         },
@@ -49,10 +54,10 @@ export const styles = (theme: ThemesConfig) => {
             borderTopRightRadius: 25
         },
         containerFormExpand: {
-            
+
         },
-        title: { 
-            fontSize: 18, 
+        title: {
+            fontSize: 18,
             color: theme.text.primary,
             marginTop: 15,
             marginLeft: 8,
@@ -66,12 +71,12 @@ export const styles = (theme: ThemesConfig) => {
             paddingHorizontal: 15
         },
         label: {
-            fontSize: 14, 
+            fontSize: 14,
             color: theme.text.primary,
             opacity: 0.7
         },
         info: {
-            fontSize: 19, 
+            fontSize: 19,
             color: theme.text.primary,
             marginTop: 5
         }

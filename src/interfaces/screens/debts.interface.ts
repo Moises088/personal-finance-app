@@ -5,3 +5,9 @@ export interface DebtsContextData {
     getDebtsBalance: () => void,
     deleteDebt: (id: number) => void
 }
+
+export type DebtsParamRoute = {
+    Detail: {
+        debts?: DebtsBalance
+    };
+}

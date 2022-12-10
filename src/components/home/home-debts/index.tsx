@@ -20,7 +20,12 @@ const HomeDebts: React.FC = () => {
       <Text style={style.title}>Valores restantes</Text>
       <BarChart itens={debts.map(debt => ({
         color: debt.institution.color,
-        icon: (<Image source={debt.institution.logo} style={style.logo} />),
+        icon: (
+          <View style={style.align}>
+            <Image source={debt.institution.logo} style={style.logo} />
+            {debt.institution.name == "OUTRO" && (<Text style={style.text}>{debt.institutionName}</Text>)}
+          </View>
+        ),
         total: debt.totalRemain
       }))} />
 

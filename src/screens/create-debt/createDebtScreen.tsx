@@ -10,15 +10,16 @@ import { DEBTS_INSTITUTION } from '../../constants/debts.constants';
 import { ThemeContext } from '../../contexts/themeContext';
 import { DebtForms, DebtsDto, DebtsInstitution } from '../../interfaces/services/debts.interface';
 import { AppDebtsService } from '../../services/debts';
-import { getPipeMoneyNumber } from '../../utils/money.util';
+import { getPipeMoneyNumber, getPipeMoneyString } from '../../utils/money.util';
 import { INPUT_MASK_OPTIONS } from '../create-budget/createBudgetScreen';
 import { AntDesign } from '@expo/vector-icons';
 import { styles } from './styles';
 import DatetimePicker from '../../components/global/datetime-picker';
 import { getPipeCustomDateString } from '../../utils/date.util';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { useNavigation } from '@react-navigation/native';
+import { useRoute, RouteProp, useNavigation } from "@react-navigation/native";
 import { DebtsContext } from '../../contexts/debtsContext';
+import { DebtsParamRoute } from '../../interfaces/screens/debts.interface';
 
 const CreateDebtScreen: React.FC = () => {
 
@@ -27,7 +28,9 @@ const CreateDebtScreen: React.FC = () => {
   const style = styles(theme);
   const defaultInstitution = DEBTS_INSTITUTION.find(debt => debt.name == "OUTRO") as DebtsInstitution;
   const form = { institution: defaultInstitution, total: "0", totalPerMonth: "0" } as DebtForms;
+
   const navigation = useNavigation<StackNavigationProp<any>>();
+  const { params } = useRoute<RouteProp<DebtsParamRoute>>();
 
   const [institutionSelected, setInstitutionSelected] = React.useState<string>("OUTRO");
   const [debtForms, setDebtForms] = React.useState<DebtForms>(form);
@@ -35,6 +38,28 @@ const CreateDebtScreen: React.FC = () => {
   const [loadingEnd, setLoadingEnd] = React.useState<boolean>(false)
   const [isDatePickerVisible, setDatePickerVisibility] = React.useState<boolean>(false)
   const [validation, setValidation] = React.useState<string[]>([]);
+  const [debtId, setDebtId] = React.useState<number>();
+
+  React.useEffect(() => {
+    if (params?.debts) {
+      const debts = params.debts;
+      const getTotalPerMonth = () => {
+        if(debts.total == debts.totalPerMonth) return "0";
+        return getPipeMoneyString(debts.totalPerMonth)
+      }
+
+      setDebtForms({
+        institution: debts.institution,
+        paidMonthAt: debts.paidMonthAt,
+        total: getPipeMoneyString(debts.total),
+        institutionName: debts.institutionName,
+        totalPerMonth: getTotalPerMonth()
+      })
+
+      setInstitutionSelected(debts.institution.name)
+      setDebtId(debts.id)
+    }
+  }, [])
 
   const createDebt = async () => {
     const { institution, total, totalPerMonth, paidMonthAt, institutionName } = debtForms;
@@ -64,7 +89,13 @@ const CreateDebtScreen: React.FC = () => {
         type: "INVOICE",
         institutionName
       }
-      await AppDebtsService.create(debtDto);
+
+      if(!debtId){
+        await AppDebtsService.create(debtDto);
+      } else {
+        await AppDebtsService.update(debtId, debtDto);
+      }
+
       await getDebtsBalance()
       navigation.goBack()
     } catch (error: any) {
