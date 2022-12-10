@@ -1,13 +1,13 @@
 import React from 'react';
-import { View, ScrollView, TouchableOpacity, Text } from 'react-native';
+import { View, ScrollView, Image, Text } from 'react-native';
 import { ThemeContext } from '../../contexts/themeContext';
 import { FontAwesome5, AntDesign } from '@expo/vector-icons';
 import { styles } from './styles';
 import { TextInputMask } from 'react-native-masked-text';
-import { BudgetForms, BudgetFormCategories } from '../../interfaces/screens/budget.interface';
+import { BudgetForms, BudgetFormCategories, BudgetFormDebts } from '../../interfaces/screens/budget.interface';
 import { DATE_MONTH, DATE_YEAR } from '../../constants/date.constants';
 import { BudgetDto } from '../../interfaces/services/budget.interface';
-import { getPipeMoneyNumber } from '../../utils/money.util';
+import { getPipeMoneyNumber, getPipeMoneyString } from '../../utils/money.util';
 import { AppBudgetService } from '../../services/budget';
 import { COLOR_SUCCESS } from '../../constants/colors';
 import { useNavigation } from '@react-navigation/native';
@@ -17,6 +17,7 @@ import { AppCategoryService } from '../../services/category';
 import CustomButtonAnimated from '../../components/global/custom-button-animated';
 import GlobalPicker from '../../components/global/picker';
 import AlertError from '../../components/global/alert-error';
+import { AppDebtsService } from '../../services/debts';
 
 export const INPUT_MASK_OPTIONS = {
   precision: 2,
@@ -28,7 +29,7 @@ export const INPUT_MASK_OPTIONS = {
 
 const CreateBudgetScreen: React.FC = () => {
 
-  const [budgetForm, setBudgetForm] = React.useState<BudgetForms>({ categories: new Array(), total: "0,00" } as BudgetForms);
+  const [budgetForm, setBudgetForm] = React.useState<BudgetForms>({ categories: new Array(), debts: new Array(), total: "0,00" } as BudgetForms);
 
   const [filteredMonth, setFilteredMonth] = React.useState<string>('')
   const [filteredYear, setFilteredYear] = React.useState<string>('')
@@ -49,8 +50,16 @@ const CreateBudgetScreen: React.FC = () => {
 
   const loadCategories = async () => {
     const getCategories = await AppCategoryService.find();
-    const categories: BudgetFormCategories[] = getCategories.map(category => ({ category, total: "0" }))
-    setBudgetForm(prev => ({ ...prev, categories }))
+    const categories: BudgetFormCategories[] = getCategories.map(category => ({ category, total: "0" }));
+
+    const getDebts = await AppDebtsService.findInstitutions();
+    const debts: BudgetFormDebts[] = getDebts.map(debt => ({ debt, total: getPipeMoneyString(debt.total) }))
+
+    const totals = debts.filter(debt => debt.total != "0").map(debt => getPipeMoneyNumber(debt.total));
+    let total = 0;
+    totals.map(t => total += t);
+
+    setBudgetForm(prev => ({ ...prev, categories, debts, total: getPipeMoneyString(total) }))
   }
 
   const setTotal = (total: string, index: number) => {
@@ -152,6 +161,36 @@ const CreateBudgetScreen: React.FC = () => {
                     ...prev, categories: budgetForm.categories.map((category, index) => {
                       if (index == i) category.total = total;
                       return category
+                    })
+                  }))
+                }}
+                style={style.valueInputCategory}
+              />
+            </View>
+          </View>
+        ))}
+
+        {budgetForm.debts.map((debt, i) => (
+          <View key={i} style={style.containerCategory}>
+            <View style={style.containerCategoryTitle}>
+              <View style={style.containerIcon}>
+                <Image source={debt.debt.logo} style={{ width: 28, height: 28, borderRadius: 28 }} />
+              </View>
+              <Text style={style.containerCategoryName}>{debt.debt.name}</Text>
+            </View>
+
+            <View style={style.containerCategoryTotal}>
+              <Text style={[style.valuePrefixText, { fontSize: 13 }]}>R$</Text>
+              <TextInputMask
+                type={'money'}
+                options={INPUT_MASK_OPTIONS}
+                value={budgetForm?.debts[i]?.total}
+                onChangeText={(total: string) => {
+                  setTotal(total, i)
+                  setBudgetForm(prev => ({
+                    ...prev, debts: budgetForm.debts.map((debt, index) => {
+                      if (index == i) debt.total = total;
+                      return debt
                     })
                   }))
                 }}

@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { DEBTS_INSTITUTION } from "../constants/debts.constants";
 import { ASYNC_DEBTS } from "../constants/storage.constant";
-import { DebtsDto, DebtsEntity, DebtsInstitution } from "../interfaces/services/debts.interface";
+import { DebtsDto, DebtsEntity, DebtsInstitution, DebtsInstitutionTotal } from "../interfaces/services/debts.interface";
 import { Services } from "../interfaces/services/service.interface";
 import { getPipeDateTimeString } from "../utils/date.util";
 
@@ -34,12 +34,12 @@ class DebtsService implements Services<DebtsEntity, DebtsDto> {
         return JSON.parse(categories ?? JSON.stringify([]));
     }
 
-    public async findInstitutions(): Promise<DebtsInstitution[]> {
+    public async findInstitutions(): Promise<DebtsInstitutionTotal[]> {
         const debts = await this.find();
         return debts.map(debt => {
-            const institution = DEBTS_INSTITUTION.find(institution => institution.id == debt.institutionId) as DebtsInstitution
+            const institution = DEBTS_INSTITUTION.find(institution => institution.id == debt.institutionId) as DebtsInstitutionTotal
             if (debt?.institutionName) institution.name = debt.institutionName
-            return { ...institution, id: debt.id };
+            return { ...institution, id: debt.id, total: debt.totalPerMonth };
         });
     }
 

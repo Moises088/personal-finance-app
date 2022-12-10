@@ -22,6 +22,10 @@ export interface DebtsInstitution {
     logo: any
 }
 
+export interface DebtsInstitutionTotal extends DebtsInstitution {
+    total: number
+}
+
 export interface DebtForms {
     institution: DebtsInstitution;
     total: string;
