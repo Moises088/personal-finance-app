@@ -34,5 +34,13 @@ export const styles = (theme: ThemesConfig) => {
         textTitle: {
             color: theme.text.tertiary
         },
+        align: {
+            alignItems: "center"
+        },
+        text: {
+            color: "#FFF",
+            fontSize: 11,
+            marginLeft: 1
+        }
     })
 };

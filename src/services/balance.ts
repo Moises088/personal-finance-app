@@ -1,6 +1,7 @@
 import { DEBTS_INSTITUTION } from "../constants/debts.constants";
 import { DebtsBalance, DebtsInstitution } from "../interfaces/services/debts.interface";
 import { FinanceBalance, FinanceBalancePerCategory, FinancesBalanceEntity } from "../interfaces/services/finance.interface";
+import { decontextualize } from "../utils/data.util";
 import { AppCategoryService } from "./category";
 import { AppDebtsService } from "./debts";
 import { AppFinanceService } from "./finance";
@@ -88,7 +89,11 @@ class BalanceService {
 
                 const category = categories.find(c => c.id == finance.categoryId);
                 const getBill = bills.find(bill => bill.id == finance.billId);
-                const bill = DEBTS_INSTITUTION.find(bill => bill.id == getBill?.institutionId);
+                const getInstitution = DEBTS_INSTITUTION.find(bill => bill.id == getBill?.institutionId);
+                if(!getInstitution) return;
+
+                const bill = decontextualize<DebtsInstitution>(getInstitution);
+                if (bill.name == "OUTRO") bill.name = getBill?.institutionName ?? "";
 
                 return { ...finance, category, bill };
             }

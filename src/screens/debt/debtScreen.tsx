@@ -9,6 +9,7 @@ import { WINDOW_WIDTH } from '../../constants/screen.contants';
 import { getPipeMoneyString } from '../../utils/money.util';
 import { COLOR_DANGER, COLOR_SUCCESS } from '../../constants/colors';
 import { DebtsContext } from '../../contexts/debtsContext';
+import { FontAwesome5 } from '@expo/vector-icons';
 import FinanceHistoricCard from '../../components/finance/finance-historic-card';
 import DebtsCard from '../../components/debts/debts-card';
 import Carousel from '../../components/global/carousel';
@@ -32,6 +33,12 @@ const DebtScreen: React.FC = () => {
     setActual(debt);
   }
 
+  const name = () => {
+    if (!actual) return ""
+    if (actual.institution.name != "OUTRO") return actual.institution.name;
+    if (actual.institution.name == "OUTRO") return actual.institutionName;
+  }
+
   return (
     <SafeAreaView style={style.container}>
       {actual ? (
@@ -46,7 +53,7 @@ const DebtScreen: React.FC = () => {
             onChangeIndex={index => setActual(debts[index])}
           />
         </View>
-      ): (
+      ) : (
         <Text style={style.titleHeader}>Crie novas faturas clicando em adicionar</Text>
       )}
 
@@ -58,7 +65,12 @@ const DebtScreen: React.FC = () => {
 
           {actual && (
             <>
-              <Text style={style.title}>{actual.institution.name}</Text>
+              <TouchableOpacity style={[style.btn, style.btnReload]} onPress={() => navigation.navigate("CreateDebtScreen", { debts: actual })}>
+                <FontAwesome5 name="sync-alt" size={14} color="#FFF" />
+                <Text style={style.btnText}> Atualizar</Text>
+              </TouchableOpacity>
+
+              <Text style={style.title}>{name()}</Text>
 
               <View style={style.containerInfo}>
                 <Text style={style.label}>Valor total</Text>
