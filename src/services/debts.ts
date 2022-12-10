@@ -3,6 +3,7 @@ import { DEBTS_INSTITUTION } from "../constants/debts.constants";
 import { ASYNC_DEBTS } from "../constants/storage.constant";
 import { DebtsDto, DebtsEntity, DebtsInstitution, DebtsInstitutionTotal } from "../interfaces/services/debts.interface";
 import { Services } from "../interfaces/services/service.interface";
+import { decontextualize } from "../utils/data.util";
 import { getPipeDateTimeString } from "../utils/date.util";
 
 class Debts implements DebtsEntity {
@@ -37,10 +38,13 @@ class DebtsService implements Services<DebtsEntity, DebtsDto> {
     public async findInstitutions(): Promise<DebtsInstitutionTotal[]> {
         const debts = await this.find();
         return debts.map(debt => {
-            const institution = DEBTS_INSTITUTION.find(institution => institution.id == debt.institutionId) as DebtsInstitutionTotal
+            const getInstitution = DEBTS_INSTITUTION.find(institution => institution.id == debt.institutionId);
+            if (!getInstitution) return;
+            
+            const institution = decontextualize<DebtsInstitution>(getInstitution);
             if (debt?.institutionName) institution.name = debt.institutionName
             return { ...institution, id: debt.id, total: debt.totalPerMonth };
-        });
+        }).filter(r => r) as DebtsInstitutionTotal[];
     }
 
     public async findOne(id: number): Promise<DebtsEntity | undefined> {
