@@ -1,5 +1,5 @@
 import { CategoryEntity } from "./category.interface";
-import { DebtsInstitution } from "./debts.interface";
+import { DebtsEntity, DebtsInstitution } from "./debts.interface";
 
 interface Finance {
     name: string;
@@ -36,6 +36,7 @@ export interface FinanceBalance {
 }
 
 export interface FinanceBalancePerCategory {
+    bill?: { institution: DebtsInstitution | undefined, id: number };
     category: CategoryEntity | undefined;
     total: number;
 }

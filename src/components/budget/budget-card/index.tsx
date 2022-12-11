@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import { ThemeContext } from '../../../contexts/themeContext';
 import { styles } from './styles';
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -13,10 +13,16 @@ const BudgetCard: React.FC<{ item: BudgetsBalanceCategory }> = ({ item }) => {
 
     const progress = parseFloat(((item.used * 100) / item.total).toFixed(2));
 
+    const Icon: React.FC = () => {
+        if (item.categoryId) return <FontAwesome5 name={item.category?.icon} size={18} color={theme.text.primary} />
+        if (item.debtId) return <Image source={item.debt?.logo} style={style.image} />
+        return <View />
+    }
+
     return (
         <View style={style.container}>
             <View style={style.containerIcon}>
-                <FontAwesome5 name={item.category?.icon} size={18} color={theme.text.primary} />
+                <Icon />
             </View>
             <View style={style.containerInfo}>
                 <View style={style.containerHeader}>

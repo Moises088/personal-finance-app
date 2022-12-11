@@ -100,8 +100,8 @@ export const styles = (theme: ThemesConfig) => {
             marginRight: 4
         },
         containerButton: {
-            width: "70%",
-            marginLeft: "15%",
+            width: "80%",
+            marginLeft: "10%",
             marginTop: 20,
             marginBottom: 20
         }

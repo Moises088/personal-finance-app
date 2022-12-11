@@ -1,10 +1,15 @@
 import { CategoryEntity } from "./category.interface";
+import { DebtsInstitution } from "./debts.interface";
 
 interface Budget {
     year: string;
     month: string;
     categories: {
         categoryId: number;
+        total: number;
+    }[];
+    debts: {
+        debtId: number;
         total: number;
     }[];
 }
@@ -20,9 +25,11 @@ export interface BudgetEntity extends Budget {
 }
 
 export interface BudgetsBalanceCategory {
-    category: CategoryEntity | undefined;
+    categoryId?: number;
+    category?: CategoryEntity;
+    debtId?: number;
+    debt?: DebtsInstitution;
     used: number;
-    categoryId: number;
     total: number;
 }
 
