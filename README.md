@@ -19,7 +19,7 @@ Esse é um aplicativo criado para fazer uma gestão financeira completa, para re
 ## Demonstração
 
 <img src="https://i.ibb.co/sKwVzDT/3.png" />
-<img src="https://i.ibb.co/HrKmnpF/2.png" />
+<img src="https://i.ibb.co/QdTFryq/Debt-Screen.gif" />
 <img src="https://i.ibb.co/khsg5X7/1.png" />
 
 ## Instalação
@@ -38,8 +38,6 @@ Clone o repositório:
 Instale as depêndencias:
 ```bash
   npm install
-  # ou
-  expo intall
 ```  
 
 ## Executar
@@ -68,5 +66,5 @@ Atualmente o app salva seus dados localmente. Futuramente estarei lançando um s
 
 ## Créditos
 #### Imagens usadas:
-- https://br.freepik.com/vetores-gratis/prancheta-com-doc-oficial-gerenciando-dinheiro-extra-placa-com-papel-planejador-de-financas-pilha-de-moedas-amarelas-pilha-de-dinheiro-fundo-de-bonus-beneficios-e-prosperidade-ilustracao-em-vetor-conceito-metafora-isolado_11668644.htm#query=budget&position=0&from_view=search&track=sph
-- https://www.freepik.com/free-vector/wavy-smooth-lines-pattern-background_2451587.htm#query=wave%20line&position=1&from_view=keyword
+- [Freepik](https://br.freepik.com/vetores-gratis/prancheta-com-doc-oficial-gerenciando-dinheiro-extra-placa-com-papel-planejador-de-financas-pilha-de-moedas-amarelas-pilha-de-dinheiro-fundo-de-bonus-beneficios-e-prosperidade-ilustracao-em-vetor-conceito-metafora-isolado_11668644.htm#query=budget&position=0&from_view=search&track=sph)
+- [Freepik](https://www.freepik.com/free-vector/wavy-smooth-lines-pattern-background_2451587.htm#query=wave%20line&position=1&from_view=keyword)
