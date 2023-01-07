@@ -58,6 +58,11 @@ export const styles = (theme: ThemesConfig) => {
         containerProgress: {
             width: "90%",
             marginLeft: "5%"
+        },
+        image: {
+            width: 38,
+            height: 38,
+            borderRadius: 38
         }
     })
 };

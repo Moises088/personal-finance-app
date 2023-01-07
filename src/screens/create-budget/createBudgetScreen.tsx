@@ -9,7 +9,7 @@ import { DATE_MONTH, DATE_YEAR } from '../../constants/date.constants';
 import { BudgetDto } from '../../interfaces/services/budget.interface';
 import { getPipeMoneyNumber, getPipeMoneyString } from '../../utils/money.util';
 import { AppBudgetService } from '../../services/budget';
-import { COLOR_SUCCESS } from '../../constants/colors';
+import { COLOR_DANGER, COLOR_SUCCESS } from '../../constants/colors';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { BudgetsContext } from '../../contexts/budgetsContext';
@@ -62,19 +62,34 @@ const CreateBudgetScreen: React.FC = () => {
     setBudgetForm(prev => ({ ...prev, categories, debts, total: getPipeMoneyString(total) }))
   }
 
-  const setTotal = (total: string, index: number) => {
-    const sum = budgetForm.categories
-      .filter((r, i) => i !== index)
-      .reduce((partialSum, a) => partialSum + parseFloat(a.total.replace(",", ".")), 0);
+  const setTotal = (total: string, index: number, type: "Categories" | "Debts") => {
+    let categories = budgetForm.categories.map(c => c);
+    let debts = budgetForm.debts.map(c => c);
 
-    setBudgetForm(prev => ({ ...prev, total: (sum + parseFloat(total.replace(",", "."))).toFixed(2).replace(".", ",") }))
+    if (type == "Categories") categories = categories.filter((_, i) => i !== index);
+    if (type == "Debts") debts = debts.filter((_, i) => i !== index);
+
+    const formatTotal = (partial: string) => parseFloat(partial.replace(",", "."))
+
+    const sumCategories = categories.reduce((partialSum, a) => partialSum + formatTotal(a.total), 0);
+    const sumDebts = debts.reduce((partialSum, a) => partialSum + formatTotal(a.total), 0);
+    const totals = formatTotal(total);
+
+    const sum = sumCategories + sumDebts + totals;
+
+    setBudgetForm(prev => ({ ...prev, total: sum.toFixed(2).replace(".", ",") }))
   }
 
   const savebudget = async () => {
-    const { categories, total } = budgetForm;
+    const { categories, total, debts } = budgetForm;
+
     const categoriesDto = categories.map(category => (
       { categoryId: category.category.id, total: getPipeMoneyNumber(category.total) }
     )).filter(c => c.total > 0);
+
+    const debtsDto = debts.map(debt => (
+      { debtId: debt.debt.id, total: getPipeMoneyNumber(debt.total) }
+    )).filter(d => d.total > 0);
 
     const erros = [];
     if (!categoriesDto?.length) erros.push("Adicione ao menos uma categoria")
@@ -89,7 +104,7 @@ const CreateBudgetScreen: React.FC = () => {
     }
 
     try {
-      const budgetDto: BudgetDto = { month: filteredMonth, year: filteredYear, categories: categoriesDto, total }
+      const budgetDto: BudgetDto = { month: filteredMonth, year: filteredYear, categories: categoriesDto, debts: debtsDto, total }
       await AppBudgetService.create(budgetDto)
       await getBudgetsBalance()
       navigation.goBack()
@@ -139,6 +154,7 @@ const CreateBudgetScreen: React.FC = () => {
         </View>
 
         <Text style={[style.textButton, { fontSize: 14, marginTop: 10 }]}>Escolha as categorias</Text>
+        <Text style={[style.textButton, { fontSize: 11, marginTop: 10, color: COLOR_DANGER }]}>Apenas gastos</Text>
 
         {budgetForm.categories.map((cate, i) => (
           <View key={i} style={style.containerCategory}>
@@ -156,7 +172,7 @@ const CreateBudgetScreen: React.FC = () => {
                 options={INPUT_MASK_OPTIONS}
                 value={budgetForm?.categories[i]?.total}
                 onChangeText={(total: string) => {
-                  setTotal(total, i)
+                  setTotal(total, i, "Categories")
                   setBudgetForm(prev => ({
                     ...prev, categories: budgetForm.categories.map((category, index) => {
                       if (index == i) category.total = total;
@@ -186,7 +202,7 @@ const CreateBudgetScreen: React.FC = () => {
                 options={INPUT_MASK_OPTIONS}
                 value={budgetForm?.debts[i]?.total}
                 onChangeText={(total: string) => {
-                  setTotal(total, i)
+                  setTotal(total, i, "Debts")
                   setBudgetForm(prev => ({
                     ...prev, debts: budgetForm.debts.map((debt, index) => {
                       if (index == i) debt.total = total;

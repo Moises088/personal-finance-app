@@ -29,6 +29,11 @@ export const styles = (theme: ThemesConfig) => {
         text: {
             letterSpacing: 1.05,
             color: theme.text.primary
+        },
+        image: {
+            width: 38,
+            height: 38,
+            borderRadius: 38
         }
     })
 };

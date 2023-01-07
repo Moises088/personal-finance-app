@@ -90,10 +90,12 @@ class BalanceService {
                 const category = categories.find(c => c.id == finance.categoryId);
                 const getBill = bills.find(bill => bill.id == finance.billId);
                 const getInstitution = DEBTS_INSTITUTION.find(bill => bill.id == getBill?.institutionId);
-                if(!getInstitution) return;
 
-                const bill = decontextualize<DebtsInstitution>(getInstitution);
-                if (bill.name == "OUTRO") bill.name = getBill?.institutionName ?? "";
+                let bill;
+                if (getInstitution) {
+                    bill = decontextualize<DebtsInstitution>(getInstitution);
+                    if (bill.name == "OUTRO") bill.name = getBill?.institutionName ?? "";
+                }
 
                 return { ...finance, category, bill };
             }
@@ -112,16 +114,33 @@ class BalanceService {
         const perCategory: FinanceBalancePerCategory[] = [];
 
         for (const balance of balances.finances) {
-            const category = perCategory.find(category => category?.category?.id == balance.categoryId);
-            if (category?.total) {
-                category.total += balance.value;
-                continue
+            if (balance.categoryId) {
+                const category = perCategory.find(category => category?.category?.id == balance.categoryId);
+                if (category?.total) {
+                    category.total += balance.value;
+                    continue
+                }
+
+                perCategory.push({
+                    bill: undefined,
+                    category: balance.category,
+                    total: balance.value
+                })
             }
 
-            perCategory.push({
-                category: balance.category,
-                total: balance.value
-            })
+            if (balance.billId) {
+                const bill = perCategory.find(bill => bill.bill?.id == balance.billId);
+                if (bill?.total) {
+                    bill.total += balance.value;
+                    continue
+                }
+
+                perCategory.push({
+                    bill: { institution: balance.bill, id: balance.billId },
+                    category: undefined,
+                    total: balance.value
+                })
+            }
         }
 
         return { ...balances, categories: perCategory }

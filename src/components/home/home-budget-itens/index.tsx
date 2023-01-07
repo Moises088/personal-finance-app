@@ -21,12 +21,18 @@ const HomeBudgetItens: React.FC<{ item: BudgetsBalanceCategory }> = ({ item }) =
 
   const progress = parseFloat(((item.used * 100) / item.total).toFixed(2));
 
+  const Icon: React.FC = () => {
+    if (item.categoryId) return <FontAwesome5 name={item.category?.icon} size={18} color={theme.text.primary} />
+    if (item.debtId) return <Image source={item.debt?.logo} style={style.image} />
+    return <View />
+  }
+
   return (
     <View style={style.container}>
       <Image source={BACKGROUN_IMAGE} style={style.backgroundImage} />
       <View style={style.containerTitle}>
         <View style={[style.containerIcon, { backgroundColor: item.category?.color ?? theme.background.primary }]}>
-          {item.category && (<FontAwesome5 name={item.category.icon} size={22} color={theme.text.primary} />)}
+          <Icon />
         </View>
         <Text style={style.text}>{item.category?.name}</Text>
       </View>
