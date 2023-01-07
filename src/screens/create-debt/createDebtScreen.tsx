@@ -20,9 +20,11 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { useRoute, RouteProp, useNavigation } from "@react-navigation/native";
 import { DebtsContext } from '../../contexts/debtsContext';
 import { DebtsParamRoute } from '../../interfaces/screens/debts.interface';
+import { FinancesContext } from '../../contexts/financesContext';
 
 const CreateDebtScreen: React.FC = () => {
 
+  const { getFinancesBalance } = React.useContext(FinancesContext);
   const { getDebtsBalance } = React.useContext(DebtsContext);
   const { theme } = React.useContext(ThemeContext);
   const style = styles(theme);
@@ -44,7 +46,7 @@ const CreateDebtScreen: React.FC = () => {
     if (params?.debts) {
       const debts = params.debts;
       const getTotalPerMonth = () => {
-        if(debts.total == debts.totalPerMonth) return "0";
+        if (debts.total == debts.totalPerMonth) return "0";
         return getPipeMoneyString(debts.totalPerMonth)
       }
 
@@ -90,13 +92,14 @@ const CreateDebtScreen: React.FC = () => {
         institutionName
       }
 
-      if(!debtId){
+      if (!debtId) {
         await AppDebtsService.create(debtDto);
       } else {
         await AppDebtsService.update(debtId, debtDto);
       }
 
       await getDebtsBalance()
+      await getFinancesBalance()
       navigation.goBack()
     } catch (error: any) {
       if (error?.message) setValidation([error.message])

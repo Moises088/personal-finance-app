@@ -26,7 +26,7 @@ const HomeBudget: React.FC = () => {
         <Carousel
           width={250}
           itens={
-            budgets?.categories.map((budget, i) => (
+            budgets?.categories.map((budget, i) => i < 5 && (
               <HomeBudgetItens key={i} item={budget} />
             )) as JSX.Element[] ?? []
           }
