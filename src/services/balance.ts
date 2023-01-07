@@ -90,10 +90,12 @@ class BalanceService {
                 const category = categories.find(c => c.id == finance.categoryId);
                 const getBill = bills.find(bill => bill.id == finance.billId);
                 const getInstitution = DEBTS_INSTITUTION.find(bill => bill.id == getBill?.institutionId);
-                if (!getInstitution) return;
 
-                const bill = decontextualize<DebtsInstitution>(getInstitution);
-                if (bill.name == "OUTRO") bill.name = getBill?.institutionName ?? "";
+                let bill;
+                if (getInstitution) {
+                    bill = decontextualize<DebtsInstitution>(getInstitution);
+                    if (bill.name == "OUTRO") bill.name = getBill?.institutionName ?? "";
+                }
 
                 return { ...finance, category, bill };
             }
